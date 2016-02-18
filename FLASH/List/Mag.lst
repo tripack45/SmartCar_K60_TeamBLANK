@@ -1,0 +1,374 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM        18/Feb/2016  00:48:06
+# Copyright 1999-2014 IAR Systems AB.
+#
+#    Cpu mode     =  thumb
+#    Endian       =  little
+#    Source file  =  E:\freescale_racing\framework2016\source\Mag.c
+#    Command line =  
+#        E:\freescale_racing\framework2016\source\Mag.c -lCN
+#        E:\freescale_racing\framework2016\FLASH\List\ -lB
+#        E:\freescale_racing\framework2016\FLASH\List\ -o
+#        E:\freescale_racing\framework2016\FLASH\Obj\ --no_cse --no_unroll
+#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
+#        --debug --endian=little --cpu=Cortex-M4 -e --char_is_signed --fpu=None
+#        --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\INC\c\DLib_Config_Normal.h" -I
+#        E:\freescale_racing\framework2016\source\ -I
+#        E:\freescale_racing\framework2016\common\ -I
+#        E:\freescale_racing\framework2016\LPLD\ -I
+#        E:\freescale_racing\framework2016\LPLD\HW\ -I
+#        E:\freescale_racing\framework2016\LPLD\DEV\ -Ol -I "C:\Program Files
+#        (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include\" -D
+#        ARM_MATH_CM4
+#    List file    =  E:\freescale_racing\framework2016\FLASH\List\Mag.lst
+#    Object file  =  E:\freescale_racing\framework2016\FLASH\Obj\Mag.o
+#
+###############################################################################
+
+E:\freescale_racing\framework2016\source\Mag.c
+      1          /*
+      2          Arthor : Qian Qiyang (KisaragiAyanoo@twitter)
+      3          Date : 2015/12/01
+      4          License : MIT
+      5          */
+      6          
+      7          #include "includes.h"
+      8          
+      9          
+     10          // ===== Global Variables =====
+
+   \                                 In section .bss, align 4
+     11          U16 mag_val[6];
+   \                     mag_val:
+   \   00000000                      DS8 12
+     12          
+     13          
+     14          // ===== Function Realization =====
+     15          
+
+   \                                 In section .text, align 2, keep-with-next
+     16          void Mag_Sample(){
+   \                     Mag_Sample: (+1)
+   \   00000000   0xB510             PUSH     {R4,LR}
+     17            mag_val[0] = Mag1();
+   \   00000002   0x.... 0x....      BL       Mag1
+   \   00000006   0x....             LDR.N    R1,??DataTable7
+   \   00000008   0x8008             STRH     R0,[R1, #+0]
+     18            mag_val[1] = Mag2();
+   \   0000000A   0x.... 0x....      BL       Mag2
+   \   0000000E   0x....             LDR.N    R1,??DataTable7
+   \   00000010   0x8048             STRH     R0,[R1, #+2]
+     19            mag_val[2] = Mag3();
+   \   00000012   0x.... 0x....      BL       Mag3
+   \   00000016   0x....             LDR.N    R1,??DataTable7
+   \   00000018   0x8088             STRH     R0,[R1, #+4]
+     20            mag_val[3] = Mag4();
+   \   0000001A   0x.... 0x....      BL       Mag4
+   \   0000001E   0x....             LDR.N    R1,??DataTable7
+   \   00000020   0x80C8             STRH     R0,[R1, #+6]
+     21            mag_val[5] = Mag6();
+   \   00000022   0x.... 0x....      BL       Mag6
+   \   00000026   0x....             LDR.N    R1,??DataTable7
+   \   00000028   0x8148             STRH     R0,[R1, #+10]
+     22            mag_val[4] = mag_val[5] - Mag5();
+   \   0000002A   0x....             LDR.N    R0,??DataTable7
+   \   0000002C   0x8944             LDRH     R4,[R0, #+10]
+   \   0000002E   0x.... 0x....      BL       Mag5
+   \   00000032   0x1A20             SUBS     R0,R4,R0
+   \   00000034   0x....             LDR.N    R1,??DataTable7
+   \   00000036   0x8108             STRH     R0,[R1, #+8]
+     23          }
+   \   00000038   0xBD10             POP      {R4,PC}          ;; return
+     24          
+
+   \                                 In section .text, align 2, keep-with-next
+     25          u16 Mag1(){
+     26            ADC1->SC1[0] = ADC_SC1_ADCH(4);
+   \                     Mag1: (+1)
+   \   00000000   0x2004             MOVS     R0,#+4
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     27            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag1_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag1_0
+     28            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     29          }
+
+   \                                 In section .text, align 2, keep-with-next
+     30          u16 Mag2(){
+     31            ADC1->SC1[0] = ADC_SC1_ADCH(5);
+   \                     Mag2: (+1)
+   \   00000000   0x2005             MOVS     R0,#+5
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     32            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag2_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag2_0
+     33            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     34          }
+
+   \                                 In section .text, align 2, keep-with-next
+     35          u16 Mag3(){
+     36            ADC1->SC1[0] = ADC_SC1_ADCH(6);
+   \                     Mag3: (+1)
+   \   00000000   0x2006             MOVS     R0,#+6
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     37            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag3_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag3_0
+     38            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     39          }
+
+   \                                 In section .text, align 2, keep-with-next
+     40          u16 Mag4(){
+     41            ADC1->SC1[0] = ADC_SC1_ADCH(7);
+   \                     Mag4: (+1)
+   \   00000000   0x2007             MOVS     R0,#+7
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     42            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag4_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag4_0
+     43            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     44          }
+
+   \                                 In section .text, align 2, keep-with-next
+     45          s16 Mag5(){
+     46            ADC1->SC1[0] = ADC_SC1_DIFF_MASK | ADC_SC1_ADCH(3);
+   \                     Mag5: (+1)
+   \   00000000   0x2023             MOVS     R0,#+35
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     47            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag5_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag5_0
+     48            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB200             SXTH     R0,R0            ;; SignExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     49            //ADC1->SC1[0] &= ~ADC_SC1_DIFF_MASK;
+     50          }
+
+   \                                 In section .text, align 2, keep-with-next
+     51          u16 Mag6(){
+     52            ADC1->SC1[0] = ADC_SC1_ADCH(3);
+   \                     Mag6: (+1)
+   \   00000000   0x2003             MOVS     R0,#+3
+   \   00000002   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000004   0x6008             STR      R0,[R1, #+0]
+     53            while((ADC1->SC1[0]&ADC_SC1_COCO_MASK)==0);
+   \                     ??Mag6_0: (+1)
+   \   00000006   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   00000008   0x6800             LDR      R0,[R0, #+0]
+   \   0000000A   0x0600             LSLS     R0,R0,#+24
+   \   0000000C   0xD5FB             BPL.N    ??Mag6_0
+     54            return ADC1->R[0];
+   \   0000000E   0x....             LDR.N    R0,??DataTable7_2  ;; 0x400bb010
+   \   00000010   0x6800             LDR      R0,[R0, #+0]
+   \   00000012   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
+   \   00000014   0x4770             BX       LR               ;; return
+     55          }
+     56          
+
+   \                                 In section .text, align 2, keep-with-next
+     57          void Mag_Init(){
+     58            
+     59            if(!ADC1_enabled){
+   \                     Mag_Init: (+1)
+   \   00000000   0x....             LDR.N    R0,??DataTable7_3
+   \   00000002   0x7800             LDRB     R0,[R0, #+0]
+   \   00000004   0x2800             CMP      R0,#+0
+   \   00000006   0xD11A             BNE.N    ??Mag_Init_0
+     60              SIM->SCGC3 |= SIM_SCGC3_ADC1_MASK;  //ADC1 Clock Enable
+   \   00000008   0x....             LDR.N    R0,??DataTable7_4  ;; 0x40048030
+   \   0000000A   0x6800             LDR      R0,[R0, #+0]
+   \   0000000C   0xF050 0x6000      ORRS     R0,R0,#0x8000000
+   \   00000010   0x....             LDR.N    R1,??DataTable7_4  ;; 0x40048030
+   \   00000012   0x6008             STR      R0,[R1, #+0]
+     61              ADC1->CFG1 |= 0
+     62                         //|ADC_CFG1_ADLPC_MASK
+     63                         | ADC_CFG1_ADICLK(1)
+     64                         | ADC_CFG1_MODE(1)
+     65                         | ADC_CFG1_ADIV(0);
+   \   00000014   0x....             LDR.N    R0,??DataTable7_5  ;; 0x400bb008
+   \   00000016   0x6800             LDR      R0,[R0, #+0]
+   \   00000018   0xF050 0x0005      ORRS     R0,R0,#0x5
+   \   0000001C   0x....             LDR.N    R1,??DataTable7_5  ;; 0x400bb008
+   \   0000001E   0x6008             STR      R0,[R1, #+0]
+     66              ADC1->CFG2 |= //ADC_CFG2_ADHSC_MASK |
+     67                            ADC_CFG2_ADACKEN_MASK;
+   \   00000020   0x....             LDR.N    R0,??DataTable7_6  ;; 0x400bb00c
+   \   00000022   0x6800             LDR      R0,[R0, #+0]
+   \   00000024   0xF050 0x0008      ORRS     R0,R0,#0x8
+   \   00000028   0x....             LDR.N    R1,??DataTable7_6  ;; 0x400bb00c
+   \   0000002A   0x6008             STR      R0,[R1, #+0]
+     68              
+     69              ADC1->SC1[0]&=~ADC_SC1_AIEN_MASK;//disenble interrupt
+   \   0000002C   0x....             LDR.N    R0,??DataTable7_1  ;; 0x400bb000
+   \   0000002E   0x6800             LDR      R0,[R0, #+0]
+   \   00000030   0xF030 0x0040      BICS     R0,R0,#0x40
+   \   00000034   0x....             LDR.N    R1,??DataTable7_1  ;; 0x400bb000
+   \   00000036   0x6008             STR      R0,[R1, #+0]
+     70              ADC1_enabled = 1;
+   \   00000038   0x2001             MOVS     R0,#+1
+   \   0000003A   0x....             LDR.N    R1,??DataTable7_3
+   \   0000003C   0x7008             STRB     R0,[R1, #+0]
+     71            }
+     72            
+     73            PORTE->PCR[0]|=PORT_PCR_MUX(0);//adc1-4a
+   \                     ??Mag_Init_0: (+1)
+   \   0000003E   0x....             LDR.N    R0,??DataTable7_7  ;; 0x4004d000
+   \   00000040   0x6800             LDR      R0,[R0, #+0]
+   \   00000042   0x....             LDR.N    R1,??DataTable7_7  ;; 0x4004d000
+   \   00000044   0x6008             STR      R0,[R1, #+0]
+     74            PORTE->PCR[1]|=PORT_PCR_MUX(0);//adc1-5a
+   \   00000046   0x....             LDR.N    R0,??DataTable7_8  ;; 0x4004d004
+   \   00000048   0x6800             LDR      R0,[R0, #+0]
+   \   0000004A   0x....             LDR.N    R1,??DataTable7_8  ;; 0x4004d004
+   \   0000004C   0x6008             STR      R0,[R1, #+0]
+     75            PORTE->PCR[2]|=PORT_PCR_MUX(0);//adc1-6a
+   \   0000004E   0x....             LDR.N    R0,??DataTable7_9  ;; 0x4004d008
+   \   00000050   0x6800             LDR      R0,[R0, #+0]
+   \   00000052   0x....             LDR.N    R1,??DataTable7_9  ;; 0x4004d008
+   \   00000054   0x6008             STR      R0,[R1, #+0]
+     76            PORTE->PCR[3]|=PORT_PCR_MUX(0);//adc1-7a
+   \   00000056   0x....             LDR.N    R0,??DataTable7_10  ;; 0x4004d00c
+   \   00000058   0x6800             LDR      R0,[R0, #+0]
+   \   0000005A   0x....             LDR.N    R1,??DataTable7_10  ;; 0x4004d00c
+   \   0000005C   0x6008             STR      R0,[R1, #+0]
+     77          }
+   \   0000005E   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7:
+   \   00000000   0x........         DC32     mag_val
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_1:
+   \   00000000   0x400BB000         DC32     0x400bb000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_2:
+   \   00000000   0x400BB010         DC32     0x400bb010
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_3:
+   \   00000000   0x........         DC32     ADC1_enabled
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_4:
+   \   00000000   0x40048030         DC32     0x40048030
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_5:
+   \   00000000   0x400BB008         DC32     0x400bb008
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_6:
+   \   00000000   0x400BB00C         DC32     0x400bb00c
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_7:
+   \   00000000   0x4004D000         DC32     0x4004d000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_8:
+   \   00000000   0x4004D004         DC32     0x4004d004
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_9:
+   \   00000000   0x4004D008         DC32     0x4004d008
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_10:
+   \   00000000   0x4004D00C         DC32     0x4004d00c
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   Mag1
+       0   Mag2
+       0   Mag3
+       0   Mag4
+       0   Mag5
+       0   Mag6
+       0   Mag_Init
+       8   Mag_Sample
+         8   -> Mag1
+         8   -> Mag2
+         8   -> Mag3
+         8   -> Mag4
+         8   -> Mag5
+         8   -> Mag6
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_10
+       4  ??DataTable7_2
+       4  ??DataTable7_3
+       4  ??DataTable7_4
+       4  ??DataTable7_5
+       4  ??DataTable7_6
+       4  ??DataTable7_7
+       4  ??DataTable7_8
+       4  ??DataTable7_9
+      22  Mag1
+      22  Mag2
+      22  Mag3
+      22  Mag4
+      22  Mag5
+      22  Mag6
+      96  Mag_Init
+      58  Mag_Sample
+      12  mag_val
+
+ 
+  12 bytes in section .bss
+ 330 bytes in section .text
+ 
+ 330 bytes of CODE memory
+  12 bytes of DATA memory
+
+Errors: none
+Warnings: none

@@ -1,0 +1,42 @@
+#ifndef CAM_H
+#define CAM_H
+
+// ===== Settings =====
+// the camera has about 300 rows and 400 cols ,
+// but we can not handle that much ,
+// so we get 1 row of image for every IMG_STEP rows of camera ,
+// and totally get IMG_ROWS rows.
+
+#define IMG_ROWS 50
+#define IMG_COLS 150
+#define IMG_STEP 4
+
+
+// ====== Global Variables ======
+
+extern u8 cam_buffer[IMG_ROWS][IMG_COLS];
+
+extern u32 cam_current_frame;
+extern u32 cam_acquiring_frame;
+extern u32 cam_last_valid_frame;
+extern u32 cam_frame_diff;
+
+  //img_row             :   Currently(To be) loading row of the frame
+  //cam_current_frame   :   The frame currently being loaded.
+  //img_row_used        :   The row currently processing
+  //cam_current_frame   :   The frame currently under processing
+                           //(Reciving or InAlgorithm
+  //cam_acquiring_frame   :   Frame currently being loading.
+  //cam_last_valid_frame : Last Consistent Frame
+  //cam_frame_diff      : Difference of valid frames
+
+// ===== APIs ======
+
+  // write your algorithm in this func
+void Cam_Algorithm();
+
+  // Init
+void Cam_Init();
+
+
+#endif
