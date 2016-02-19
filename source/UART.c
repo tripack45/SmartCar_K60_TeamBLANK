@@ -139,7 +139,7 @@ void UART_Configure_DMA(){
   DMA0->TCD[1].DLAST_SGA = 0;
   
   NVIC_EnableIRQ(DMA1_IRQn);
-  NVIC_SetPriority(DMA1_IRQn, NVIC_EncodePriority(NVIC_GROUP, 2, 3));
+  NVIC_SetPriority(DMA1_IRQn, NVIC_EncodePriority(NVIC_GROUP, 2, 1));
   DMA0->INT |= DMA_INT_INT1_MASK; //Open Interrupt
   //DMA0->TCD[0].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(1);
   //DMA0->TCD[0].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(1);

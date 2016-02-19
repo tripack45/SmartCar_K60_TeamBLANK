@@ -1,33 +1,34 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM        18/Feb/2016  00:48:05
+# IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM        19/Feb/2016  17:56:18
 # Copyright 1999-2014 IAR Systems AB.
 #
 #    Cpu mode     =  thumb
 #    Endian       =  little
-#    Source file  =  E:\freescale_racing\framework2016\source\Cam.c
+#    Source file  =  E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c
 #    Command line =  
-#        E:\freescale_racing\framework2016\source\Cam.c -lCN
-#        E:\freescale_racing\framework2016\FLASH\List\ -lB
-#        E:\freescale_racing\framework2016\FLASH\List\ -o
-#        E:\freescale_racing\framework2016\FLASH\Obj\ --no_cse --no_unroll
-#        --no_inline --no_code_motion --no_tbaa --no_clustering --no_scheduling
-#        --debug --endian=little --cpu=Cortex-M4 -e --char_is_signed --fpu=None
-#        --dlib_config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
-#        7.0\arm\INC\c\DLib_Config_Normal.h" -I
-#        E:\freescale_racing\framework2016\source\ -I
-#        E:\freescale_racing\framework2016\common\ -I
-#        E:\freescale_racing\framework2016\LPLD\ -I
-#        E:\freescale_racing\framework2016\LPLD\HW\ -I
-#        E:\freescale_racing\framework2016\LPLD\DEV\ -Ol -I "C:\Program Files
-#        (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include\" -D
-#        ARM_MATH_CM4
-#    List file    =  E:\freescale_racing\framework2016\FLASH\List\Cam.lst
-#    Object file  =  E:\freescale_racing\framework2016\FLASH\Obj\Cam.o
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c -lCN
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -lB
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -o
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\ --no_cse
+#        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
+#        --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e
+#        --char_is_signed --fpu=None --dlib_config "C:\Program Files (x86)\IAR
+#        Systems\Embedded Workbench 7.0\arm\INC\c\DLib_Config_Normal.h" -I
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\ -I
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\ -I
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\ -I
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW\ -I
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV\ -Ol -I
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        7.0\arm\CMSIS\Include\" -D ARM_MATH_CM4
+#    List file    =  
+#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\Cam.lst
+#    Object file  =  E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Cam.o
 #
 ###############################################################################
 
-E:\freescale_racing\framework2016\source\Cam.c
+E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c
       1          /*
       2          Arthor : Qian Qiyang (KisaragiAyanoo@twitter)
       3          Date : 2015/12/01
@@ -124,22 +125,22 @@ E:\freescale_racing\framework2016\source\Cam.c
    \                                 In section .bss, align 4
      18          u8 cam_buffer0[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
    \                     cam_buffer0:
-   \   00000000                      DS8 7508
+   \   00000000                      DS8 4908
 
    \                                 In section .bss, align 4
      19          u8 cam_buffer1[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
    \                     cam_buffer1:
-   \   00000000                      DS8 7508
+   \   00000000                      DS8 4908
 
    \                                 In section .bss, align 4
      20          u8 cam_buffer2[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
    \                     cam_buffer2:
-   \   00000000                      DS8 7508
+   \   00000000                      DS8 4908
 
    \                                 In section .bss, align 4
      21          u8 cam_buffer3[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
    \                     cam_buffer3:
-   \   00000000                      DS8 7508
+   \   00000000                      DS8 4908
      22          
 
    \                                 In section .data, align 4
@@ -407,7 +408,7 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   0000003C   0x6800             LDR      R0,[R0, #+0]
    \   0000003E   0x.... 0x....      LDR.W    R1,??DataTable6_3
    \   00000042   0x7809             LDRB     R1,[R1, #+0]
-   \   00000044   0x2296             MOVS     R2,#+150
+   \   00000044   0x2262             MOVS     R2,#+98
    \   00000046   0xFB02 0x0001      MLA      R0,R2,R1,R0
    \   0000004A   0x.... 0x....      LDR.W    R1,??DataTable6_16  ;; 0x40009010
    \   0000004E   0x6008             STR      R0,[R1, #+0]
@@ -801,7 +802,7 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   00000178   0x....             LDR.N    R1,??DataTable6_44  ;; 0x40009014
    \   0000017A   0x8008             STRH     R0,[R1, #+0]
     218            DMA0->TCD[0].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(IMG_COLS);
-   \   0000017C   0x2096             MOVS     R0,#+150
+   \   0000017C   0x2062             MOVS     R0,#+98
    \   0000017E   0x....             LDR.N    R1,??DataTable6_45  ;; 0x40009016
    \   00000180   0x8008             STRH     R0,[R1, #+0]
     219            DMA0->TCD[0].DLAST_SGA = 0;
@@ -809,7 +810,7 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   00000184   0x....             LDR.N    R1,??DataTable6_46  ;; 0x40009018
    \   00000186   0x6008             STR      R0,[R1, #+0]
     220            DMA0->TCD[0].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(IMG_COLS);
-   \   00000188   0x2096             MOVS     R0,#+150
+   \   00000188   0x2062             MOVS     R0,#+98
    \   0000018A   0x....             LDR.N    R1,??DataTable6_47  ;; 0x4000901e
    \   0000018C   0x8008             STRH     R0,[R1, #+0]
     221            DMA0->TCD[0].CSR = 0x00000000; //Clear
@@ -865,9 +866,9 @@ E:\freescale_racing\framework2016\source\Cam.c
     233          #define BUFFER(n) cam_buffer##n
     234          #define INIT_BUFFER(n) \
     235            BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \
-    236            BUFFER(n)[sizeof(BUFFER(n))-1]=0xff; \
+    236            BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \
     237            BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \
-    238            BUFFER(n)[sizeof(BUFFER(n))-3]=0xff; 
+    238            BUFFER(n)[sizeof(BUFFER(n))-3]=0xA0; 
     239            
     240            INIT_BUFFER(0);
    \   000001E8   0x20FF             MOVS     R0,#+255
@@ -879,13 +880,13 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   000001F4   0x20FF             MOVS     R0,#+255
    \   000001F6   0x....             LDR.N    R1,??DataTable6_50
    \   000001F8   0x7088             STRB     R0,[R1, #+2]
-   \   000001FA   0x20FF             MOVS     R0,#+255
+   \   000001FA   0x20A0             MOVS     R0,#+160
    \   000001FC   0x....             LDR.N    R1,??DataTable6_51
    \   000001FE   0x7008             STRB     R0,[R1, #+0]
    \   00000200   0x2000             MOVS     R0,#+0
    \   00000202   0x....             LDR.N    R1,??DataTable6_52
    \   00000204   0x7008             STRB     R0,[R1, #+0]
-   \   00000206   0x20FF             MOVS     R0,#+255
+   \   00000206   0x20A0             MOVS     R0,#+160
    \   00000208   0x....             LDR.N    R1,??DataTable6_53
    \   0000020A   0x7008             STRB     R0,[R1, #+0]
     241            INIT_BUFFER(1);
@@ -898,13 +899,13 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   00000218   0x20FF             MOVS     R0,#+255
    \   0000021A   0x....             LDR.N    R1,??DataTable6_54
    \   0000021C   0x7088             STRB     R0,[R1, #+2]
-   \   0000021E   0x20FF             MOVS     R0,#+255
+   \   0000021E   0x20A0             MOVS     R0,#+160
    \   00000220   0x....             LDR.N    R1,??DataTable6_55
    \   00000222   0x7008             STRB     R0,[R1, #+0]
    \   00000224   0x2000             MOVS     R0,#+0
    \   00000226   0x....             LDR.N    R1,??DataTable6_56
    \   00000228   0x7008             STRB     R0,[R1, #+0]
-   \   0000022A   0x20FF             MOVS     R0,#+255
+   \   0000022A   0x20A0             MOVS     R0,#+160
    \   0000022C   0x....             LDR.N    R1,??DataTable6_57
    \   0000022E   0x7008             STRB     R0,[R1, #+0]
     242            INIT_BUFFER(2);
@@ -917,13 +918,13 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   0000023C   0x20FF             MOVS     R0,#+255
    \   0000023E   0x....             LDR.N    R1,??DataTable6_58
    \   00000240   0x7088             STRB     R0,[R1, #+2]
-   \   00000242   0x20FF             MOVS     R0,#+255
+   \   00000242   0x20A0             MOVS     R0,#+160
    \   00000244   0x....             LDR.N    R1,??DataTable6_59
    \   00000246   0x7008             STRB     R0,[R1, #+0]
    \   00000248   0x2000             MOVS     R0,#+0
    \   0000024A   0x....             LDR.N    R1,??DataTable6_60
    \   0000024C   0x7008             STRB     R0,[R1, #+0]
-   \   0000024E   0x20FF             MOVS     R0,#+255
+   \   0000024E   0x20A0             MOVS     R0,#+160
    \   00000250   0x....             LDR.N    R1,??DataTable6_61
    \   00000252   0x7008             STRB     R0,[R1, #+0]
     243            INIT_BUFFER(3);
@@ -936,13 +937,13 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   00000260   0x20FF             MOVS     R0,#+255
    \   00000262   0x....             LDR.N    R1,??DataTable6_62
    \   00000264   0x7088             STRB     R0,[R1, #+2]
-   \   00000266   0x20FF             MOVS     R0,#+255
+   \   00000266   0x20A0             MOVS     R0,#+160
    \   00000268   0x....             LDR.N    R1,??DataTable6_63
    \   0000026A   0x7008             STRB     R0,[R1, #+0]
    \   0000026C   0x2000             MOVS     R0,#+0
    \   0000026E   0x....             LDR.N    R1,??DataTable6_64
    \   00000270   0x7008             STRB     R0,[R1, #+0]
-   \   00000272   0x20FF             MOVS     R0,#+255
+   \   00000272   0x20A0             MOVS     R0,#+160
    \   00000274   0x....             LDR.N    R1,??DataTable6_65
    \   00000276   0x7008             STRB     R0,[R1, #+0]
     244          
@@ -1025,19 +1026,20 @@ E:\freescale_racing\framework2016\source\Cam.c
    \   00000074   0x....             LDR.N    R1,??DataTable6_25  ;; 0x40008024
    \   00000076   0x6008             STR      R0,[R1, #+0]
     264            
-    265            Bluetooth_SendDataChunkAsync( sending_buffer , IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
-   \   00000078   0xF641 0x5152      MOVW     R1,#+7506
+    265            Bluetooth_SendDataChunkAsync( sending_buffer,
+    266                                         IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+   \   00000078   0xF241 0x312A      MOVW     R1,#+4906
    \   0000007C   0x....             LDR.N    R0,??DataTable6_71
    \   0000007E   0x6800             LDR      R0,[R0, #+0]
    \   00000080   0x.... 0x....      BL       Bluetooth_SendDataChunkAsync
-    266            LED2_Tog();
+    267            LED2_Tog();
    \   00000084   0x.... 0x....      BL       LED2_Tog
-    267            TICK();
+    268            TICK();
    \   00000088   0x....             LDR.N    R0,??DataTable6_22  ;; 0x40037124
    \   0000008A   0x6800             LDR      R0,[R0, #+0]
    \   0000008C   0x....             LDR.N    R1,??DataTable6_66
    \   0000008E   0x6008             STR      R0,[R1, #+0]
-    268          }
+    269          }
    \   00000090   0xBD01             POP      {R0,PC}          ;; return
 
    \                                 In section .text, align 4, keep-with-next
@@ -1246,15 +1248,15 @@ E:\freescale_racing\framework2016\source\Cam.c
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_51:
-   \   00000000   0x........         DC32     cam_buffer0+0x1D51
+   \   00000000   0x........         DC32     cam_buffer0+0x1329
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_52:
-   \   00000000   0x........         DC32     cam_buffer0+0x1D50
+   \   00000000   0x........         DC32     cam_buffer0+0x1328
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_53:
-   \   00000000   0x........         DC32     cam_buffer0+0x1D4F
+   \   00000000   0x........         DC32     cam_buffer0+0x1327
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_54:
@@ -1262,15 +1264,15 @@ E:\freescale_racing\framework2016\source\Cam.c
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_55:
-   \   00000000   0x........         DC32     cam_buffer1+0x1D51
+   \   00000000   0x........         DC32     cam_buffer1+0x1329
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_56:
-   \   00000000   0x........         DC32     cam_buffer1+0x1D50
+   \   00000000   0x........         DC32     cam_buffer1+0x1328
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_57:
-   \   00000000   0x........         DC32     cam_buffer1+0x1D4F
+   \   00000000   0x........         DC32     cam_buffer1+0x1327
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_58:
@@ -1278,15 +1280,15 @@ E:\freescale_racing\framework2016\source\Cam.c
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_59:
-   \   00000000   0x........         DC32     cam_buffer2+0x1D51
+   \   00000000   0x........         DC32     cam_buffer2+0x1329
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_60:
-   \   00000000   0x........         DC32     cam_buffer2+0x1D50
+   \   00000000   0x........         DC32     cam_buffer2+0x1328
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_61:
-   \   00000000   0x........         DC32     cam_buffer2+0x1D4F
+   \   00000000   0x........         DC32     cam_buffer2+0x1327
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_62:
@@ -1294,15 +1296,15 @@ E:\freescale_racing\framework2016\source\Cam.c
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_63:
-   \   00000000   0x........         DC32     cam_buffer3+0x1D51
+   \   00000000   0x........         DC32     cam_buffer3+0x1329
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_64:
-   \   00000000   0x........         DC32     cam_buffer3+0x1D50
+   \   00000000   0x........         DC32     cam_buffer3+0x1328
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_65:
-   \   00000000   0x........         DC32     cam_buffer3+0x1D4F
+   \   00000000   0x........         DC32     cam_buffer3+0x1327
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable6_66:
@@ -1439,10 +1441,10 @@ E:\freescale_racing\framework2016\source\Cam.c
       38  NVIC_SetPriority
      400  PORTC_IRQHandler
       16  buffer_ptr
-    7508  cam_buffer0
-    7508  cam_buffer1
-    7508  cam_buffer2
-    7508  cam_buffer3
+    4908  cam_buffer0
+    4908  cam_buffer1
+    4908  cam_buffer2
+    4908  cam_buffer3
        1  cam_row
        1  current_frame_indicator
        4  img_buffer
@@ -1463,12 +1465,12 @@ E:\freescale_racing\framework2016\source\Cam.c
        4  t
 
  
- 30 073 bytes in section .bss
+ 19 673 bytes in section .bss
      33 bytes in section .data
   1 794 bytes in section .text
  
   1 794 bytes of CODE memory
- 30 106 bytes of DATA memory
+ 19 706 bytes of DATA memory
 
 Errors: none
 Warnings: 1

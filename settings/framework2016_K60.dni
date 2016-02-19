@@ -17,7 +17,7 @@ TracePortSize=0x00000004
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
 [DebugChecksum]
-Checksum=1731856401
+Checksum=-1129324131
 [CodeCoverage]
 Enabled=_ 0
 [CallStack]
@@ -107,6 +107,16 @@ SumSortOrder=0
 Frequency=10000
 Probe0=I0
 ProbeSetup0=2 1 1 2 0 0
+[array_types]
+Fmt0=u8[4906]	3	0
+[Trace1]
+Enabled=0
+ShowSource=1
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 1 "EMUL_DATA" "UART_SetMode" 0 0 0 0 4294967295
+Count=1
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -114,6 +124,10 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "E:\freescale_racing\framework2016\common\startup_K60.s" "E:\freescale_racing\SmartCar_K60_TeamBLANK\common\startup_K60.s"
+Count=1
+SuppressDialog=1
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -122,11 +136,3 @@ Mode=1
 Graph=1
 Symbiont=0
 Exclusions=
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 1 "EMUL_DATA" "UART_SetMode" 0 0 0 0 4294967295
-Count=1
-[Aliases]
-Count=0
-SuppressDialog=0

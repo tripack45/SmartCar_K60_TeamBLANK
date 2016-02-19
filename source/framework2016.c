@@ -34,7 +34,7 @@ void main (void)
       UART_Init(115200);
   } 
   UART_Configure_DMA();
-  UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+  UART_SetMode(UART_MODE_DMA_MANNUAL);
  
   Motor_Init();
   Tacho_Init();
@@ -60,14 +60,13 @@ void main (void)
   Oled_Putstr(7,1,"Press Key1 to go on");
   while (Key1());while (!Key1());
   Oled_Clear();
- 
+/* 
 UART_SetMode(UART_MODE_DMA_MANNUAL);
   
-const char welcome_msg[]="Team [BLANK], JI-SJTU";
-Bluetooth_SendDataChunkSync((void*)welcome_msg,sizeof(welcome_msg)-1);
-
-UART_SetMode(UART_MODE_DMA_CONTINUOUS);
-  /*
+//const char welcome_msg[]="Team [BLANK], JI-SJTU";
+//Bluetooth_SendDataChunkSync((void*)welcome_msg,sizeof(welcome_msg)-1);
+//UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+ 
   uint8 tdata[50][100]={0};
   uint8 *p=(uint8*)tdata;
   int t=sizeof(tdata);
@@ -75,11 +74,13 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
     p[i]=p[i-1]+1;
   }
   //preparing testdata
-  //t=3;
-  //while(t--)
+  //TICK();
+  t=1;
+  while(t--)
     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
-  */
-    
+  //TOCK();*/
+UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+
   ////// System Initiated ////
   
   // --- Flash test --- 

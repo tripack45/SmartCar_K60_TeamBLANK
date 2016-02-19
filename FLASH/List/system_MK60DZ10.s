@@ -1,30 +1,30 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       16/Feb/2016  22:34:43
+// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       18/Feb/2016  13:11:11
 // Copyright 1999-2014 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  
-//        E:\freescale_racing\framework2016\common\system_MK60DZ10.c
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\system_MK60DZ10.c
 //    Command line =  
-//        E:\freescale_racing\framework2016\common\system_MK60DZ10.c -lCN
-//        E:\freescale_racing\framework2016\FLASH\List\ -lB
-//        E:\freescale_racing\framework2016\FLASH\List\ -o
-//        E:\freescale_racing\framework2016\FLASH\Obj\ --no_cse --no_unroll
-//        --no_inline --no_code_motion --no_tbaa --no_clustering
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\system_MK60DZ10.c
+//        -lCN E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -lB
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -o
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\ --no_cse
+//        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
 //        --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e
 //        --char_is_signed --fpu=None --dlib_config "C:\Program Files (x86)\IAR
 //        Systems\Embedded Workbench 7.0\arm\INC\c\DLib_Config_Normal.h" -I
-//        E:\freescale_racing\framework2016\source\ -I
-//        E:\freescale_racing\framework2016\common\ -I
-//        E:\freescale_racing\framework2016\LPLD\ -I
-//        E:\freescale_racing\framework2016\LPLD\HW\ -I
-//        E:\freescale_racing\framework2016\LPLD\DEV\ -Ol -I "C:\Program Files
-//        (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include\" -D
-//        ARM_MATH_CM4
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV\ -Ol -I
+//        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+//        7.0\arm\CMSIS\Include\" -D ARM_MATH_CM4
 //    List file    =  
-//        E:\freescale_racing\framework2016\FLASH\List\system_MK60DZ10.s
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\system_MK60DZ10.s
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +44,7 @@
         PUBLIC SystemCoreClockUpdate
         PUBLIC SystemInit
 
-// E:\freescale_racing\framework2016\common\system_MK60DZ10.c
+// E:\freescale_racing\SmartCar_K60_TeamBLANK\common\system_MK60DZ10.c
 //    1 /**
 //    2  * @file system_MK60DZ10.c
 //    3  * @version 1.2.1[By LPLD]
@@ -233,7 +233,7 @@ SystemInit:
         MOVS     R1,#+1
         MOVS     R0,#+4
         BL       Oled_Putstr
-//   85   Oled_Putstr(5,1,"SW2:1382400");
+//   85   Oled_Putstr(5,1,"SW2:921600");
         LDR.N    R2,??DataTable2_17
         MOVS     R1,#+1
         MOVS     R0,#+5
@@ -450,7 +450,8 @@ SystemCoreClockUpdate:
         SECTION `.rodata`:CONST:REORDER:NOROOT(2)
 ?_5:
         DATA
-        DC8 "SW2:1382400"
+        DC8 "SW2:921600"
+        DC8 0
 
         SECTION `.rodata`:CONST:REORDER:NOROOT(2)
 ?_6:

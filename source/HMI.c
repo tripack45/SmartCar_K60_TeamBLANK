@@ -60,10 +60,10 @@ void LED1_Tog(){
 //----- Bell ------
 
 void BELL(u8 x){
-  /*if(x)
+  if(x)
     PTD->PSOR |= 1<<15;
   else
-    PTD->PCOR |= 1<<15;*/
+    PTD->PCOR |= 1<<15;
 }
 
 

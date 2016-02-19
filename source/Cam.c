@@ -233,9 +233,9 @@ void Cam_Init(){
 #define BUFFER(n) cam_buffer##n
 #define INIT_BUFFER(n) \
   BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \
-  BUFFER(n)[sizeof(BUFFER(n))-1]=0xff; \
+  BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \
   BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \
-  BUFFER(n)[sizeof(BUFFER(n))-3]=0xff; 
+  BUFFER(n)[sizeof(BUFFER(n))-3]=0xA0; 
   
   INIT_BUFFER(0);
   INIT_BUFFER(1);
@@ -262,7 +262,8 @@ void DMA1_IRQHandler(){
   
   DMA0->INT=DMA_INT_INT1_MASK;
   
-  Bluetooth_SendDataChunkAsync( sending_buffer , IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+  Bluetooth_SendDataChunkAsync( sending_buffer,
+                               IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
   LED2_Tog();
   TICK();
 }

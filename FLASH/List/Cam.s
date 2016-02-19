@@ -1,28 +1,29 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       18/Feb/2016  00:48:05
+// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       19/Feb/2016  17:56:18
 // Copyright 1999-2014 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
-//    Source file  =  E:\freescale_racing\framework2016\source\Cam.c
+//    Source file  =  E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c
 //    Command line =  
-//        E:\freescale_racing\framework2016\source\Cam.c -lCN
-//        E:\freescale_racing\framework2016\FLASH\List\ -lB
-//        E:\freescale_racing\framework2016\FLASH\List\ -o
-//        E:\freescale_racing\framework2016\FLASH\Obj\ --no_cse --no_unroll
-//        --no_inline --no_code_motion --no_tbaa --no_clustering
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c -lCN
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -lB
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -o
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\ --no_cse
+//        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
 //        --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e
 //        --char_is_signed --fpu=None --dlib_config "C:\Program Files (x86)\IAR
 //        Systems\Embedded Workbench 7.0\arm\INC\c\DLib_Config_Normal.h" -I
-//        E:\freescale_racing\framework2016\source\ -I
-//        E:\freescale_racing\framework2016\common\ -I
-//        E:\freescale_racing\framework2016\LPLD\ -I
-//        E:\freescale_racing\framework2016\LPLD\HW\ -I
-//        E:\freescale_racing\framework2016\LPLD\DEV\ -Ol -I "C:\Program Files
-//        (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include\" -D
-//        ARM_MATH_CM4
-//    List file    =  E:\freescale_racing\framework2016\FLASH\List\Cam.s
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW\ -I
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV\ -Ol -I
+//        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+//        7.0\arm\CMSIS\Include\" -D ARM_MATH_CM4
+//    List file    =  
+//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\Cam.s
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,7 +66,7 @@
         PUBLIC sending_frame
         PUBLIC sending_frame_indicator
 
-// E:\freescale_racing\framework2016\source\Cam.c
+// E:\freescale_racing\SmartCar_K60_TeamBLANK\source\Cam.c
 //    1 /*
 //    2 Arthor : Qian Qiyang (KisaragiAyanoo@twitter)
 //    3 Date : 2015/12/01
@@ -165,22 +166,22 @@ img_row:
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 //   18 u8 cam_buffer0[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
 cam_buffer0:
-        DS8 7508
+        DS8 4908
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 //   19 u8 cam_buffer1[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
 cam_buffer1:
-        DS8 7508
+        DS8 4908
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 //   20 u8 cam_buffer2[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
 cam_buffer2:
-        DS8 7508
+        DS8 4908
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 //   21 u8 cam_buffer3[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
 cam_buffer3:
-        DS8 7508
+        DS8 4908
 //   22 
 
         SECTION `.data`:DATA:REORDER:NOROOT(2)
@@ -454,7 +455,7 @@ PORTC_IRQHandler:
         LDR      R0,[R0, #+0]
         LDR.W    R1,??DataTable6_3
         LDRB     R1,[R1, #+0]
-        MOVS     R2,#+150
+        MOVS     R2,#+98
         MLA      R0,R2,R1,R0
         LDR.W    R1,??DataTable6_16  ;; 0x40009010
         STR      R0,[R1, #+0]
@@ -850,7 +851,7 @@ Cam_Init:
         LDR.N    R1,??DataTable6_44  ;; 0x40009014
         STRH     R0,[R1, #+0]
 //  218   DMA0->TCD[0].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(IMG_COLS);
-        MOVS     R0,#+150
+        MOVS     R0,#+98
         LDR.N    R1,??DataTable6_45  ;; 0x40009016
         STRH     R0,[R1, #+0]
 //  219   DMA0->TCD[0].DLAST_SGA = 0;
@@ -858,7 +859,7 @@ Cam_Init:
         LDR.N    R1,??DataTable6_46  ;; 0x40009018
         STR      R0,[R1, #+0]
 //  220   DMA0->TCD[0].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(IMG_COLS);
-        MOVS     R0,#+150
+        MOVS     R0,#+98
         LDR.N    R1,??DataTable6_47  ;; 0x4000901e
         STRH     R0,[R1, #+0]
 //  221   DMA0->TCD[0].CSR = 0x00000000; //Clear
@@ -914,9 +915,9 @@ Cam_Init:
 //  233 #define BUFFER(n) cam_buffer##n
 //  234 #define INIT_BUFFER(n) \ 
 //  235   BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \ 
-//  236   BUFFER(n)[sizeof(BUFFER(n))-1]=0xff; \ 
+//  236   BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \ 
 //  237   BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \ 
-//  238   BUFFER(n)[sizeof(BUFFER(n))-3]=0xff; 
+//  238   BUFFER(n)[sizeof(BUFFER(n))-3]=0xA0; 
 //  239   
 //  240   INIT_BUFFER(0);
         MOVS     R0,#+255
@@ -928,13 +929,13 @@ Cam_Init:
         MOVS     R0,#+255
         LDR.N    R1,??DataTable6_50
         STRB     R0,[R1, #+2]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_51
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
         LDR.N    R1,??DataTable6_52
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_53
         STRB     R0,[R1, #+0]
 //  241   INIT_BUFFER(1);
@@ -947,13 +948,13 @@ Cam_Init:
         MOVS     R0,#+255
         LDR.N    R1,??DataTable6_54
         STRB     R0,[R1, #+2]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_55
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
         LDR.N    R1,??DataTable6_56
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_57
         STRB     R0,[R1, #+0]
 //  242   INIT_BUFFER(2);
@@ -966,13 +967,13 @@ Cam_Init:
         MOVS     R0,#+255
         LDR.N    R1,??DataTable6_58
         STRB     R0,[R1, #+2]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_59
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
         LDR.N    R1,??DataTable6_60
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_61
         STRB     R0,[R1, #+0]
 //  243   INIT_BUFFER(3);
@@ -985,13 +986,13 @@ Cam_Init:
         MOVS     R0,#+255
         LDR.N    R1,??DataTable6_62
         STRB     R0,[R1, #+2]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_63
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
         LDR.N    R1,??DataTable6_64
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+255
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_65
         STRB     R0,[R1, #+0]
 //  244 
@@ -1075,19 +1076,20 @@ DMA1_IRQHandler:
         LDR.N    R1,??DataTable6_25  ;; 0x40008024
         STR      R0,[R1, #+0]
 //  264   
-//  265   Bluetooth_SendDataChunkAsync( sending_buffer , IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
-        MOVW     R1,#+7506
+//  265   Bluetooth_SendDataChunkAsync( sending_buffer,
+//  266                                IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+        MOVW     R1,#+4906
         LDR.N    R0,??DataTable6_71
         LDR      R0,[R0, #+0]
         BL       Bluetooth_SendDataChunkAsync
-//  266   LED2_Tog();
+//  267   LED2_Tog();
         BL       LED2_Tog
-//  267   TICK();
+//  268   TICK();
         LDR.N    R0,??DataTable6_22  ;; 0x40037124
         LDR      R0,[R0, #+0]
         LDR.N    R1,??DataTable6_66
         STR      R0,[R1, #+0]
-//  268 }
+//  269 }
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
@@ -1400,19 +1402,19 @@ DMA1_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_51:
-        DC32     cam_buffer0+0x1D51
+        DC32     cam_buffer0+0x1329
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_52:
-        DC32     cam_buffer0+0x1D50
+        DC32     cam_buffer0+0x1328
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_53:
-        DC32     cam_buffer0+0x1D4F
+        DC32     cam_buffer0+0x1327
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -1424,19 +1426,19 @@ DMA1_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_55:
-        DC32     cam_buffer1+0x1D51
+        DC32     cam_buffer1+0x1329
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_56:
-        DC32     cam_buffer1+0x1D50
+        DC32     cam_buffer1+0x1328
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_57:
-        DC32     cam_buffer1+0x1D4F
+        DC32     cam_buffer1+0x1327
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -1448,19 +1450,19 @@ DMA1_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_59:
-        DC32     cam_buffer2+0x1D51
+        DC32     cam_buffer2+0x1329
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_60:
-        DC32     cam_buffer2+0x1D50
+        DC32     cam_buffer2+0x1328
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_61:
-        DC32     cam_buffer2+0x1D4F
+        DC32     cam_buffer2+0x1327
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -1472,19 +1474,19 @@ DMA1_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_63:
-        DC32     cam_buffer3+0x1D51
+        DC32     cam_buffer3+0x1329
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_64:
-        DC32     cam_buffer3+0x1D50
+        DC32     cam_buffer3+0x1328
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_65:
-        DC32     cam_buffer3+0x1D4F
+        DC32     cam_buffer3+0x1327
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
@@ -1541,12 +1543,12 @@ DMA1_IRQHandler:
 
         END
 // 
-// 30 073 bytes in section .bss
+// 19 673 bytes in section .bss
 //     33 bytes in section .data
 //  1 794 bytes in section .text
 // 
 //  1 794 bytes of CODE memory
-// 30 106 bytes of DATA memory
+// 19 706 bytes of DATA memory
 //
 //Errors: none
 //Warnings: 1

@@ -8,7 +8,7 @@
 // and totally get IMG_ROWS rows.
 
 #define IMG_ROWS 50
-#define IMG_COLS 150
+#define IMG_COLS 98
 #define IMG_STEP 4
 
 
