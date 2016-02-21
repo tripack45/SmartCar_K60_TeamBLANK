@@ -117,17 +117,20 @@ void PORTC_IRQHandler(){
     PORTC->ISFR |= PORT_ISFR_ISF(1 << 8);
     
     if(img_row < IMG_ROWS && cam_row % IMG_STEP == 0 ){
+      ITM_EVENT8_WITH_PC(2,24);
       DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
-      ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
-      DMA0->TCD[0].CSR = DMA_CSR_DREQ_MASK | DMA_CSR_INTMAJOR_MASK; //Enable Major Loop Int
       DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
+      ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
+      DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
     }
     cam_row++;
   }
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
+    ITM_EVENT8_WITH_PC(3,24);
     PORTC->ISFR |= PORT_ISFR_ISF(1 << 9);
+    e_debug_num= cam_row;
     cam_row = img_row = 0;
-    
+
     //update the loading frame counter
     loading_frame++;
     //set current buffer==>last frame buffer
@@ -143,8 +146,14 @@ void PORTC_IRQHandler(){
 }
 
 void DMA0_IRQHandler(){
+  //if(e_debug_num==1)
+  //{e_debug_num=2;
+  DMA0->CINT &= ~DMA_CINT_CINT(7);
+  ITM_EVENT8_WITH_PC(1,25);
   img_row++; 
-  DMA0->INT=DMA_INT_INT0_MASK;
+  
+  
+  //}
 }
 
 
@@ -232,6 +241,7 @@ void Cam_Init(){
   
 #define BUFFER(n) cam_buffer##n
 #define INIT_BUFFER(n) \
+  for(int i=1;i<sizeof(BUFFER(n));i++) BUFFER(n)[i]=0;\
   BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \
   BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \
   BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \
@@ -248,7 +258,7 @@ void Cam_Init(){
 
 void DMA1_IRQHandler(){
   //One frame is sent!
-  TOCK();
+  //TOCK();
   send_diff=sending_frame-last_sent_frame;
   last_sent_frame=sending_frame;
   sending_frame=loading_frame-1;
@@ -265,5 +275,5 @@ void DMA1_IRQHandler(){
   Bluetooth_SendDataChunkAsync( sending_buffer,
                                IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
   LED2_Tog();
-  TICK();
+  //TICK();
 }

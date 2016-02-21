@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       19/Feb/2016  17:56:18
+// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       21/Feb/2016  14:16:11
 // Copyright 1999-2014 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
@@ -35,7 +35,6 @@
         EXTERN debug_num
         EXTERN e_debug_num
         EXTERN g_bus_clock
-        EXTERN tclk
 
         PUBLIC Cam_Algorithm
         PUBLIC Cam_Init
@@ -450,54 +449,105 @@ PORTC_IRQHandler:
         MLS      R2,R2,R1,R0
         CMP      R2,#+0
         BNE.N    ??PORTC_IRQHandler_1
-//  120       DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
-        LDR.W    R0,??DataTable6_15
+//  120       ITM_EVENT8_WITH_PC(2,24);
+        LDR.W    R0,??DataTable6_15  ;; 0xe000edfc
+        LDR      R0,[R0, #+0]
+        LSLS     R0,R0,#+7
+        BPL.N    ??PORTC_IRQHandler_2
+??PORTC_IRQHandler_3:
+        LDR.W    R0,??DataTable6_16  ;; 0xe0000014
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??PORTC_IRQHandler_3
+        MOV      R0,PC
+        LDR.W    R1,??DataTable6_16  ;; 0xe0000014
+        STR      R0,[R1, #+0]
+??PORTC_IRQHandler_4:
+        LDR.W    R0,??DataTable6_17  ;; 0xe0000008
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??PORTC_IRQHandler_4
+        MOVS     R0,#+24
+        LDR.W    R1,??DataTable6_17  ;; 0xe0000008
+        STRB     R0,[R1, #+0]
+//  121       DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
+??PORTC_IRQHandler_2:
+        LDR.W    R0,??DataTable6_18
         LDR      R0,[R0, #+0]
         LDR.W    R1,??DataTable6_3
         LDRB     R1,[R1, #+0]
         MOVS     R2,#+98
         MLA      R0,R2,R1,R0
-        LDR.W    R1,??DataTable6_16  ;; 0x40009010
+        LDR.W    R1,??DataTable6_19  ;; 0x40009010
         STR      R0,[R1, #+0]
-//  121       ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
-        LDR.W    R0,??DataTable6_17  ;; 0x4003b000
-        LDR      R0,[R0, #+0]
-        ORRS     R0,R0,#0x4
-        LDR.W    R1,??DataTable6_17  ;; 0x4003b000
-        STR      R0,[R1, #+0]
-//  122       DMA0->TCD[0].CSR = DMA_CSR_DREQ_MASK | DMA_CSR_INTMAJOR_MASK; //Enable Major Loop Int
-        MOVS     R0,#+10
-        LDR.W    R1,??DataTable6_18  ;; 0x4000901c
-        STRH     R0,[R1, #+0]
-//  123       DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
-        LDR.W    R0,??DataTable6_19  ;; 0x4000800c
+//  122       DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
+        LDR.W    R0,??DataTable6_20  ;; 0x4000800c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x1
-        LDR.W    R1,??DataTable6_19  ;; 0x4000800c
+        LDR.W    R1,??DataTable6_20  ;; 0x4000800c
         STR      R0,[R1, #+0]
-//  124     }
-//  125     cam_row++;
+//  123       ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
+        LDR.W    R0,??DataTable6_21  ;; 0x4003b000
+        LDR      R0,[R0, #+0]
+        ORRS     R0,R0,#0x4
+        LDR.W    R1,??DataTable6_21  ;; 0x4003b000
+        STR      R0,[R1, #+0]
+//  124       DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
+        LDR.W    R0,??DataTable6_22  ;; 0x4000901c
+        LDRH     R0,[R0, #+0]
+        ORRS     R0,R0,#0x1
+        LDR.W    R1,??DataTable6_22  ;; 0x4000901c
+        STRH     R0,[R1, #+0]
+//  125     }
+//  126     cam_row++;
 ??PORTC_IRQHandler_1:
         LDR.W    R0,??DataTable6_14
         LDRB     R0,[R0, #+0]
         ADDS     R0,R0,#+1
         LDR.W    R1,??DataTable6_14
         STRB     R0,[R1, #+0]
-        B.N      ??PORTC_IRQHandler_2
-//  126   }
-//  127   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
+        B.N      ??PORTC_IRQHandler_5
+//  127   }
+//  128   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
 ??PORTC_IRQHandler_0:
         LDR.W    R0,??DataTable6_13  ;; 0x4004b0a0
         LDR      R0,[R0, #+0]
         LSLS     R0,R0,#+22
-        BPL.N    ??PORTC_IRQHandler_2
-//  128     PORTC->ISFR |= PORT_ISFR_ISF(1 << 9);
+        BPL.W    ??PORTC_IRQHandler_5
+//  129     ITM_EVENT8_WITH_PC(3,24);
+        LDR.W    R0,??DataTable6_15  ;; 0xe000edfc
+        LDR      R0,[R0, #+0]
+        LSLS     R0,R0,#+7
+        BPL.N    ??PORTC_IRQHandler_6
+??PORTC_IRQHandler_7:
+        LDR.W    R0,??DataTable6_16  ;; 0xe0000014
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??PORTC_IRQHandler_7
+        MOV      R0,PC
+        LDR.W    R1,??DataTable6_16  ;; 0xe0000014
+        STR      R0,[R1, #+0]
+??PORTC_IRQHandler_8:
+        LDR.W    R0,??DataTable6_23  ;; 0xe000000c
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??PORTC_IRQHandler_8
+        MOVS     R0,#+24
+        LDR.W    R1,??DataTable6_23  ;; 0xe000000c
+        STRB     R0,[R1, #+0]
+//  130     PORTC->ISFR |= PORT_ISFR_ISF(1 << 9);
+??PORTC_IRQHandler_6:
         LDR.W    R0,??DataTable6_13  ;; 0x4004b0a0
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x200
         LDR.W    R1,??DataTable6_13  ;; 0x4004b0a0
         STR      R0,[R1, #+0]
-//  129     cam_row = img_row = 0;
+//  131     e_debug_num= cam_row;
+        LDR.W    R0,??DataTable6_14
+        LDRB     R0,[R0, #+0]
+        LDR.W    R1,??DataTable6_24
+        STRH     R0,[R1, #+0]
+//  132     cam_row = img_row = 0;
         MOVS     R0,#+0
         LDR.W    R1,??DataTable6_3
         STRB     R0,[R1, #+0]
@@ -505,192 +555,221 @@ PORTC_IRQHandler:
         LDRB     R0,[R0, #+0]
         LDR.W    R1,??DataTable6_14
         STRB     R0,[R1, #+0]
-//  130     
-//  131     //update the loading frame counter
-//  132     loading_frame++;
+//  133 
+//  134     //update the loading frame counter
+//  135     loading_frame++;
         LDR.W    R0,??DataTable6_5
         LDR      R0,[R0, #+0]
         ADDS     R0,R0,#+1
         LDR.W    R1,??DataTable6_5
         STR      R0,[R1, #+0]
-//  133     //set current buffer==>last frame buffer
-//  134     last_frame_indicator=current_frame_indicator;
+//  136     //set current buffer==>last frame buffer
+//  137     last_frame_indicator=current_frame_indicator;
         LDR.W    R0,??DataTable6_6
         LDRB     R0,[R0, #+0]
-        LDR.W    R1,??DataTable6_20
+        LDR.W    R1,??DataTable6_25
         STRB     R0,[R1, #+0]
-//  135     CLEAR_LOCK(LFLOCK_BASE);
+//  138     CLEAR_LOCK(LFLOCK_BASE);
         LDR.W    R0,??DataTable6_8
         LDR      R0,[R0, #+0]
         LSRS     R0,R0,#+4
         LSLS     R0,R0,#+4
         LDR.W    R1,??DataTable6_8
         STR      R0,[R1, #+0]
-//  136     SET_LOCK(LFLOCK_BASE,last_frame_indicator);
+//  139     SET_LOCK(LFLOCK_BASE,last_frame_indicator);
         LDR.W    R0,??DataTable6_8
         LDR      R0,[R0, #+0]
         MOVS     R1,#+1
-        LDR.W    R2,??DataTable6_20
+        LDR.W    R2,??DataTable6_25
         LDRSB    R2,[R2, #+0]
         LSLS     R1,R1,R2
         ORRS     R0,R1,R0
         LDR.W    R1,??DataTable6_8
         STR      R0,[R1, #+0]
-//  137     current_frame_indicator=GET_FREE_LOCK();
+//  140     current_frame_indicator=GET_FREE_LOCK();
         LDR.W    R0,??DataTable6_8
         LDR      R0,[R0, #+0]
         MOVW     R1,#+273
         TST      R0,R1
-        BEQ.N    ??PORTC_IRQHandler_3
+        BEQ.N    ??PORTC_IRQHandler_9
         LDR.W    R0,??DataTable6_8
         LDR      R0,[R0, #+0]
         MOVW     R1,#+546
         TST      R0,R1
-        BEQ.N    ??PORTC_IRQHandler_4
+        BEQ.N    ??PORTC_IRQHandler_10
         LDR.W    R0,??DataTable6_8
         LDR      R0,[R0, #+0]
         MOVW     R1,#+1092
         TST      R0,R1
-        BEQ.N    ??PORTC_IRQHandler_5
+        BEQ.N    ??PORTC_IRQHandler_11
         MOVS     R0,#+3
-        B.N      ??PORTC_IRQHandler_6
-??PORTC_IRQHandler_5:
+        B.N      ??PORTC_IRQHandler_12
+??PORTC_IRQHandler_11:
         MOVS     R0,#+2
-        B.N      ??PORTC_IRQHandler_6
-??PORTC_IRQHandler_4:
+        B.N      ??PORTC_IRQHandler_12
+??PORTC_IRQHandler_10:
         MOVS     R0,#+1
-??PORTC_IRQHandler_6:
+??PORTC_IRQHandler_12:
         LDR.W    R1,??DataTable6_6
         STRB     R0,[R1, #+0]
-        B.N      ??PORTC_IRQHandler_7
-??PORTC_IRQHandler_3:
+        B.N      ??PORTC_IRQHandler_13
+??PORTC_IRQHandler_9:
         MOVS     R0,#+0
         LDR.W    R1,??DataTable6_6
         STRB     R0,[R1, #+0]
-//  138     loading_buffer=(void*)buffer_ptr[current_frame_indicator];
-??PORTC_IRQHandler_7:
+//  141     loading_buffer=(void*)buffer_ptr[current_frame_indicator];
+??PORTC_IRQHandler_13:
         LDR.W    R0,??DataTable6_9
         LDR.W    R1,??DataTable6_6
         LDRB     R1,[R1, #+0]
         LDR      R0,[R0, R1, LSL #+2]
-        LDR.W    R1,??DataTable6_15
+        LDR.W    R1,??DataTable6_18
         STR      R0,[R1, #+0]
-//  139     static u32 t=0;
-//  140     debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
-        LDR.W    R0,??DataTable6_21
+//  142     static u32 t=0;
+//  143     debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
+        LDR.W    R0,??DataTable6_26
         LDR      R0,[R0, #+0]
         MOVW     R1,#+10000
         UDIV     R0,R0,R1
-        LDR.W    R1,??DataTable6_22  ;; 0x40037124
+        LDR.W    R1,??DataTable6_27  ;; 0x40037124
         LDR      R1,[R1, #+0]
         RSBS     R1,R1,#+0
         UDIV     R0,R1,R0
-        LDR.W    R1,??DataTable6_23
+        LDR.W    R1,??DataTable6_28
         LDR      R1,[R1, #+0]
         ADDS     R0,R1,R0
-        LDR.W    R1,??DataTable6_24
+        LDR.W    R1,??DataTable6_29
         STRH     R0,[R1, #+0]
-//  141     t-=debug_num;
-        LDR.W    R0,??DataTable6_23
+//  144     t-=debug_num;
+        LDR.W    R0,??DataTable6_28
         LDR      R0,[R0, #+0]
-        LDR.W    R1,??DataTable6_24
+        LDR.W    R1,??DataTable6_29
         LDRH     R1,[R1, #+0]
         SUBS     R0,R0,R1
-        LDR.W    R1,??DataTable6_23
+        LDR.W    R1,??DataTable6_28
         STR      R0,[R1, #+0]
-//  142   }
-//  143 }
-??PORTC_IRQHandler_2:
+//  145   }
+//  146 }
+??PORTC_IRQHandler_5:
         BX       LR               ;; return
 
         SECTION `.bss`:DATA:REORDER:NOROOT(2)
 ??t:
         DS8 4
-//  144 
+//  147 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  145 void DMA0_IRQHandler(){
-//  146   img_row++; 
+//  148 void DMA0_IRQHandler(){
+//  149   //if(e_debug_num==1)
+//  150   //{e_debug_num=2;
+//  151   DMA0->CINT &= ~DMA_CINT_CINT(7);
 DMA0_IRQHandler:
+        LDR.W    R0,??DataTable6_30  ;; 0x4000801f
+        LDRB     R0,[R0, #+0]
+        ANDS     R0,R0,#0xF8
+        LDR.W    R1,??DataTable6_30  ;; 0x4000801f
+        STRB     R0,[R1, #+0]
+//  152   ITM_EVENT8_WITH_PC(1,25);
+        LDR.W    R0,??DataTable6_15  ;; 0xe000edfc
+        LDR      R0,[R0, #+0]
+        LSLS     R0,R0,#+7
+        BPL.N    ??DMA0_IRQHandler_0
+??DMA0_IRQHandler_1:
+        LDR.W    R0,??DataTable6_16  ;; 0xe0000014
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??DMA0_IRQHandler_1
+        MOV      R0,PC
+        LDR.W    R1,??DataTable6_16  ;; 0xe0000014
+        STR      R0,[R1, #+0]
+??DMA0_IRQHandler_2:
+        LDR.W    R0,??DataTable6_31  ;; 0xe0000004
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ.N    ??DMA0_IRQHandler_2
+        MOVS     R0,#+25
+        LDR.W    R1,??DataTable6_31  ;; 0xe0000004
+        STRB     R0,[R1, #+0]
+//  153   img_row++; 
+??DMA0_IRQHandler_0:
         LDR.W    R0,??DataTable6_3
         LDRB     R0,[R0, #+0]
         ADDS     R0,R0,#+1
         LDR.W    R1,??DataTable6_3
         STRB     R0,[R1, #+0]
-//  147   DMA0->INT=DMA_INT_INT0_MASK;
-        MOVS     R0,#+1
-        LDR.W    R1,??DataTable6_25  ;; 0x40008024
-        STR      R0,[R1, #+0]
-//  148 }
+//  154   
+//  155   
+//  156   //}
+//  157 }
         BX       LR               ;; return
-//  149 
-//  150 
-//  151 
+//  158 
+//  159 
+//  160 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  152 void Cam_Init(){
+//  161 void Cam_Init(){
 Cam_Init:
         PUSH     {R4,LR}
-//  153   
-//  154   // --- IO ---
-//  155   
-//  156   PORTC->PCR[8] |= PORT_PCR_MUX(1); //cs
-        LDR.W    R0,??DataTable6_26  ;; 0x4004b020
+//  162   
+//  163   // --- IO ---
+//  164   
+//  165   PORTC->PCR[8] |= PORT_PCR_MUX(1); //cs
+        LDR.W    R0,??DataTable6_32  ;; 0x4004b020
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x100
-        LDR.W    R1,??DataTable6_26  ;; 0x4004b020
+        LDR.W    R1,??DataTable6_32  ;; 0x4004b020
         STR      R0,[R1, #+0]
-//  157   PORTC->PCR[9] |= PORT_PCR_MUX(1); //vs
-        LDR.W    R0,??DataTable6_27  ;; 0x4004b024
+//  166   PORTC->PCR[9] |= PORT_PCR_MUX(1); //vs
+        LDR.W    R0,??DataTable6_33  ;; 0x4004b024
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x100
-        LDR.W    R1,??DataTable6_27  ;; 0x4004b024
+        LDR.W    R1,??DataTable6_33  ;; 0x4004b024
         STR      R0,[R1, #+0]
-//  158   PORTC->PCR[11] |= PORT_PCR_MUX(1);    //oe
-        LDR.W    R0,??DataTable6_28  ;; 0x4004b02c
+//  167   PORTC->PCR[11] |= PORT_PCR_MUX(1);    //oe
+        LDR.W    R0,??DataTable6_34  ;; 0x4004b02c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x100
-        LDR.W    R1,??DataTable6_28  ;; 0x4004b02c
+        LDR.W    R1,??DataTable6_34  ;; 0x4004b02c
         STR      R0,[R1, #+0]
-//  159   PTC->PDDR &=~(3<<8);
-        LDR.W    R0,??DataTable6_29  ;; 0x400ff094
+//  168   PTC->PDDR &=~(3<<8);
+        LDR.W    R0,??DataTable6_35  ;; 0x400ff094
         LDR      R0,[R0, #+0]
         BICS     R0,R0,#0x300
-        LDR.W    R1,??DataTable6_29  ;; 0x400ff094
+        LDR.W    R1,??DataTable6_35  ;; 0x400ff094
         STR      R0,[R1, #+0]
-//  160   PTC->PDDR &=~(1<<11);
-        LDR.W    R0,??DataTable6_29  ;; 0x400ff094
+//  169   PTC->PDDR &=~(1<<11);
+        LDR.W    R0,??DataTable6_35  ;; 0x400ff094
         LDR      R0,[R0, #+0]
         BICS     R0,R0,#0x800
-        LDR.W    R1,??DataTable6_29  ;; 0x400ff094
+        LDR.W    R1,??DataTable6_35  ;; 0x400ff094
         STR      R0,[R1, #+0]
-//  161   PORTC->PCR[8] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(10);	//PULLUP | falling edge
-        LDR.W    R0,??DataTable6_26  ;; 0x4004b020
+//  170   PORTC->PCR[8] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(10);	//PULLUP | falling edge
+        LDR.W    R0,??DataTable6_32  ;; 0x4004b020
         LDR      R0,[R0, #+0]
         ORR      R0,R0,#0xA0000
         ORRS     R0,R0,#0x3
-        LDR.N    R1,??DataTable6_26  ;; 0x4004b020
+        LDR.W    R1,??DataTable6_32  ;; 0x4004b020
         STR      R0,[R1, #+0]
-//  162   PORTC->PCR[9] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(9);  // rising edge
-        LDR.N    R0,??DataTable6_27  ;; 0x4004b024
+//  171   PORTC->PCR[9] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(9);  // rising edge
+        LDR.W    R0,??DataTable6_33  ;; 0x4004b024
         LDR      R0,[R0, #+0]
         ORR      R0,R0,#0x90000
         ORRS     R0,R0,#0x3
-        LDR.N    R1,??DataTable6_27  ;; 0x4004b024
+        LDR.W    R1,??DataTable6_33  ;; 0x4004b024
         STR      R0,[R1, #+0]
-//  163   PORTC->PCR[11] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
-        LDR.N    R0,??DataTable6_28  ;; 0x4004b02c
+//  172   PORTC->PCR[11] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
+        LDR.W    R0,??DataTable6_34  ;; 0x4004b02c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x3
-        LDR.N    R1,??DataTable6_28  ;; 0x4004b02c
+        LDR.W    R1,??DataTable6_34  ;; 0x4004b02c
         STR      R0,[R1, #+0]
-//  164   
-//  165   NVIC_EnableIRQ(PORTC_IRQn);
+//  173   
+//  174   NVIC_EnableIRQ(PORTC_IRQn);
         MOVS     R0,#+89
         BL       NVIC_EnableIRQ
-//  166   NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
+//  175   NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
         MOVS     R2,#+2
         MOVS     R1,#+1
         MOVS     R0,#+5
@@ -698,212 +777,212 @@ Cam_Init:
         MOVS     R1,R0
         MOVS     R0,#+89
         BL       NVIC_SetPriority
-//  167   
-//  168   // --- AD ---
-//  169   
-//  170   /*
-//  171   SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK;  //ADC1 Clock Enable
-//  172   ADC0->CFG1 |= 0
-//  173              //|ADC_CFG1_ADLPC_MASK
-//  174              | ADC_CFG1_ADICLK(1)
-//  175              | ADC_CFG1_MODE(0);     // 8 bits
-//  176              //| ADC_CFG1_ADIV(0);
-//  177   ADC0->CFG2 |= //ADC_CFG2_ADHSC_MASK |
-//  178                 ADC_CFG2_MUXSEL_MASK |  // b
-//  179                 ADC_CFG2_ADACKEN_MASK; 
-//  180   
-//  181   ADC0->SC1[0]&=~ADC_SC1_AIEN_MASK;//disenble interrupt
-//  182   
-//  183   ADC0->SC2 |= ADC_SC2_DMAEN_MASK; //DMA
-//  184   
-//  185   ADC0->SC3 |= ADC_SC3_ADCO_MASK; // continuous
-//  186   
-//  187   //PORTC->PCR[2]|=PORT_PCR_MUX(0);//adc1-4a
-//  188   
-//  189   ADC0->SC1[0] |= ADC_SC1_ADCH(4);
-//  190   */
+//  176   
+//  177   // --- AD ---
+//  178   
+//  179   /*
+//  180   SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK;  //ADC1 Clock Enable
+//  181   ADC0->CFG1 |= 0
+//  182              //|ADC_CFG1_ADLPC_MASK
+//  183              | ADC_CFG1_ADICLK(1)
+//  184              | ADC_CFG1_MODE(0);     // 8 bits
+//  185              //| ADC_CFG1_ADIV(0);
+//  186   ADC0->CFG2 |= //ADC_CFG2_ADHSC_MASK |
+//  187                 ADC_CFG2_MUXSEL_MASK |  // b
+//  188                 ADC_CFG2_ADACKEN_MASK; 
+//  189   
+//  190   ADC0->SC1[0]&=~ADC_SC1_AIEN_MASK;//disenble interrupt
 //  191   
-//  192   SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK; //ADC1 Clock Enable
-        LDR.N    R0,??DataTable6_30  ;; 0x4004803c
+//  192   ADC0->SC2 |= ADC_SC2_DMAEN_MASK; //DMA
+//  193   
+//  194   ADC0->SC3 |= ADC_SC3_ADCO_MASK; // continuous
+//  195   
+//  196   //PORTC->PCR[2]|=PORT_PCR_MUX(0);//adc1-4a
+//  197   
+//  198   ADC0->SC1[0] |= ADC_SC1_ADCH(4);
+//  199   */
+//  200   
+//  201   SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK; //ADC1 Clock Enable
+        LDR.W    R0,??DataTable6_36  ;; 0x4004803c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x8000000
-        LDR.N    R1,??DataTable6_30  ;; 0x4004803c
+        LDR.W    R1,??DataTable6_36  ;; 0x4004803c
         STR      R0,[R1, #+0]
-//  193   ADC0->SC1[0] &= ~ADC_SC1_AIEN_MASK; //ADC1A
-        LDR.N    R0,??DataTable6_17  ;; 0x4003b000
+//  202   ADC0->SC1[0] &= ~ADC_SC1_AIEN_MASK; //ADC1A
+        LDR.N    R0,??DataTable6_21  ;; 0x4003b000
         LDR      R0,[R0, #+0]
         BICS     R0,R0,#0x40
-        LDR.N    R1,??DataTable6_17  ;; 0x4003b000
+        LDR.N    R1,??DataTable6_21  ;; 0x4003b000
         STR      R0,[R1, #+0]
-//  194   ADC0->SC1[0] = 0x00000000; //Clear
+//  203   ADC0->SC1[0] = 0x00000000; //Clear
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_17  ;; 0x4003b000
+        LDR.N    R1,??DataTable6_21  ;; 0x4003b000
         STR      R0,[R1, #+0]
-//  195   ADC0->SC1[0] |= ADC_SC1_ADCH(4); //ADC1_5->Input, Single Pin, No interrupt
-        LDR.N    R0,??DataTable6_17  ;; 0x4003b000
+//  204   ADC0->SC1[0] |= ADC_SC1_ADCH(4); //ADC1_5->Input, Single Pin, No interrupt
+        LDR.N    R0,??DataTable6_21  ;; 0x4003b000
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x4
-        LDR.N    R1,??DataTable6_17  ;; 0x4003b000
+        LDR.N    R1,??DataTable6_21  ;; 0x4003b000
         STR      R0,[R1, #+0]
-//  196   ADC0->SC1[1] &= ~ADC_SC1_AIEN_MASK; //ADC1B
-        LDR.N    R0,??DataTable6_31  ;; 0x4003b004
+//  205   ADC0->SC1[1] &= ~ADC_SC1_AIEN_MASK; //ADC1B
+        LDR.N    R0,??DataTable6_37  ;; 0x4003b004
         LDR      R0,[R0, #+0]
         BICS     R0,R0,#0x40
-        LDR.N    R1,??DataTable6_31  ;; 0x4003b004
+        LDR.N    R1,??DataTable6_37  ;; 0x4003b004
         STR      R0,[R1, #+0]
-//  197   ADC0->SC1[1] |= ADC_SC1_ADCH(4); //ADC1_5b
-        LDR.N    R0,??DataTable6_31  ;; 0x4003b004
+//  206   ADC0->SC1[1] |= ADC_SC1_ADCH(4); //ADC1_5b
+        LDR.N    R0,??DataTable6_37  ;; 0x4003b004
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x4
-        LDR.N    R1,??DataTable6_31  ;; 0x4003b004
+        LDR.N    R1,??DataTable6_37  ;; 0x4003b004
         STR      R0,[R1, #+0]
-//  198   ADC0->SC2 &= 0x00000000; //Clear all.
-        LDR.N    R0,??DataTable6_32  ;; 0x4003b020
+//  207   ADC0->SC2 &= 0x00000000; //Clear all.
+        LDR.N    R0,??DataTable6_38  ;; 0x4003b020
         LDR      R4,[R0, #+0]
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_32  ;; 0x4003b020
+        LDR.N    R1,??DataTable6_38  ;; 0x4003b020
         STR      R0,[R1, #+0]
-//  199   ADC0->SC2 |= ADC_SC2_DMAEN_MASK; //DMA, SoftWare
-        LDR.N    R0,??DataTable6_32  ;; 0x4003b020
+//  208   ADC0->SC2 |= ADC_SC2_DMAEN_MASK; //DMA, SoftWare
+        LDR.N    R0,??DataTable6_38  ;; 0x4003b020
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x4
-        LDR.N    R1,??DataTable6_32  ;; 0x4003b020
+        LDR.N    R1,??DataTable6_38  ;; 0x4003b020
         STR      R0,[R1, #+0]
-//  200   ADC0->SC3 &= (~ADC_SC3_AVGE_MASK&~ADC_SC3_AVGS_MASK); //hardware average disabled
-        LDR.N    R0,??DataTable6_33  ;; 0x4003b024
+//  209   ADC0->SC3 &= (~ADC_SC3_AVGE_MASK&~ADC_SC3_AVGS_MASK); //hardware average disabled
+        LDR.N    R0,??DataTable6_39  ;; 0x4003b024
         LDR      R0,[R0, #+0]
         LSRS     R0,R0,#+3
         LSLS     R0,R0,#+3
-        LDR.N    R1,??DataTable6_33  ;; 0x4003b024
+        LDR.N    R1,??DataTable6_39  ;; 0x4003b024
         STR      R0,[R1, #+0]
-//  201   ADC0->SC3 |= ADC_SC3_ADCO_MASK; //Continuous conversion enable
-        LDR.N    R0,??DataTable6_33  ;; 0x4003b024
+//  210   ADC0->SC3 |= ADC_SC3_ADCO_MASK; //Continuous conversion enable
+        LDR.N    R0,??DataTable6_39  ;; 0x4003b024
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x8
-        LDR.N    R1,??DataTable6_33  ;; 0x4003b024
+        LDR.N    R1,??DataTable6_39  ;; 0x4003b024
         STR      R0,[R1, #+0]
-//  202   ADC0->CFG1|=ADC_CFG1_ADICLK(1)|ADC_CFG1_MODE(0)|ADC_CFG1_ADIV(0);//InputClk, ShortTime, 8bits, Bus
-        LDR.N    R0,??DataTable6_34  ;; 0x4003b008
+//  211   ADC0->CFG1|=ADC_CFG1_ADICLK(1)|ADC_CFG1_MODE(0)|ADC_CFG1_ADIV(0);//InputClk, ShortTime, 8bits, Bus
+        LDR.N    R0,??DataTable6_40  ;; 0x4003b008
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x1
-        LDR.N    R1,??DataTable6_34  ;; 0x4003b008
+        LDR.N    R1,??DataTable6_40  ;; 0x4003b008
         STR      R0,[R1, #+0]
-//  203   ADC0->CFG2 |= ADC_CFG2_MUXSEL_MASK; //ADC1  b
-        LDR.N    R0,??DataTable6_35  ;; 0x4003b00c
+//  212   ADC0->CFG2 |= ADC_CFG2_MUXSEL_MASK; //ADC1  b
+        LDR.N    R0,??DataTable6_41  ;; 0x4003b00c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x10
-        LDR.N    R1,??DataTable6_35  ;; 0x4003b00c
+        LDR.N    R1,??DataTable6_41  ;; 0x4003b00c
         STR      R0,[R1, #+0]
-//  204   ADC0->CFG2 |= ADC_CFG2_ADACKEN_MASK; //OutputClock
-        LDR.N    R0,??DataTable6_35  ;; 0x4003b00c
+//  213   ADC0->CFG2 |= ADC_CFG2_ADACKEN_MASK; //OutputClock
+        LDR.N    R0,??DataTable6_41  ;; 0x4003b00c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x8
-        LDR.N    R1,??DataTable6_35  ;; 0x4003b00c
+        LDR.N    R1,??DataTable6_41  ;; 0x4003b00c
         STR      R0,[R1, #+0]
-//  205     
-//  206   // --- DMA ---
-//  207   
-//  208   SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK; //DMAMUX Clock Enable
-        LDR.N    R0,??DataTable6_30  ;; 0x4004803c
+//  214     
+//  215   // --- DMA ---
+//  216   
+//  217   SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK; //DMAMUX Clock Enable
+        LDR.N    R0,??DataTable6_36  ;; 0x4004803c
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x2
-        LDR.N    R1,??DataTable6_30  ;; 0x4004803c
+        LDR.N    R1,??DataTable6_36  ;; 0x4004803c
         STR      R0,[R1, #+0]
-//  209   SIM->SCGC7 |= SIM_SCGC7_DMA_MASK; //DMA Clock Enable
-        LDR.N    R0,??DataTable6_36  ;; 0x40048040
+//  218   SIM->SCGC7 |= SIM_SCGC7_DMA_MASK; //DMA Clock Enable
+        LDR.N    R0,??DataTable6_42  ;; 0x40048040
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x2
-        LDR.N    R1,??DataTable6_36  ;; 0x40048040
+        LDR.N    R1,??DataTable6_42  ;; 0x40048040
         STR      R0,[R1, #+0]
-//  210   DMAMUX->CHCFG[0] |= DMAMUX_CHCFG_SOURCE(40); //DMA0->No.40 request, ADC0
-        LDR.N    R0,??DataTable6_37  ;; 0x40021000
+//  219   DMAMUX->CHCFG[0] |= DMAMUX_CHCFG_SOURCE(40); //DMA0->No.40 request, ADC0
+        LDR.N    R0,??DataTable6_43  ;; 0x40021000
         LDRB     R0,[R0, #+0]
         ORRS     R0,R0,#0x28
-        LDR.N    R1,??DataTable6_37  ;; 0x40021000
+        LDR.N    R1,??DataTable6_43  ;; 0x40021000
         STRB     R0,[R1, #+0]
-//  211   DMA0->TCD[0].SADDR = (uint32_t) & (ADC0->R[0]); //Source Address 0x400B_B010h
-        LDR.N    R0,??DataTable6_38  ;; 0x4003b010
-        LDR.N    R1,??DataTable6_39  ;; 0x40009000
+//  220   DMA0->TCD[0].SADDR = (uint32_t) & (ADC0->R[0]); //Source Address 0x400B_B010h
+        LDR.N    R0,??DataTable6_44  ;; 0x4003b010
+        LDR.N    R1,??DataTable6_45  ;; 0x40009000
         STR      R0,[R1, #+0]
-//  212   DMA0->TCD[0].SOFF = 0; //Source Fixed
+//  221   DMA0->TCD[0].SOFF = 0; //Source Fixed
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_40  ;; 0x40009004
+        LDR.N    R1,??DataTable6_46  ;; 0x40009004
         STRH     R0,[R1, #+0]
-//  213   DMA0->TCD[0].ATTR = DMA_ATTR_SSIZE(0) | DMA_ATTR_DSIZE(0); //Source 8 bits, Aim 8 bits
+//  222   DMA0->TCD[0].ATTR = DMA_ATTR_SSIZE(0) | DMA_ATTR_DSIZE(0); //Source 8 bits, Aim 8 bits
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_41  ;; 0x40009006
+        LDR.N    R1,??DataTable6_47  ;; 0x40009006
         STRH     R0,[R1, #+0]
-//  214   DMA0->TCD[0].NBYTES_MLNO = DMA_NBYTES_MLNO_NBYTES(1); //one byte each
+//  223   DMA0->TCD[0].NBYTES_MLNO = DMA_NBYTES_MLNO_NBYTES(1); //one byte each
         MOVS     R0,#+1
-        LDR.N    R1,??DataTable6_42  ;; 0x40009008
+        LDR.N    R1,??DataTable6_48  ;; 0x40009008
         STR      R0,[R1, #+0]
-//  215   DMA0->TCD[0].SLAST = 0; //Last Source fixed
+//  224   DMA0->TCD[0].SLAST = 0; //Last Source fixed
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_43  ;; 0x4000900c
+        LDR.N    R1,??DataTable6_49  ;; 0x4000900c
         STR      R0,[R1, #+0]
-//  216   DMA0->TCD[0].DADDR = (u32)loading_buffer;
-        LDR.N    R0,??DataTable6_15
+//  225   DMA0->TCD[0].DADDR = (u32)loading_buffer;
+        LDR.N    R0,??DataTable6_18
         LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable6_16  ;; 0x40009010
+        LDR.N    R1,??DataTable6_19  ;; 0x40009010
         STR      R0,[R1, #+0]
-//  217   DMA0->TCD[0].DOFF = 1;
+//  226   DMA0->TCD[0].DOFF = 1;
         MOVS     R0,#+1
-        LDR.N    R1,??DataTable6_44  ;; 0x40009014
+        LDR.N    R1,??DataTable6_50  ;; 0x40009014
         STRH     R0,[R1, #+0]
-//  218   DMA0->TCD[0].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(IMG_COLS);
+//  227   DMA0->TCD[0].CITER_ELINKNO = DMA_CITER_ELINKNO_CITER(IMG_COLS);
         MOVS     R0,#+98
-        LDR.N    R1,??DataTable6_45  ;; 0x40009016
+        LDR.N    R1,??DataTable6_51  ;; 0x40009016
         STRH     R0,[R1, #+0]
-//  219   DMA0->TCD[0].DLAST_SGA = 0;
+//  228   DMA0->TCD[0].DLAST_SGA = 0;
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_46  ;; 0x40009018
+        LDR.N    R1,??DataTable6_52  ;; 0x40009018
         STR      R0,[R1, #+0]
-//  220   DMA0->TCD[0].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(IMG_COLS);
+//  229   DMA0->TCD[0].BITER_ELINKNO = DMA_BITER_ELINKNO_BITER(IMG_COLS);
         MOVS     R0,#+98
-        LDR.N    R1,??DataTable6_47  ;; 0x4000901e
+        LDR.N    R1,??DataTable6_53  ;; 0x4000901e
         STRH     R0,[R1, #+0]
-//  221   DMA0->TCD[0].CSR = 0x00000000; //Clear
+//  230   DMA0->TCD[0].CSR = 0x00000000; //Clear
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_18  ;; 0x4000901c
+        LDR.N    R1,??DataTable6_22  ;; 0x4000901c
         STRH     R0,[R1, #+0]
-//  222   DMA0->TCD[0].CSR |= DMA_CSR_DREQ_MASK; //Auto Clear
-        LDR.N    R0,??DataTable6_18  ;; 0x4000901c
+//  231   DMA0->TCD[0].CSR |= DMA_CSR_DREQ_MASK; //Auto Clear
+        LDR.N    R0,??DataTable6_22  ;; 0x4000901c
         LDRH     R0,[R0, #+0]
         ORRS     R0,R0,#0x8
-        LDR.N    R1,??DataTable6_18  ;; 0x4000901c
+        LDR.N    R1,??DataTable6_22  ;; 0x4000901c
         STRH     R0,[R1, #+0]
-//  223   DMA0->TCD[0].CSR |= DMA_CSR_INTMAJOR_MASK; //Enable Major Loop Int
-        LDR.N    R0,??DataTable6_18  ;; 0x4000901c
+//  232   DMA0->TCD[0].CSR |= DMA_CSR_INTMAJOR_MASK; //Enable Major Loop Int
+        LDR.N    R0,??DataTable6_22  ;; 0x4000901c
         LDRH     R0,[R0, #+0]
         ORRS     R0,R0,#0x2
-        LDR.N    R1,??DataTable6_18  ;; 0x4000901c
+        LDR.N    R1,??DataTable6_22  ;; 0x4000901c
         STRH     R0,[R1, #+0]
-//  224   DMA0->DCHPRI0 = DMA_DCHPRI1_CHPRI(1);
+//  233   DMA0->DCHPRI0 = DMA_DCHPRI1_CHPRI(1);
         MOVS     R0,#+1
-        LDR.N    R1,??DataTable6_48  ;; 0x40008103
+        LDR.N    R1,??DataTable6_54  ;; 0x40008103
         STRB     R0,[R1, #+0]
-//  225   DMA0->DCHPRI1 = DMA_DCHPRI1_CHPRI(0); //Exchange the DMA Priority of CH0 and CH1
+//  234   DMA0->DCHPRI1 = DMA_DCHPRI1_CHPRI(0); //Exchange the DMA Priority of CH0 and CH1
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_49  ;; 0x40008102
+        LDR.N    R1,??DataTable6_55  ;; 0x40008102
         STRB     R0,[R1, #+0]
-//  226   DMA0->INT |= DMA_INT_INT0_MASK; //Open Interrupt
-        LDR.N    R0,??DataTable6_25  ;; 0x40008024
+//  235   DMA0->INT |= DMA_INT_INT0_MASK; //Open Interrupt
+        LDR.N    R0,??DataTable6_56  ;; 0x40008024
         LDR      R0,[R0, #+0]
         ORRS     R0,R0,#0x1
-        LDR.N    R1,??DataTable6_25  ;; 0x40008024
+        LDR.N    R1,??DataTable6_56  ;; 0x40008024
         STR      R0,[R1, #+0]
-//  227   //DMA->ERQ&=~DMA_ERQ_ERQ0_MASK;//Clear Disable
-//  228   DMAMUX->CHCFG[0] |= DMAMUX_CHCFG_ENBL_MASK; //Enable
-        LDR.N    R0,??DataTable6_37  ;; 0x40021000
+//  236   //DMA->ERQ&=~DMA_ERQ_ERQ0_MASK;//Clear Disable
+//  237   DMAMUX->CHCFG[0] |= DMAMUX_CHCFG_ENBL_MASK; //Enable
+        LDR.N    R0,??DataTable6_43  ;; 0x40021000
         LDRB     R0,[R0, #+0]
         ORRS     R0,R0,#0x80
-        LDR.N    R1,??DataTable6_37  ;; 0x40021000
+        LDR.N    R1,??DataTable6_43  ;; 0x40021000
         STRB     R0,[R1, #+0]
-//  229   
-//  230   NVIC_EnableIRQ(DMA0_IRQn);
+//  238   
+//  239   NVIC_EnableIRQ(DMA0_IRQn);
         MOVS     R0,#+0
         BL       NVIC_EnableIRQ
-//  231   NVIC_SetPriority(DMA0_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
+//  240   NVIC_SetPriority(DMA0_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
         MOVS     R2,#+2
         MOVS     R1,#+1
         MOVS     R0,#+5
@@ -911,146 +990,179 @@ Cam_Init:
         MOVS     R1,R0
         MOVS     R0,#+0
         BL       NVIC_SetPriority
-//  232   
-//  233 #define BUFFER(n) cam_buffer##n
-//  234 #define INIT_BUFFER(n) \ 
-//  235   BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \ 
-//  236   BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \ 
-//  237   BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \ 
-//  238   BUFFER(n)[sizeof(BUFFER(n))-3]=0xA0; 
-//  239   
-//  240   INIT_BUFFER(0);
+//  241   
+//  242 #define BUFFER(n) cam_buffer##n
+//  243 #define INIT_BUFFER(n) \ 
+//  244   for(int i=1;i<sizeof(BUFFER(n));i++) BUFFER(n)[i]=0;\ 
+//  245   BUFFER(n)[0]=0xff; BUFFER(n)[1]=0x00; BUFFER(n)[2]=0xff; \ 
+//  246   BUFFER(n)[sizeof(BUFFER(n))-1]=0xA0; \ 
+//  247   BUFFER(n)[sizeof(BUFFER(n))-2]=0x00; \ 
+//  248   BUFFER(n)[sizeof(BUFFER(n))-3]=0xA0; 
+//  249   
+//  250   INIT_BUFFER(0);
+        MOVS     R0,#+1
+        B.N      ??Cam_Init_0
+??Cam_Init_1:
+        MOVS     R1,#+0
+        LDR.N    R2,??DataTable6_57
+        STRB     R1,[R0, R2]
+        ADDS     R0,R0,#+1
+??Cam_Init_0:
+        MOVW     R1,#+4906
+        CMP      R0,R1
+        BCC.N    ??Cam_Init_1
         MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_50
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_50
-        STRB     R0,[R1, #+1]
-        MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_50
-        STRB     R0,[R1, #+2]
-        MOVS     R0,#+160
-        LDR.N    R1,??DataTable6_51
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_52
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+160
-        LDR.N    R1,??DataTable6_53
-        STRB     R0,[R1, #+0]
-//  241   INIT_BUFFER(1);
-        MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_54
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_54
-        STRB     R0,[R1, #+1]
-        MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_54
-        STRB     R0,[R1, #+2]
-        MOVS     R0,#+160
-        LDR.N    R1,??DataTable6_55
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_56
-        STRB     R0,[R1, #+0]
-        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_57
         STRB     R0,[R1, #+0]
-//  242   INIT_BUFFER(2);
+        MOVS     R0,#+0
+        LDR.N    R1,??DataTable6_57
+        STRB     R0,[R1, #+1]
         MOVS     R0,#+255
+        LDR.N    R1,??DataTable6_57
+        STRB     R0,[R1, #+2]
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_58
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_58
-        STRB     R0,[R1, #+1]
-        MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_58
-        STRB     R0,[R1, #+2]
-        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_59
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+0
+        MOVS     R0,#+160
         LDR.N    R1,??DataTable6_60
         STRB     R0,[R1, #+0]
-        MOVS     R0,#+160
+//  251   INIT_BUFFER(1);
+        MOVS     R0,#+1
+        B.N      ??Cam_Init_2
+??Cam_Init_3:
+        MOVS     R1,#+0
+        LDR.N    R2,??DataTable6_61
+        STRB     R1,[R0, R2]
+        ADDS     R0,R0,#+1
+??Cam_Init_2:
+        MOVW     R1,#+4906
+        CMP      R0,R1
+        BCC.N    ??Cam_Init_3
+        MOVS     R0,#+255
         LDR.N    R1,??DataTable6_61
         STRB     R0,[R1, #+0]
-//  243   INIT_BUFFER(3);
-        MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_62
-        STRB     R0,[R1, #+0]
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_62
+        LDR.N    R1,??DataTable6_61
         STRB     R0,[R1, #+1]
         MOVS     R0,#+255
-        LDR.N    R1,??DataTable6_62
+        LDR.N    R1,??DataTable6_61
         STRB     R0,[R1, #+2]
         MOVS     R0,#+160
-        LDR.N    R1,??DataTable6_63
+        LDR.N    R1,??DataTable6_62
         STRB     R0,[R1, #+0]
         MOVS     R0,#+0
-        LDR.N    R1,??DataTable6_64
+        LDR.N    R1,??DataTable6_63
         STRB     R0,[R1, #+0]
         MOVS     R0,#+160
+        LDR.N    R1,??DataTable6_64
+        STRB     R0,[R1, #+0]
+//  252   INIT_BUFFER(2);
+        MOVS     R0,#+1
+        B.N      ??Cam_Init_4
+??Cam_Init_5:
+        MOVS     R1,#+0
+        LDR.N    R2,??DataTable6_65
+        STRB     R1,[R0, R2]
+        ADDS     R0,R0,#+1
+??Cam_Init_4:
+        MOVW     R1,#+4906
+        CMP      R0,R1
+        BCC.N    ??Cam_Init_5
+        MOVS     R0,#+255
         LDR.N    R1,??DataTable6_65
         STRB     R0,[R1, #+0]
-//  244 
-//  245 #undef BUFFER
-//  246 #undef INIT_BUFFER
-//  247 }
+        MOVS     R0,#+0
+        LDR.N    R1,??DataTable6_65
+        STRB     R0,[R1, #+1]
+        MOVS     R0,#+255
+        LDR.N    R1,??DataTable6_65
+        STRB     R0,[R1, #+2]
+        MOVS     R0,#+160
+        LDR.N    R1,??DataTable6_66
+        STRB     R0,[R1, #+0]
+        MOVS     R0,#+0
+        LDR.N    R1,??DataTable6_67
+        STRB     R0,[R1, #+0]
+        MOVS     R0,#+160
+        LDR.N    R1,??DataTable6_68
+        STRB     R0,[R1, #+0]
+//  253   INIT_BUFFER(3);
+        MOVS     R0,#+1
+        B.N      ??Cam_Init_6
+??Cam_Init_7:
+        MOVS     R1,#+0
+        LDR.N    R2,??DataTable6_69
+        STRB     R1,[R0, R2]
+        ADDS     R0,R0,#+1
+??Cam_Init_6:
+        MOVW     R1,#+4906
+        CMP      R0,R1
+        BCC.N    ??Cam_Init_7
+        MOVS     R0,#+255
+        LDR.N    R1,??DataTable6_69
+        STRB     R0,[R1, #+0]
+        MOVS     R0,#+0
+        LDR.N    R1,??DataTable6_69
+        STRB     R0,[R1, #+1]
+        MOVS     R0,#+255
+        LDR.N    R1,??DataTable6_69
+        STRB     R0,[R1, #+2]
+        MOVS     R0,#+160
+        LDR.N    R1,??DataTable6_70
+        STRB     R0,[R1, #+0]
+        MOVS     R0,#+0
+        LDR.N    R1,??DataTable6_71
+        STRB     R0,[R1, #+0]
+        MOVS     R0,#+160
+        LDR.N    R1,??DataTable6_72
+        STRB     R0,[R1, #+0]
+//  254 
+//  255 #undef BUFFER
+//  256 #undef INIT_BUFFER
+//  257 }
         POP      {R4,PC}          ;; return
-//  248 
+//  258 
 
         SECTION `.text`:CODE:NOROOT(1)
         THUMB
-//  249 void DMA1_IRQHandler(){
+//  259 void DMA1_IRQHandler(){
 DMA1_IRQHandler:
         PUSH     {R7,LR}
-//  250   //One frame is sent!
-//  251   TOCK();
-        LDR.N    R0,??DataTable6_66
+//  260   //One frame is sent!
+//  261   //TOCK();
+//  262   send_diff=sending_frame-last_sent_frame;
+        LDR.N    R0,??DataTable6_73
         LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable6_21
-        LDR      R1,[R1, #+0]
-        MOVW     R2,#+10000
-        UDIV     R1,R1,R2
-        LDR.N    R2,??DataTable6_22  ;; 0x40037124
-        LDR      R2,[R2, #+0]
-        SUBS     R0,R0,R2
-        UDIV     R0,R0,R1
-        LDR.N    R1,??DataTable6_67
-        STRH     R0,[R1, #+0]
-//  252   send_diff=sending_frame-last_sent_frame;
-        LDR.N    R0,??DataTable6_68
-        LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable6_69
+        LDR.N    R1,??DataTable6_74
         LDR      R1,[R1, #+0]
         SUBS     R0,R0,R1
-        LDR.N    R1,??DataTable6_70
+        LDR.N    R1,??DataTable6_75
         STR      R0,[R1, #+0]
-//  253   last_sent_frame=sending_frame;
-        LDR.N    R0,??DataTable6_68
+//  263   last_sent_frame=sending_frame;
+        LDR.N    R0,??DataTable6_73
         LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable6_69
+        LDR.N    R1,??DataTable6_74
         STR      R0,[R1, #+0]
-//  254   sending_frame=loading_frame-1;
+//  264   sending_frame=loading_frame-1;
         LDR.N    R0,??DataTable6_5
         LDR      R0,[R0, #+0]
         SUBS     R0,R0,#+1
-        LDR.N    R1,??DataTable6_68
+        LDR.N    R1,??DataTable6_73
         STR      R0,[R1, #+0]
-//  255   
-//  256   uint8 t=last_frame_indicator;//This Ensures atomic operation
-        LDR.N    R0,??DataTable6_20
+//  265   
+//  266   uint8 t=last_frame_indicator;//This Ensures atomic operation
+        LDR.N    R0,??DataTable6_25
         LDRB     R0,[R0, #+0]
-//  257   CLEAR_LOCK(SLOCK_BASE);
+//  267   CLEAR_LOCK(SLOCK_BASE);
         LDR.N    R1,??DataTable6_8
         LDR      R1,[R1, #+0]
         BICS     R1,R1,#0xF0
         LDR.N    R2,??DataTable6_8
         STR      R1,[R2, #+0]
-//  258   SET_LOCK(SLOCK_BASE, t);
+//  268   SET_LOCK(SLOCK_BASE, t);
         LDR.N    R1,??DataTable6_8
         LDR      R1,[R1, #+0]
         MOVS     R2,#+1
@@ -1059,37 +1171,33 @@ DMA1_IRQHandler:
         ORRS     R1,R2,R1
         LDR.N    R2,??DataTable6_8
         STR      R1,[R2, #+0]
-//  259   sending_buffer=buffer_ptr[t]-SIG_SIZE;
+//  269   sending_buffer=buffer_ptr[t]-SIG_SIZE;
         LDR.N    R1,??DataTable6_9
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         LDR      R1,[R1, R0, LSL #+2]
         SUBS     R1,R1,#+3
-        LDR.N    R2,??DataTable6_71
+        LDR.N    R2,??DataTable6_76
         STR      R1,[R2, #+0]
-//  260   
-//  261   sending_frame_indicator=t;
-        LDR.N    R1,??DataTable6_72
+//  270   
+//  271   sending_frame_indicator=t;
+        LDR.N    R1,??DataTable6_77
         STRB     R0,[R1, #+0]
-//  262   
-//  263   DMA0->INT=DMA_INT_INT1_MASK;
+//  272   
+//  273   DMA0->INT=DMA_INT_INT1_MASK;
         MOVS     R0,#+2
-        LDR.N    R1,??DataTable6_25  ;; 0x40008024
+        LDR.N    R1,??DataTable6_56  ;; 0x40008024
         STR      R0,[R1, #+0]
-//  264   
-//  265   Bluetooth_SendDataChunkAsync( sending_buffer,
-//  266                                IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+//  274   
+//  275   Bluetooth_SendDataChunkAsync( sending_buffer,
+//  276                                IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
         MOVW     R1,#+4906
-        LDR.N    R0,??DataTable6_71
+        LDR.N    R0,??DataTable6_76
         LDR      R0,[R0, #+0]
         BL       Bluetooth_SendDataChunkAsync
-//  267   LED2_Tog();
+//  277   LED2_Tog();
         BL       LED2_Tog
-//  268   TICK();
-        LDR.N    R0,??DataTable6_22  ;; 0x40037124
-        LDR      R0,[R0, #+0]
-        LDR.N    R1,??DataTable6_66
-        STR      R0,[R1, #+0]
-//  269 }
+//  278   //TICK();
+//  279 }
         POP      {R0,PC}          ;; return
 
         SECTION `.text`:CODE:NOROOT(2)
@@ -1186,348 +1294,378 @@ DMA1_IRQHandler:
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_15:
-        DC32     loading_buffer
+        DC32     0xe000edfc
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_16:
-        DC32     0x40009010
+        DC32     0xe0000014
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_17:
-        DC32     0x4003b000
+        DC32     0xe0000008
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_18:
-        DC32     0x4000901c
+        DC32     loading_buffer
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_19:
-        DC32     0x4000800c
+        DC32     0x40009010
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_20:
-        DC32     last_frame_indicator
+        DC32     0x4000800c
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_21:
-        DC32     g_bus_clock
+        DC32     0x4003b000
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_22:
-        DC32     0x40037124
+        DC32     0x4000901c
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_23:
-        DC32     ??t
+        DC32     0xe000000c
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_24:
-        DC32     debug_num
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_25:
-        DC32     0x40008024
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_26:
-        DC32     0x4004b020
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_27:
-        DC32     0x4004b024
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_28:
-        DC32     0x4004b02c
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_29:
-        DC32     0x400ff094
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_30:
-        DC32     0x4004803c
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_31:
-        DC32     0x4003b004
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_32:
-        DC32     0x4003b020
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_33:
-        DC32     0x4003b024
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_34:
-        DC32     0x4003b008
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_35:
-        DC32     0x4003b00c
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_36:
-        DC32     0x40048040
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_37:
-        DC32     0x40021000
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_38:
-        DC32     0x4003b010
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_39:
-        DC32     0x40009000
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_40:
-        DC32     0x40009004
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_41:
-        DC32     0x40009006
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_42:
-        DC32     0x40009008
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_43:
-        DC32     0x4000900c
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_44:
-        DC32     0x40009014
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_45:
-        DC32     0x40009016
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_46:
-        DC32     0x40009018
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_47:
-        DC32     0x4000901e
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_48:
-        DC32     0x40008103
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_49:
-        DC32     0x40008102
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_50:
-        DC32     cam_buffer0
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_51:
-        DC32     cam_buffer0+0x1329
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_52:
-        DC32     cam_buffer0+0x1328
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_53:
-        DC32     cam_buffer0+0x1327
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_54:
-        DC32     cam_buffer1
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_55:
-        DC32     cam_buffer1+0x1329
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_56:
-        DC32     cam_buffer1+0x1328
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_57:
-        DC32     cam_buffer1+0x1327
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_58:
-        DC32     cam_buffer2
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_59:
-        DC32     cam_buffer2+0x1329
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_60:
-        DC32     cam_buffer2+0x1328
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_61:
-        DC32     cam_buffer2+0x1327
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_62:
-        DC32     cam_buffer3
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_63:
-        DC32     cam_buffer3+0x1329
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_64:
-        DC32     cam_buffer3+0x1328
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_65:
-        DC32     cam_buffer3+0x1327
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_66:
-        DC32     tclk
-
-        SECTION `.text`:CODE:NOROOT(2)
-        SECTION_TYPE SHT_PROGBITS, 0
-        DATA
-??DataTable6_67:
         DC32     e_debug_num
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
+??DataTable6_25:
+        DC32     last_frame_indicator
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_26:
+        DC32     g_bus_clock
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_27:
+        DC32     0x40037124
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_28:
+        DC32     ??t
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_29:
+        DC32     debug_num
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_30:
+        DC32     0x4000801f
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_31:
+        DC32     0xe0000004
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_32:
+        DC32     0x4004b020
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_33:
+        DC32     0x4004b024
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_34:
+        DC32     0x4004b02c
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_35:
+        DC32     0x400ff094
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_36:
+        DC32     0x4004803c
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_37:
+        DC32     0x4003b004
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_38:
+        DC32     0x4003b020
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_39:
+        DC32     0x4003b024
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_40:
+        DC32     0x4003b008
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_41:
+        DC32     0x4003b00c
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_42:
+        DC32     0x40048040
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_43:
+        DC32     0x40021000
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_44:
+        DC32     0x4003b010
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_45:
+        DC32     0x40009000
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_46:
+        DC32     0x40009004
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_47:
+        DC32     0x40009006
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_48:
+        DC32     0x40009008
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_49:
+        DC32     0x4000900c
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_50:
+        DC32     0x40009014
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_51:
+        DC32     0x40009016
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_52:
+        DC32     0x40009018
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_53:
+        DC32     0x4000901e
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_54:
+        DC32     0x40008103
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_55:
+        DC32     0x40008102
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_56:
+        DC32     0x40008024
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_57:
+        DC32     cam_buffer0
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_58:
+        DC32     cam_buffer0+0x1329
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_59:
+        DC32     cam_buffer0+0x1328
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_60:
+        DC32     cam_buffer0+0x1327
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_61:
+        DC32     cam_buffer1
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_62:
+        DC32     cam_buffer1+0x1329
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_63:
+        DC32     cam_buffer1+0x1328
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_64:
+        DC32     cam_buffer1+0x1327
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_65:
+        DC32     cam_buffer2
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_66:
+        DC32     cam_buffer2+0x1329
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_67:
+        DC32     cam_buffer2+0x1328
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
 ??DataTable6_68:
-        DC32     sending_frame
+        DC32     cam_buffer2+0x1327
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_69:
-        DC32     last_sent_frame
+        DC32     cam_buffer3
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_70:
-        DC32     send_diff
+        DC32     cam_buffer3+0x1329
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_71:
-        DC32     sending_buffer
+        DC32     cam_buffer3+0x1328
 
         SECTION `.text`:CODE:NOROOT(2)
         SECTION_TYPE SHT_PROGBITS, 0
         DATA
 ??DataTable6_72:
+        DC32     cam_buffer3+0x1327
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_73:
+        DC32     sending_frame
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_74:
+        DC32     last_sent_frame
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_75:
+        DC32     send_diff
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_76:
+        DC32     sending_buffer
+
+        SECTION `.text`:CODE:NOROOT(2)
+        SECTION_TYPE SHT_PROGBITS, 0
+        DATA
+??DataTable6_77:
         DC32     sending_frame_indicator
 
         SECTION `.iar_vfe_header`:DATA:NOALLOC:NOROOT(2)
@@ -1545,10 +1683,10 @@ DMA1_IRQHandler:
 // 
 // 19 673 bytes in section .bss
 //     33 bytes in section .data
-//  1 794 bytes in section .text
+//  2 038 bytes in section .text
 // 
-//  1 794 bytes of CODE memory
+//  2 038 bytes of CODE memory
 // 19 706 bytes of DATA memory
 //
 //Errors: none
-//Warnings: 1
+//Warnings: none

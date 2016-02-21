@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       19/Feb/2016  17:23:18
+// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       21/Feb/2016  13:58:51
 // Copyright 1999-2014 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
@@ -46,7 +46,6 @@
         EXTERN PIT2_Init
         EXTERN Servo_Init
         EXTERN Tacho_Init
-        EXTERN UART_Configure_DMA
         EXTERN UART_Init
         EXTERN UART_SetMode
         EXTERN `data`
@@ -136,10 +135,9 @@ main:
         MOVS     R0,#+115200
         BL       UART_Init
 //   35   } 
-//   36   UART_Configure_DMA();
-??main_1:
-        BL       UART_Configure_DMA
+//   36   //UART_Configure_DMA();
 //   37   UART_SetMode(UART_MODE_DMA_MANNUAL);
+??main_1:
         MOVS     R0,#+1
         BL       UART_SetMode
 //   38  
@@ -207,9 +205,7 @@ main:
 //   79   while(t--)
 //   80     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
 //   81   //TOCK();*/
-//   82 UART_SetMode(UART_MODE_DMA_CONTINUOUS);
-        MOVS     R0,#+3
-        BL       UART_SetMode
+//   82 //UART_SetMode(UART_MODE_DMA_CONTINUOUS);
 //   83 
 //   84   ////// System Initiated ////
 //   85   
@@ -567,9 +563,9 @@ DefaultISR:
 // 
 //   2 bytes in section .bss
 // 112 bytes in section .rodata
-// 506 bytes in section .text
+// 496 bytes in section .text
 // 
-// 506 bytes of CODE  memory
+// 496 bytes of CODE  memory
 // 112 bytes of CONST memory
 //   2 bytes of DATA  memory
 //
