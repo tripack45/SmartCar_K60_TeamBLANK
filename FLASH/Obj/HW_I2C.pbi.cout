@@ -1,16 +1,16 @@
-"C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\HW\HW_I2C.c"
+"E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW\HW_I2C.c"
 -std=c99
 -ferror-limit=100
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source
+E:\freescale_racing\SmartCar_K60_TeamBLANK\source
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\common
+E:\freescale_racing\SmartCar_K60_TeamBLANK\common
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\HW
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\DEV
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include
 -I
@@ -18,15 +18,15 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\inc\c
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source
+E:\freescale_racing\SmartCar_K60_TeamBLANK\source
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\common
+E:\freescale_racing\SmartCar_K60_TeamBLANK\common
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\HW
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW
 -I
-C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\DEV
+E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include
 -DARM_MATH_CM4=1
@@ -223,8 +223,8 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\CMSIS\Include
 -D__HAS_LOCATED_WITH_INIT__=1
 -D__IAR_COMPILERBASE__=593924
 -D__SIGNED_CHARS__=1
--D__DATE__="Feb 21 2016"
--D__TIME__="16:26:02"
+-D__DATE__="Feb 23 2016"
+-D__TIME__="13:26:30"
 -D__STDC__=1
 -D__STDC_VERSION__=199901L
 -D__STDC_HOSTED__=1
