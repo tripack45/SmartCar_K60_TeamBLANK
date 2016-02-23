@@ -124,11 +124,11 @@ Mode=1
 Graph=1
 Symbiont=0
 Exclusions=
-[Breakpoints2]
+[Breakpoints]
 Count=0
 [Disassemble mode]
 mode=0
-[Breakpoints]
+[Breakpoints2]
 Count=0
 [Aliases]
 A0=_ "E:\freescale_racing\framework2016\common\startup_K60.s" "E:\freescale_racing\SmartCar_K60_TeamBLANK\common\startup_K60.s"

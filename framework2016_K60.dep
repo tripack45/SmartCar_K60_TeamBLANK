@@ -6,10 +6,12 @@
   <configuration>
     <name>BOOT</name>
     <outputs>
+      <file>$PROJ_DIR$\source\Bluetooth.h</file>
       <file>$PROJ_DIR$\source\Cam.c</file>
       <file>$PROJ_DIR$\source\Cam.h</file>
       <file>$PROJ_DIR$\source\CCD.c</file>
       <file>$PROJ_DIR$\source\CCD.h</file>
+      <file>$PROJ_DIR$\source\Bluetooth.c</file>
       <file>$PROJ_DIR$\source\OLED.c</file>
       <file>$PROJ_DIR$\source\Motor.h</file>
       <file>$PROJ_DIR$\source\HMI.c</file>
@@ -25,12 +27,9 @@
       <file>$PROJ_DIR$\source\framework2016.c</file>
       <file>$PROJ_DIR$\source\IMU.c</file>
       <file>$PROJ_DIR$\BOOT\Obj\OLED.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\OLED_UI.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\IMU.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\HW_MCG.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\CCD.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\HMI.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\Flash.pbi</file>
@@ -41,17 +40,13 @@
       <file>$PROJ_DIR$\BOOT\Obj\UI_Operation.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\PIT.o</file>
       <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cm4.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\Motor.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\Mag.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\IMU.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\UI_Operation.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\Cam.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\relocate.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\Cam.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
       <file>$PROJ_DIR$\source\UART.c</file>
       <file>$PROJ_DIR$\source\UI_Operation.h</file>
       <file>$PROJ_DIR$\common\common.h</file>
@@ -59,8 +54,10 @@
       <file>$PROJ_DIR$\source\PIT.c</file>
       <file>$PROJ_DIR$\source\UI_Operation.c</file>
       <file>$PROJ_DIR$\common\MK60DZ10.h</file>
+      <file>$PROJ_DIR$\LPLD\DEV\Setting.h</file>
       <file>$PROJ_DIR$\source\OLED_UI.h</file>
       <file>$PROJ_DIR$\source\PIT.h</file>
+      <file>$PROJ_DIR$\source\k60_card.h</file>
       <file>$PROJ_DIR$\common\system_MK60DZ10.c</file>
       <file>$PROJ_DIR$\source\OLED_UI.c</file>
       <file>$PROJ_DIR$\source\typedef.h</file>
@@ -73,49 +70,49 @@
       <file>$PROJ_DIR$\LPLD\HW\HW_I2C.c</file>
       <file>$PROJ_DIR$\LPLD\HW\HW_I2C.h</file>
       <file>$PROJ_DIR$\LPLD\HW\HW_MCG.c</file>
+      <file>$PROJ_DIR$\LPLD\LPLD_Drivers.h</file>
       <file>$PROJ_DIR$\LPLD\HW\HW_MCG.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\framework2016.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\system_MK60DZ10.o</file>
       <file>$PROJ_DIR$\BOOT\Exe\framework2016_K60.out</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cm4_simd.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\relocate.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\UART.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\Flash.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\HW_I2C.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\Mag.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\DEV_MMA8451.o</file>
-      <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
       <file>$PROJ_DIR$\BOOT\Exe\framework2016_K60.bin</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmInstr.h</file>
-      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\HMI.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\framework2016.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\CCD.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\system_MK60DZ10.pbi</file>
-      <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmFunc.h</file>
       <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
       <file>$PROJ_DIR$\BOOT\Obj\HW_MCG.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\OLED_UI.o</file>
       <file>$PROJ_DIR$\BOOT\Obj\DEV_MMA8451.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\UART.pbi</file>
       <file>$PROJ_DIR$\BOOT\Obj\HW_I2C.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\arm_itm.h</file>
+      <file>$PROJ_DIR$\BOOT\Obj\Bluetooth.pbi</file>
+      <file>$PROJ_DIR$\BOOT\Obj\Bluetooth.o</file>
+      <file>$PROJ_DIR$\BOOT\Obj\framework2016_K60.pbd</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\source\Cam.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 42</file>
+          <file> 38</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 44</file>
+          <file> 40</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
+          <file> 10 54 16 13 55 50 7 4 11 2 9 49 42 15 0 86 80 33</file>
         </tool>
       </inputs>
     </file>
@@ -124,17 +121,36 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 25</file>
+          <file> 24</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 84</file>
+          <file> 78</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
+          <file> 10 54 16 13 55 50 7 4 11 2 9 49 42 15 0 86 80 33</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Bluetooth.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 88</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10 54 16 13 55 50 7 4 11 2 9 49 42 15 0 86 80 33</file>
         </tool>
       </inputs>
     </file>
@@ -143,22 +159,42 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 18</file>
+          <file> 20</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 28</file>
+          <file> 27</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\source\HMI.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 76</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Motor.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Flash.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
@@ -166,51 +202,13 @@
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 82</file>
+          <file> 71</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\source\Motor.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 30</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 36</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\source\Flash.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 27</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 74</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
+          <file> 10 54 16 13 55 50 7 4 11 2 9 49 42 15 0 86 80 33</file>
         </tool>
       </inputs>
     </file>
@@ -219,64 +217,46 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 37</file>
+          <file> 35</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 76</file>
+          <file> 73</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\source\framework2016.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 68</file>
+          <file> 66</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 83</file>
+          <file> 77</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\source\IMU.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 21</file>
+          <file> 22</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 39</file>
+          <file> 36</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>ILINK</name>
-          <file> 70</file>
+          <file> 68</file>
         </tool>
       </outputs>
     </file>
@@ -285,140 +265,98 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 91</file>
+          <file> 84</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 73</file>
+          <file> 70</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\source\PIT.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 29</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 33</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\source\UI_Operation.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 41</file>
+          <file> 28</file>
         </tool>
         <tool>
           <name>ICCARM</name>
           <file> 32</file>
         </tool>
       </outputs>
-      <inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\UI_Operation.c</name>
+      <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
+          <file> 37</file>
         </tool>
-      </inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\common\system_MK60DZ10.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 85</file>
+          <file> 79</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 69</file>
+          <file> 67</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22 34 81 19 78 45 40 24 48 52 35 80 38 87 86 71 49 61</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\source\OLED_UI.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 20</file>
+          <file> 21</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 89</file>
+          <file> 82</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 57 14 11 58 54 5 3 9 1 7 53 47 13</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\LPLD\DEV\DEV_MMA8451.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 90</file>
+          <file> 83</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 77</file>
+          <file> 74</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 60</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\common\relocate.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 43</file>
+          <file> 39</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 72</file>
+          <file> 69</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 52 35 22 34 81 19 78 45 40 24 80 38 87 86 71 49 61</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\common\startup_K60.s</name>
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 31</file>
+          <file> 30</file>
         </tool>
       </outputs>
     </file>
@@ -427,19 +365,13 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 75</file>
+          <file> 72</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 92</file>
+          <file> 85</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 65</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\LPLD\HW\HW_MCG.c</name>
@@ -450,29 +382,19 @@
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 88</file>
+          <file> 81</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\BOOT\Exe\framework2016_K60.out</name>
       <outputs>
         <tool>
           <name>OBJCOPY</name>
-          <file> 79</file>
+          <file> 75</file>
         </tool>
       </outputs>
     </file>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>ILINK</tool>
-    </forcedrebuild>
     <forcedrebuild>
       <name>[REBUILD_ALL]</name>
     </forcedrebuild>
