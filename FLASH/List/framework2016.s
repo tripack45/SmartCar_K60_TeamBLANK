@@ -1,30 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       21/Feb/2016  13:58:51
+// IAR ANSI C/C++ Compiler V7.20.2.7424/W32 for ARM       21/Feb/2016  16:45:29
 // Copyright 1999-2014 IAR Systems AB.
 //
 //    Cpu mode     =  thumb
 //    Endian       =  little
 //    Source file  =  
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\framework2016.c
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source\framework2016.c
 //    Command line =  
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\framework2016.c
-//        -lCN E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -lB
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\ -o
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\ --no_cse
-//        --no_unroll --no_inline --no_code_motion --no_tbaa --no_clustering
-//        --no_scheduling --debug --endian=little --cpu=Cortex-M4 -e
-//        --char_is_signed --fpu=None --dlib_config "C:\Program Files (x86)\IAR
-//        Systems\Embedded Workbench 7.0\arm\INC\c\DLib_Config_Normal.h" -I
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\source\ -I
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\common\ -I
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\ -I
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\HW\ -I
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\LPLD\DEV\ -Ol -I
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source\framework2016.c
+//        -lCN
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\List\
+//        -lB
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\List\
+//        -o
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\
+//        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
+//        --no_clustering --no_scheduling --debug --endian=little
+//        --cpu=Cortex-M4 -e --char_is_signed --fpu=None --dlib_config
 //        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+//        7.0\arm\INC\c\DLib_Config_Normal.h" -I
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source\
+//        -I
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\common\
+//        -I C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\
+//        -I
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\HW\
+//        -I
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\LPLD\DEV\
+//        -Ol -I "C:\Program Files (x86)\IAR Systems\Embedded Workbench
 //        7.0\arm\CMSIS\Include\" -D ARM_MATH_CM4
 //    List file    =  
-//        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\framework2016.s
+//        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\List\framework2016.s
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -46,6 +53,7 @@
         EXTERN PIT2_Init
         EXTERN Servo_Init
         EXTERN Tacho_Init
+        EXTERN UART_Configure_DMA
         EXTERN UART_Init
         EXTERN UART_SetMode
         EXTERN `data`
@@ -58,7 +66,7 @@
         PUBLIC NMI_Handler
         PUBLIC main
 
-// E:\freescale_racing\SmartCar_K60_TeamBLANK\source\framework2016.c
+// C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\source\framework2016.c
 //    1 /*
 //    2 Arthor : Qian Qiyang (KisaragiAyanoo@twitter)
 //    3 Date : 2015/12/01
@@ -135,9 +143,10 @@ main:
         MOVS     R0,#+115200
         BL       UART_Init
 //   35   } 
-//   36   //UART_Configure_DMA();
-//   37   UART_SetMode(UART_MODE_DMA_MANNUAL);
+//   36   UART_Configure_DMA();
 ??main_1:
+        BL       UART_Configure_DMA
+//   37   UART_SetMode(UART_MODE_DMA_MANNUAL);
         MOVS     R0,#+1
         BL       UART_SetMode
 //   38  
@@ -205,7 +214,9 @@ main:
 //   79   while(t--)
 //   80     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
 //   81   //TOCK();*/
-//   82 //UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+//   82 UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+        MOVS     R0,#+3
+        BL       UART_SetMode
 //   83 
 //   84   ////// System Initiated ////
 //   85   
@@ -563,9 +574,9 @@ DefaultISR:
 // 
 //   2 bytes in section .bss
 // 112 bytes in section .rodata
-// 496 bytes in section .text
+// 506 bytes in section .text
 // 
-// 496 bytes of CODE  memory
+// 506 bytes of CODE  memory
 // 112 bytes of CONST memory
 //   2 bytes of DATA  memory
 //

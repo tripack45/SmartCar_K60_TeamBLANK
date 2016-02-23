@@ -1,39 +1,39 @@
 ###############################################################################
 #
-# IAR ELF Linker V7.20.2.7424/W32 for ARM                 21/Feb/2016  14:16:12
+# IAR ELF Linker V7.20.2.7424/W32 for ARM                 21/Feb/2016  16:45:30
 # Copyright 2007-2014 IAR Systems AB.
 #
 #    Output file  =  
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Exe\framework2016_K60.out
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Exe\framework2016_K60.out
 #    Map file     =  
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\framework2016_K60.map
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\List\framework2016_K60.map
 #    Command line =  
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Bluetooth.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Cam.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\CCD.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\DEV_MMA8451.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Flash.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\framework2016.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\HMI.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\HW_I2C.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\HW_MCG.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\IMU.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Mag.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\Motor.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\OLED.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\OLED_UI.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\PIT.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\relocate.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\startup_K60.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\system_MK60DZ10.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\UART.o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj\UI_Operation.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\Bluetooth.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\Cam.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\CCD.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\DEV_MMA8451.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\Flash.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\framework2016.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\HMI.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\HW_I2C.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\HW_MCG.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\IMU.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\Mag.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\Motor.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\OLED.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\OLED_UI.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\PIT.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\relocate.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\startup_K60.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\system_MK60DZ10.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\UART.o
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj\UI_Operation.o
 #        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Exe\framework2016_K60.out
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Exe\framework2016_K60.out
 #        --map
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\List\framework2016_K60.map
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\List\framework2016_K60.map
 #        --config
-#        E:\freescale_racing\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf
+#        C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf
 #        --semihosting --entry __iar_program_start "C:\Program Files (x86)\IAR
 #        Systems\Embedded Workbench 7.0\arm\CMSIS\Lib\IAR\iar_cortexM4l_math.a"
 #        --merge_duplicate_sections --vfe
@@ -72,56 +72,56 @@ __SystemLibrary = DLib
   .noinit              ro code  0x00000420      0x4  startup_K60.o [1]
                               - 0x00000424     0x14
 
-"P1", part 2 of 2:                           0x2a50
+"P1", part 2 of 2:                           0x2b20
   .text                ro code  0x00000424    0x7f8  Cam.o [1]
   .text                ro code  0x00000c1c    0x238  HMI.o [1]
   .text                ro code  0x00000e54     0x60  Bluetooth.o [1]
   .text                ro code  0x00000eb4    0x490  OLED.o [1]
-  .text                ro code  0x00001344    0x304  UART.o [1]
-  .text                ro code  0x00001648    0x500  Motor.o [1]
-  .text                ro code  0x00001b48    0x2cc  PIT.o [1]
-  .text                ro code  0x00001e14    0x250  UI_Operation.o [1]
-  .text                ro code  0x00002064     0xe0  OLED_UI.o [1]
-  .text                ro code  0x00002144    0x22c  Flash.o [1]
-  .rodata              const    0x00002370    0x228  OLED.o [1]
-  .text                ro code  0x00002598    0x1f0  framework2016.o [1]
-  Veneer               ro code  0x00002788      0x8  - Linker created -
-  .text                ro code  0x00002790    0x198  HW_MCG.o [1]
-  .text                ro code  0x00002928    0x180  system_MK60DZ10.o [1]
-  .text                ro code  0x00002aa8     0xa0  relocate.o [1]
-  .text                ro code  0x00002b48     0xc8  HW_I2C.o [1]
-  .data_init                    0x00002c10     0x68  <Block>
-    Initializer bytes  ro data  0x00002c10     0x68  <for .data-1>
-  CodeRelocate                  0x00002c78     0x4c  <Block>
-    Initializer bytes  ro data  0x00002c78     0x4c  <for CodeRelocateRam-1>
-  .text                ro code  0x00002cc4     0x28  data_init.o [4]
-  .text                ro code  0x00002cec     0x22  zero_init3.o [4]
-  .iar.init_table      const    0x00002d10     0x10  - Linker created -
-  .text                ro code  0x00002d20     0x1a  cmain.o [4]
-  .text                ro code  0x00002d3a      0x4  low_level_init.o [3]
-  .text                ro code  0x00002d3e      0x4  exit.o [3]
-  .text                ro code  0x00002d44      0xa  cexit.o [4]
-  .text                ro code  0x00002d50     0x14  exit.o [5]
-  .rodata              const    0x00002d64     0x18  Bluetooth.o [1]
-  .rodata              const    0x00002d7c     0x18  framework2016.o [1]
-  .rodata              const    0x00002d94     0x14  Bluetooth.o [1]
-  .rodata              const    0x00002da8     0x14  framework2016.o [1]
-  .rodata              const    0x00002dbc     0x14  framework2016.o [1]
-  .rodata              const    0x00002dd0     0x14  system_MK60DZ10.o [1]
-  .rodata              const    0x00002de4      0xc  Bluetooth.o [1]
-  .rodata              const    0x00002df0      0xc  framework2016.o [1]
-  .rodata              const    0x00002dfc      0xc  framework2016.o [1]
-  .rodata              const    0x00002e08      0xc  framework2016.o [1]
-  .rodata              const    0x00002e14      0xc  framework2016.o [1]
-  .rodata              const    0x00002e20      0xc  system_MK60DZ10.o [1]
-  .rodata              const    0x00002e2c      0xc  system_MK60DZ10.o [1]
-  .rodata              const    0x00002e38      0xc  system_MK60DZ10.o [1]
-  .rodata              const    0x00002e44      0xc  system_MK60DZ10.o [1]
-  .text                ro code  0x00002e50      0xc  cstartup_M.o [4]
-  .rodata              const    0x00002e5c      0x8  OLED_UI.o [1]
-  .rodata              const    0x00002e64      0x8  OLED_UI.o [1]
-  .rodata              const    0x00002e6c      0x8  system_MK60DZ10.o [1]
-                              - 0x00002e74   0x2a50
+  .text                ro code  0x00001344    0x3c8  UART.o [1]
+  .text                ro code  0x0000170c    0x500  Motor.o [1]
+  .text                ro code  0x00001c0c    0x2cc  PIT.o [1]
+  .text                ro code  0x00001ed8    0x250  UI_Operation.o [1]
+  .text                ro code  0x00002128     0xe0  OLED_UI.o [1]
+  .text                ro code  0x00002208    0x22c  Flash.o [1]
+  .rodata              const    0x00002434    0x228  OLED.o [1]
+  .text                ro code  0x0000265c    0x1fc  framework2016.o [1]
+  Veneer               ro code  0x00002858      0x8  - Linker created -
+  .text                ro code  0x00002860    0x198  HW_MCG.o [1]
+  .text                ro code  0x000029f8    0x180  system_MK60DZ10.o [1]
+  .text                ro code  0x00002b78     0xa0  relocate.o [1]
+  .text                ro code  0x00002c18     0xc8  HW_I2C.o [1]
+  .data_init                    0x00002ce0     0x68  <Block>
+    Initializer bytes  ro data  0x00002ce0     0x68  <for .data-1>
+  CodeRelocate                  0x00002d48     0x4c  <Block>
+    Initializer bytes  ro data  0x00002d48     0x4c  <for CodeRelocateRam-1>
+  .text                ro code  0x00002d94     0x28  data_init.o [4]
+  .text                ro code  0x00002dbc     0x22  zero_init3.o [4]
+  .iar.init_table      const    0x00002de0     0x10  - Linker created -
+  .text                ro code  0x00002df0     0x1a  cmain.o [4]
+  .text                ro code  0x00002e0a      0x4  low_level_init.o [3]
+  .text                ro code  0x00002e0e      0x4  exit.o [3]
+  .text                ro code  0x00002e14      0xa  cexit.o [4]
+  .text                ro code  0x00002e20     0x14  exit.o [5]
+  .rodata              const    0x00002e34     0x18  Bluetooth.o [1]
+  .rodata              const    0x00002e4c     0x18  framework2016.o [1]
+  .rodata              const    0x00002e64     0x14  Bluetooth.o [1]
+  .rodata              const    0x00002e78     0x14  framework2016.o [1]
+  .rodata              const    0x00002e8c     0x14  framework2016.o [1]
+  .rodata              const    0x00002ea0     0x14  system_MK60DZ10.o [1]
+  .rodata              const    0x00002eb4      0xc  Bluetooth.o [1]
+  .rodata              const    0x00002ec0      0xc  framework2016.o [1]
+  .rodata              const    0x00002ecc      0xc  framework2016.o [1]
+  .rodata              const    0x00002ed8      0xc  framework2016.o [1]
+  .rodata              const    0x00002ee4      0xc  framework2016.o [1]
+  .rodata              const    0x00002ef0      0xc  system_MK60DZ10.o [1]
+  .rodata              const    0x00002efc      0xc  system_MK60DZ10.o [1]
+  .rodata              const    0x00002f08      0xc  system_MK60DZ10.o [1]
+  .rodata              const    0x00002f14      0xc  system_MK60DZ10.o [1]
+  .text                ro code  0x00002f20      0xc  cstartup_M.o [4]
+  .rodata              const    0x00002f2c      0x8  OLED_UI.o [1]
+  .rodata              const    0x00002f34      0x8  OLED_UI.o [1]
+  .rodata              const    0x00002f3c      0x8  system_MK60DZ10.o [1]
+                              - 0x00002f44   0x2b20
 
 "P2":                                       0x13e30
   .data                         0x1fff0410     0x68  <Block>
@@ -219,7 +219,7 @@ Zero (__iar_zero_init3)
 
     Module             ro code  rw code  ro data  rw data
     ------             -------  -------  -------  -------
-E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj: [1]
+C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj: [1]
     Bluetooth.o             96                56
     Cam.o                2 040                36   19 702
     Flash.o                556                32       64
@@ -230,14 +230,14 @@ E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj: [1]
     OLED.o               1 168               552
     OLED_UI.o              224                32       20
     PIT.o                  716                         16
-    UART.o                 772                         66
+    UART.o                 968                         66
     UI_Operation.o         592                         16
-    framework2016.o        496               112        1
+    framework2016.o        508               112        1
     relocate.o             160
     startup_K60.o        1 044
     system_MK60DZ10.o      384                80        4
     -----------------------------------------------------
-    Total:              10 704       76      992   19 932
+    Total:              10 912       76      992   19 932
 
 command line: [2]
     -----------------------------------------------------
@@ -266,7 +266,7 @@ shb_l.a: [5]
     Gaps                     4                 2        3
     Linker created           8                16   61 440
 ---------------------------------------------------------
-    Grand Total:        10 866       76    1 010   81 375
+    Grand Total:        11 074       76    1 010   81 375
 
 
 *******************************************************************************
@@ -279,9 +279,9 @@ Entry                      Address    Size  Type      Object
 .bss$$Limit             0x1fff523c           --   Gb  - Linker created -
 .data$$Base             0x1fff0410           --   Gb  - Linker created -
 .data$$Limit            0x1fff0478           --   Gb  - Linker created -
-.data_init$$Base        0x00002c10           --   Gb  - Linker created -
-.data_init$$Limit       0x00002c78           --   Gb  - Linker created -
-?main                   0x00002d21          Code  Gb  cmain.o [4]
+.data_init$$Base        0x00002ce0           --   Gb  - Linker created -
+.data_init$$Limit       0x00002d48           --   Gb  - Linker created -
+?main                   0x00002df1          Code  Gb  cmain.o [4]
 ADC1_enabled            0x1fff522b     0x1  Data  Gb  framework2016.o [1]
 BELL                    0x00000c65    0x22  Code  Gb  HMI.o [1]
 Battery                 0x00000c87    0x16  Code  Gb  HMI.o [1]
@@ -290,76 +290,76 @@ Bell_Service            0x00000c25    0x24  Code  Gb  HMI.o [1]
 Bluetooth_Configure     0x00000e55    0x46  Code  Gb  Bluetooth.o [1]
 Bluetooth_SendDataChunkAsync
                         0x00000e9b     0xa  Code  Gb  Bluetooth.o [1]
-BusFault_Handler        0x000026c1    0x28  Code  Gb  framework2016.o [1]
+BusFault_Handler        0x0000278f    0x28  Code  Gb  framework2016.o [1]
 CSTACK$$Base            0x1fff5240           --   Gb  - Linker created -
 CSTACK$$Limit           0x20004240           --   Gb  - Linker created -
 Cam_Algorithm           0x0000049f    0xb0  Code  Gb  Cam.o [1]
 Cam_Init                0x0000079f   0x2d8  Code  Gb  Cam.o [1]
-CodeRelocate$$Base      0x00002c78           --   Gb  - Linker created -
-CodeRelocate$$Limit     0x00002cc4           --   Gb  - Linker created -
+CodeRelocate$$Base      0x00002d48           --   Gb  - Linker created -
+CodeRelocate$$Limit     0x00002d94           --   Gb  - Linker created -
 CodeRelocateRam$$Base   0x1fff0478           --   Gb  - Linker created -
 CodeRelocateRam$$Limit  0x1fff04c4           --   Gb  - Linker created -
 DMA0_IRQHandler         0x00000751    0x4e  Code  Gb  Cam.o [1]
 DMA1_IRQHandler         0x00000a77    0x6c  Code  Gb  Cam.o [1]
-DefaultISR              0x00002739    0x28  Code  Gb  framework2016.o [1]
-F6x8                    0x00002370   0x228  Data  Gb  OLED.o [1]
-FlashCMD                0x00002317    0x26  Code  Lc  Flash.o [1]
-Flash_Data_Reset        0x000021cf    0x3c  Code  Gb  Flash.o [1]
-Flash_Data_Update       0x00002193    0x3c  Code  Gb  Flash.o [1]
-Flash_Erase             0x0000224d    0x42  Code  Gb  Flash.o [1]
-Flash_Init              0x0000220b    0x42  Code  Gb  Flash.o [1]
-Flash_Program           0x0000228f    0x88  Code  Gb  Flash.o [1]
-Flash_Read              0x00002173    0x20  Code  Gb  Flash.o [1]
-Flash_Write             0x00002145    0x2e  Code  Gb  Flash.o [1]
+DefaultISR              0x00002807    0x28  Code  Gb  framework2016.o [1]
+F6x8                    0x00002434   0x228  Data  Gb  OLED.o [1]
+FlashCMD                0x000023db    0x26  Code  Lc  Flash.o [1]
+Flash_Data_Reset        0x00002293    0x3c  Code  Gb  Flash.o [1]
+Flash_Data_Update       0x00002257    0x3c  Code  Gb  Flash.o [1]
+Flash_Erase             0x00002311    0x42  Code  Gb  Flash.o [1]
+Flash_Init              0x000022cf    0x42  Code  Gb  Flash.o [1]
+Flash_Program           0x00002353    0x88  Code  Gb  Flash.o [1]
+Flash_Read              0x00002237    0x20  Code  Gb  Flash.o [1]
+Flash_Write             0x00002209    0x2e  Code  Gb  Flash.o [1]
 HMI_Init                0x00000c9d   0x154  Code  Gb  HMI.o [1]
-HardFault_Handler       0x00002711    0x28  Code  Gb  framework2016.o [1]
-I2C0_IRQHandler         0x00002b49    0x5a  Code  Gb  HW_I2C.o [1]
-I2C1_IRQHandler         0x00002ba3    0x5a  Code  Gb  HW_I2C.o [1]
+HardFault_Handler       0x000027df    0x28  Code  Gb  framework2016.o [1]
+I2C0_IRQHandler         0x00002c19    0x5a  Code  Gb  HW_I2C.o [1]
+I2C1_IRQHandler         0x00002c73    0x5a  Code  Gb  HW_I2C.o [1]
 I2C_ISR                 0x1fff51b4     0x8  Data  Gb  HW_I2C.o [1]
-Key1_Downspin_Func      0x00001e33     0x8  Code  Gb  UI_Operation.o [1]
-Key1_Read               0x00001f1b    0x54  Code  Gb  UI_Operation.o [1]
-Key1_Rise_Func          0x00001e15     0xa  Code  Gb  UI_Operation.o [1]
+Key1_Downspin_Func      0x00001ef7     0x8  Code  Gb  UI_Operation.o [1]
+Key1_Read               0x00001fdf    0x54  Code  Gb  UI_Operation.o [1]
+Key1_Rise_Func          0x00001ed9     0xa  Code  Gb  UI_Operation.o [1]
 Key1_cnt                0x1fff5236     0x1  Data  Gb  UI_Operation.o [1]
 Key1_down               0x1fff5230     0x1  Data  Gb  UI_Operation.o [1]
 Key1_rise               0x1fff5233     0x1  Data  Gb  UI_Operation.o [1]
 Key1_risemask           0x1fff5238     0x1  Data  Gb  UI_Operation.o [1]
-Key2_Downspin_Func      0x00001e3b     0x8  Code  Gb  UI_Operation.o [1]
-Key2_Read               0x00001f6f    0x54  Code  Gb  UI_Operation.o [1]
-Key2_Rise_Func          0x00001e1f     0xa  Code  Gb  UI_Operation.o [1]
+Key2_Downspin_Func      0x00001eff     0x8  Code  Gb  UI_Operation.o [1]
+Key2_Read               0x00002033    0x54  Code  Gb  UI_Operation.o [1]
+Key2_Rise_Func          0x00001ee3     0xa  Code  Gb  UI_Operation.o [1]
 Key2_cnt                0x1fff5237     0x1  Data  Gb  UI_Operation.o [1]
 Key2_down               0x1fff5231     0x1  Data  Gb  UI_Operation.o [1]
 Key2_rise               0x1fff5234     0x1  Data  Gb  UI_Operation.o [1]
 Key2_risemask           0x1fff5239     0x1  Data  Gb  UI_Operation.o [1]
-Key3_Downspin_Func      0x00001e43     0x8  Code  Gb  UI_Operation.o [1]
-Key3_Read               0x00001fc3    0x64  Code  Gb  UI_Operation.o [1]
-Key3_Rise_Func          0x00001e29     0xa  Code  Gb  UI_Operation.o [1]
+Key3_Downspin_Func      0x00001f07     0x8  Code  Gb  UI_Operation.o [1]
+Key3_Read               0x00002087    0x64  Code  Gb  UI_Operation.o [1]
+Key3_Rise_Func          0x00001eed     0xa  Code  Gb  UI_Operation.o [1]
 Key3_cnt                0x1fff5235     0x1  Data  Gb  UI_Operation.o [1]
 Key3_down               0x1fff522f     0x1  Data  Gb  UI_Operation.o [1]
 Key3_rise               0x1fff5232     0x1  Data  Gb  UI_Operation.o [1]
 Key3_risemask           0x1fff523a     0x1  Data  Gb  UI_Operation.o [1]
 LED1_Tog                0x00000c57     0xe  Code  Gb  HMI.o [1]
 LED2_Tog                0x00000c49     0xe  Code  Gb  HMI.o [1]
-LPLD_PLL_Setup          0x00002791   0x198  Code  Gb  HW_MCG.o [1]
+LPLD_PLL_Setup          0x00002861   0x198  Code  Gb  HW_MCG.o [1]
 LPLD_Set_SYS_DIV        0x1fff0479    0x4c  Code  Gb  HW_MCG.o [1]
 LockState               0x1fff0430     0x4  Data  Gb  Cam.o [1]
-MotorL_Enable           0x000016c3    0x2a  Code  Gb  Motor.o [1]
-MotorR_Enable           0x000016ed    0x2a  Code  Gb  Motor.o [1]
-Motor_Init              0x000017b7    0xe0  Code  Gb  Motor.o [1]
-NMI_Handler             0x000026e9    0x28  Code  Gb  framework2016.o [1]
+MotorL_Enable           0x00001787    0x2a  Code  Gb  Motor.o [1]
+MotorR_Enable           0x000017b1    0x2a  Code  Gb  Motor.o [1]
+Motor_Init              0x0000187b    0xe0  Code  Gb  Motor.o [1]
+NMI_Handler             0x000027b7    0x28  Code  Gb  framework2016.o [1]
 NVIC_EnableIRQ          0x00000425    0x16  Code  Lc  Cam.o [1]
-NVIC_EnableIRQ          0x00001649    0x16  Code  Lc  Motor.o [1]
-NVIC_EnableIRQ          0x00001b49    0x14  Code  Lc  PIT.o [1]
+NVIC_EnableIRQ          0x0000170d    0x16  Code  Lc  Motor.o [1]
+NVIC_EnableIRQ          0x00001c0d    0x14  Code  Lc  PIT.o [1]
 NVIC_EnableIRQ          0x00001345    0x16  Code  Lc  UART.o [1]
 NVIC_EncodePriority     0x00000461    0x3e  Code  Lc  Cam.o [1]
-NVIC_EncodePriority     0x00001685    0x3e  Code  Lc  Motor.o [1]
-NVIC_EncodePriority     0x00001b7f    0x3e  Code  Lc  PIT.o [1]
+NVIC_EncodePriority     0x00001749    0x3e  Code  Lc  Motor.o [1]
+NVIC_EncodePriority     0x00001c43    0x3e  Code  Lc  PIT.o [1]
 NVIC_EncodePriority     0x00001381    0x3e  Code  Lc  UART.o [1]
 NVIC_SetPriority        0x0000043b    0x26  Code  Lc  Cam.o [1]
-NVIC_SetPriority        0x0000165f    0x26  Code  Lc  Motor.o [1]
-NVIC_SetPriority        0x00001b5d    0x22  Code  Lc  PIT.o [1]
+NVIC_SetPriority        0x00001723    0x26  Code  Lc  Motor.o [1]
+NVIC_SetPriority        0x00001c21    0x22  Code  Lc  PIT.o [1]
 NVIC_SetPriority        0x0000135b    0x26  Code  Lc  UART.o [1]
 NVIC_SetPriorityGrouping
-                        0x00002929    0x1c  Code  Lc  system_MK60DZ10.o [1]
+                        0x000029f9    0x1c  Code  Lc  system_MK60DZ10.o [1]
 Oled_Clear              0x0000103f    0x38  Code  Gb  OLED.o [1]
 Oled_DC                 0x00001301    0x22  Code  Gb  OLED.o [1]
 Oled_DLY_ms             0x000011a7    0x1a  Code  Gb  OLED.o [1]
@@ -372,35 +372,36 @@ Oled_SDA                0x000012bd    0x22  Code  Gb  OLED.o [1]
 Oled_Set_Pos            0x0000125d    0x3e  Code  Gb  OLED.o [1]
 Oled_WrCmd              0x00001219    0x44  Code  Gb  OLED.o [1]
 Oled_WrDat              0x000011c1    0x56  Code  Gb  OLED.o [1]
-PIT0_IRQHandler         0x00001c1b    0x98  Code  Gb  PIT.o [1]
-PIT0_Init               0x00001cb3    0x62  Code  Gb  PIT.o [1]
-PIT1_IRQHandler         0x00001bbd    0x5e  Code  Gb  PIT.o [1]
-PIT1_Init               0x00001d15    0x62  Code  Gb  PIT.o [1]
-PIT2_Init               0x00001d77    0x28  Code  Gb  PIT.o [1]
-PORTA_IRQHandler        0x000019df    0x9a  Code  Gb  Motor.o [1]
+PIT0_IRQHandler         0x00001cdf    0x98  Code  Gb  PIT.o [1]
+PIT0_Init               0x00001d77    0x62  Code  Gb  PIT.o [1]
+PIT1_IRQHandler         0x00001c81    0x5e  Code  Gb  PIT.o [1]
+PIT1_Init               0x00001dd9    0x62  Code  Gb  PIT.o [1]
+PIT2_Init               0x00001e3b    0x28  Code  Gb  PIT.o [1]
+PORTA_IRQHandler        0x00001aa3    0x9a  Code  Gb  Motor.o [1]
 PORTC_IRQHandler        0x0000054f   0x202  Code  Gb  Cam.o [1]
-Region$$Table$$Base     0x00002d10           --   Gb  - Linker created -
-Region$$Table$$Limit    0x00002d20           --   Gb  - Linker created -
-Servo_Init              0x0000197f    0x48  Code  Gb  Motor.o [1]
-Spin_Func               0x00001e4b     0xa  Code  Gb  UI_Operation.o [1]
+Region$$Table$$Base     0x00002de0           --   Gb  - Linker created -
+Region$$Table$$Limit    0x00002df0           --   Gb  - Linker created -
+Servo_Init              0x00001a43    0x48  Code  Gb  Motor.o [1]
+Spin_Func               0x00001f0f     0xa  Code  Gb  UI_Operation.o [1]
 SystemCoreClock         0x1fff0474     0x4  Data  Gb  system_MK60DZ10.o [1]
-SystemCoreClockUpdate   0x00002a29    0x26  Code  Gb  system_MK60DZ10.o [1]
-SystemInit              0x00002945    0xe4  Code  Gb  system_MK60DZ10.o [1]
-Tacho0_Dir              0x000019c7     0xc  Code  Gb  Motor.o [1]
-Tacho0_Get              0x00001717    0x1e  Code  Gb  Motor.o [1]
-Tacho0_Renew            0x00001735    0x64  Code  Gb  Motor.o [1]
-Tacho1_Dir              0x000019d3     0xc  Code  Gb  Motor.o [1]
-Tacho1_Get              0x00001799    0x1e  Code  Gb  Motor.o [1]
-Tacho_Init              0x00001897    0xe8  Code  Gb  Motor.o [1]
+SystemCoreClockUpdate   0x00002af9    0x26  Code  Gb  system_MK60DZ10.o [1]
+SystemInit              0x00002a15    0xe4  Code  Gb  system_MK60DZ10.o [1]
+Tacho0_Dir              0x00001a8b     0xc  Code  Gb  Motor.o [1]
+Tacho0_Get              0x000017db    0x1e  Code  Gb  Motor.o [1]
+Tacho0_Renew            0x000017f9    0x64  Code  Gb  Motor.o [1]
+Tacho1_Dir              0x00001a97     0xc  Code  Gb  Motor.o [1]
+Tacho1_Get              0x0000185d    0x1e  Code  Gb  Motor.o [1]
+Tacho_Init              0x0000195b    0xe8  Code  Gb  Motor.o [1]
 UART3_IRQHandler        0x000013f9    0x12  Code  Gb  UART.o [1]
+UART_Configure_DMA      0x0000150f    0x94  Code  Gb  UART.o [1]
 UART_DMASend_Start      0x000014d7    0x1c  Code  Gb  UART.o [1]
 UART_GetChar            0x0000140b    0x12  Code  Gb  UART.o [1]
 UART_Init               0x0000141d    0xba  Code  Gb  UART.o [1]
 UART_Push               0x000013bf    0x3a  Code  Gb  UART.o [1]
 UART_SendDataChunk      0x000014f3    0x1c  Code  Gb  UART.o [1]
-UART_SetMode            0x0000150f    0xdc  Code  Gb  UART.o [1]
-UI_Operation_Service    0x00001e55    0xc6  Code  Gb  UI_Operation.o [1]
-UI_SystemInfo           0x00002065    0xaa  Code  Gb  OLED_UI.o [1]
+UART_SetMode            0x000015a3    0xdc  Code  Gb  UART.o [1]
+UI_Operation_Service    0x00001f19    0xc6  Code  Gb  UI_Operation.o [1]
+UI_SystemInfo           0x00002129    0xaa  Code  Gb  OLED_UI.o [1]
 __BOOT_STACK_ADDRESS {Abs}
                         0x2000fff8           --   Gb  command line/config [2]
 __VECTOR_RAM {Abs}      0x1fff0000           --   Gb  command line/config [2]
@@ -410,17 +411,17 @@ __Vectors_End           0x00000400          Data  Gb  startup_K60.o [1]
 __Vectors_Size {Abs}    0x00000400           --   Gb  startup_K60.o [1]
 __as_entries_start      0xffffffff           --   Gb  command line/config [2]
 __as_table_start        0xffffffff           --   Gb  command line/config [2]
-__cmain                 0x00002d21          Code  Gb  cmain.o [4]
-__exit                  0x00002d51    0x14  Code  Gb  exit.o [5]
-__iar_data_init3        0x00002cc5    0x28  Code  Gb  data_init.o [4]
-__iar_program_start     0x00002e51          Code  Gb  cstartup_M.o [4]
-__iar_zero_init3        0x00002ced    0x22  Code  Gb  zero_init3.o [4]
-__low_level_init        0x00002d3b     0x4  Code  Gb  low_level_init.o [3]
+__cmain                 0x00002df1          Code  Gb  cmain.o [4]
+__exit                  0x00002e21    0x14  Code  Gb  exit.o [5]
+__iar_data_init3        0x00002d95    0x28  Code  Gb  data_init.o [4]
+__iar_program_start     0x00002f21          Code  Gb  cstartup_M.o [4]
+__iar_zero_init3        0x00002dbd    0x22  Code  Gb  zero_init3.o [4]
+__low_level_init        0x00002e0b     0x4  Code  Gb  low_level_init.o [3]
 __vector_table          0x00000000          Data  Gb  startup_K60.o [1]
 __vector_table_0x1c     0x0000001c          Data  Gb  startup_K60.o [1]
-_call_main              0x00002d2d          Code  Gb  cmain.o [4]
-_exit                   0x00002d45          Code  Gb  cexit.o [4]
-_main                   0x00002d37          Code  Gb  cmain.o [4]
+_call_main              0x00002dfd          Code  Gb  cmain.o [4]
+_exit                   0x00002e15          Code  Gb  cexit.o [4]
+_main                   0x00002e07          Code  Gb  cmain.o [4]
 battery                 0x1fff520c     0x2  Data  Gb  HMI.o [1]
 bell_request_tick       0x1fff520e     0x2  Data  Gb  HMI.o [1]
 buffer_ptr              0x1fff0410    0x10  Data  Gb  Cam.o [1]
@@ -429,7 +430,7 @@ cam_buffer1             0x1fff17f0  0x132c  Data  Gb  Cam.o [1]
 cam_buffer2             0x1fff2b1c  0x132c  Data  Gb  Cam.o [1]
 cam_buffer3             0x1fff3e48  0x132c  Data  Gb  Cam.o [1]
 cam_row                 0x1fff5226     0x1  Data  Gb  Cam.o [1]
-common_relocate         0x00002aa9    0xa0  Code  Gb  relocate.o [1]
+common_relocate         0x00002b79    0xa0  Code  Gb  relocate.o [1]
 current_frame_indicator
                         0x1fff5228     0x1  Data  Gb  Cam.o [1]
 data                    0x1fff5194    0x20  Data  Gb  Flash.o [1]
@@ -437,7 +438,7 @@ data_initial            0x1fff0434    0x20  Data  Gb  Flash.o [1]
 debug_msg               0x1fff0464    0x10  Data  Gb  OLED_UI.o [1]
 debug_num               0x1fff521e     0x2  Data  Gb  OLED_UI.o [1]
 e_debug_num             0x1fff5220     0x2  Data  Gb  OLED_UI.o [1]
-exit                    0x00002d3f     0x4  Code  Gb  exit.o [3]
+exit                    0x00002e0f     0x4  Code  Gb  exit.o [3]
 ftm1cnt_last            0x1fff5218     0x2  Data  Gb  Motor.o [1]
 g_bus_clock             0x1fff0458     0x4  Data  Gb  HW_MCG.o [1]
 g_core_clock            0x1fff0454     0x4  Data  Gb  HW_MCG.o [1]
@@ -450,7 +451,7 @@ last_processed_frame    0x1fff5180     0x4  Data  Gb  Cam.o [1]
 last_sent_frame         0x1fff5184     0x4  Data  Gb  Cam.o [1]
 loading_buffer          0x1fff0424     0x4  Data  Gb  Cam.o [1]
 loading_frame           0x1fff5178     0x4  Data  Gb  Cam.o [1]
-main                    0x00002599   0x128  Code  Gb  framework2016.o [1]
+main                    0x0000265d   0x132  Code  Gb  framework2016.o [1]
 pit0_time               0x1fff51c0     0x4  Data  Gb  PIT.o [1]
 pit1_time               0x1fff51c4     0x4  Data  Gb  PIT.o [1]
 pit1_time_tmp           0x1fff51c8     0x4  Data  Gb  PIT.o [1]
@@ -478,13 +479,13 @@ ui_operation_cnt        0x1fff5224     0x2  Data  Gb  UI_Operation.o [1]
 ui_operation_shift      0x1fff5222     0x2  Data  Gb  UI_Operation.o [1]
 
 
-[1] = E:\freescale_racing\SmartCar_K60_TeamBLANK\FLASH\Obj
+[1] = C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\FLASH\Obj
 [2] = command line
 [3] = dl7M_tln.a
 [4] = rt7M_tl.a
 [5] = shb_l.a
 
-  10 866 bytes of readonly  code memory
+  11 074 bytes of readonly  code memory
       76 bytes of readwrite code memory
    1 010 bytes of readonly  data memory
   81 375 bytes of readwrite data memory

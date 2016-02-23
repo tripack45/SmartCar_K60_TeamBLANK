@@ -1669,7 +1669,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>E:\freescale_racing\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
+          <state>C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
@@ -3003,7 +3003,7 @@
     </group>
   </group>
   <file>
-    <name>C:\Users\patri</name>
+    <name>$PROJ_DIR$\..\..\..\..\patri</name>
   </file>
 </project>
 

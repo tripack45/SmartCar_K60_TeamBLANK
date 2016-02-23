@@ -33,7 +33,7 @@ void main (void)
   }else{
       UART_Init(115200);
   } 
-  //UART_Configure_DMA();
+  UART_Configure_DMA();
   UART_SetMode(UART_MODE_DMA_MANNUAL);
  
   Motor_Init();
@@ -79,7 +79,7 @@ UART_SetMode(UART_MODE_DMA_MANNUAL);
   while(t--)
     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
   //TOCK();*/
-//UART_SetMode(UART_MODE_DMA_CONTINUOUS);
+UART_SetMode(UART_MODE_DMA_CONTINUOUS);
 
   ////// System Initiated ////
   
