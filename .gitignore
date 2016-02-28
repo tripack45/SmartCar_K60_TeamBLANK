@@ -83,5 +83,7 @@ $RECYCLE.BIN/
 *.lnk
 
 #others
-settings/
-FLASH/
+settings/*
+FLASH/*
+RAM/*
+BOOT/*
