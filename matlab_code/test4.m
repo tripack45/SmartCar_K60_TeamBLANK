@@ -32,7 +32,7 @@ b_buffer=0;
 while 1
     %read the number
     input=[];
-    while get(com,'BytesAvailable')>imgcol*imgrow
+    if get(com,'BytesAvailable')>imgcol*imgrow
         input=fread(com,get(com,'BytesAvailable'));
         b_buffer=[b_buffer; input];
         while length(b_buffer)>=imgcol*imgrow*2
