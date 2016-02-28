@@ -346,6 +346,12 @@
     <file>
       <name>$PROJ_DIR$\source\UI_Operation.h</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\source\USB_callback.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\USB_callback.h</name>
+    </file>
   </group>
   <group>
     <name>lib</name>
@@ -397,13 +403,106 @@
         <name>$PROJ_DIR$\LPLD\HW\HW_MCG.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\LPLD\HW\HW_USB.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\LPLD\HW\HW_USB.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\LPLD\LPLD_Drivers.h</name>
       </file>
     </group>
   </group>
-  <file>
-    <name>C:\Users\patri</name>
-  </file>
+  <group>
+    <name>USB</name>
+    <file>
+      <name>$PROJ_DIR$\USB\common\derivative.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\mouse_button.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\mouse_button.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\types.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_bdt_kinetis.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_cdc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_cdc.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_cdc_pstn.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_cdc_pstn.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\usb_class.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\usb_class.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\USB_Config.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_dci_kinetis.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_dci_kinetis.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_dciapi.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\descriptor\usb_descriptor_cdc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\descriptor\usb_descriptor_cdc.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_devapi.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_driver.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usb_driver.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\usb_framework.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\usb_framework.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_hid.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\class\usb_hid.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usbevent.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\usbevent.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\common\user_config.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\virtual_com.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\USB\driver\virtual_com.h</name>
+    </file>
+  </group>
 </project>
 
 

@@ -10,7 +10,11 @@ License : MIT
 
 U8 ADC0_enabled = 0;
 U8 ADC1_enabled = 0;
+//uint8 tdata[50][100]={0};
 
+#ifdef ENABLE_USB
+void USB_RecieveCallback();
+#endif 
 
 void main (void)
 {
@@ -18,6 +22,7 @@ void main (void)
   // --- System Initiate ---
   
   __disable_irq();
+ 
   
   HMI_Init();
   PIT0_Init(PIT0_PERIOD_US);
@@ -32,10 +37,12 @@ void main (void)
       UART_Init(460800);
   }else{
       UART_Init(115200);
-  } 
+  }
+#ifndef ENABLE_USB
   UART_Configure_DMA();
-  UART_SetMode(UART_MODE_DMA_MANNUAL);
- 
+#endif
+  //UART_SetMode(UART_MODE_DMA_MANNUAL);
+  
   Motor_Init();
   Tacho_Init();
   Servo_Init();
@@ -79,8 +86,9 @@ UART_SetMode(UART_MODE_DMA_MANNUAL);
   while(t--)
     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
   //TOCK();*/
+#ifndef ENABLE_USB
 UART_SetMode(UART_MODE_DMA_CONTINUOUS);
-
+#endif
   ////// System Initiated ////
   
   // --- Flash test --- 
@@ -106,13 +114,36 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
     }
   }
   __enable_irq(); 
+  
+#ifdef ENABLE_USB
+  LPLD_USB_Init();
+  NVIC_SetPriority(USB0_IRQn, NVIC_EncodePriority(NVIC_GROUP, 2, 1));
+  LPLD_USB_SetRevIsr(USB_RecieveCallback);
+  while(!usb_valid);
+  //cam_usb();
+#endif
 
-
-
+/*
+  uint8 *p=(uint8*)tdata;
+  int t=sizeof(tdata);
+  for(int i=1;i<t;i++){
+    p[i]=p[i-1]+1;
+  }
+  //preparing testdata
+  while(1){
+  t=100;
+  ITM_EVENT8_WITH_PC(1,25);
+  while(t--){
+      debug_num=LPLD_USB_VirtualCom_Tx((uint8*)tdata,sizeof(tdata));
+  //for(int i=1;i<10000000;i++)asm("NOP");
+  while(is_usr_usb_sending);
+  }
+  ITM_EVENT8_WITH_PC(2,25);
+  }*/ 
   while(1)
   {
     // Don't use oled or sensors' functions here !!!
-    
+   
    
 #if (CAR_TYPE==0)
     
@@ -174,3 +205,5 @@ void DefaultISR(void)
 
   return;
 }
+
+

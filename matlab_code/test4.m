@@ -8,11 +8,17 @@ imgrow=67;
 imgcol=77;
 %COM4, BuadRate 115200, DataBits 8
 %fclose(com);
-com = serial('COM10','BaudRate',460800,'DataBits',8);
+com = serial('COM11','BaudRate',460800*100,'DataBits',8);
 set(com,'InputBufferSize',imgrow*100*4);
 fopen(com); %opens the Serial Port
+fwrite(com,'abc');
 
-% currimg=ones(imgrows,imgcols);
+currimg=ones(imgrow,imgcol);
+colormap(gray);
+im=image(currimg);
+axis equal;
+
+% 
 % hgraph=imshow(currimg);
 % colormap(gray);
 % drawnow;
@@ -25,7 +31,7 @@ fopen(com); %opens the Serial Port
 b_buffer=0;
 while 1
     %read the number
-    clear('input');
+    input=[];
     while get(com,'BytesAvailable')>imgcol*imgrow
         input=fread(com,get(com,'BytesAvailable'));
         b_buffer=[b_buffer; input];
@@ -37,16 +43,16 @@ while 1
             if b_buffer(head+1)==0&&b_buffer(head+2)==255&&head<length(b_buffer)-4906
                 input2(1:imgcol*imgrow+3)=b_buffer(head+3:head+imgcol*imgrow+5);
                 b_buffer(1:head+4905)=[];
-                fprintf(sprintf('the head is ok\r'));
+                %fprintf(sprintf('the head is ok\r'));
             else
                 fprintf(sprintf('the head is lost\r'));
                 break
             end
             tail=find(input2==160,1);
             if length(tail)>0&&input2(tail+1)==0&&input2(tail+2)==160
-                fprintf(sprintf('the tail is ok\r'));
+                %fprintf(sprintf('the tail is ok\r'));
                 if tail==imgcol*imgrow+1;
-                    fprintf(sprintf('no information lost\r'));
+                    %fprintf(sprintf('no information lost\r'));
                 else
                     fprintf(sprintf('some information is lost\r'));
                 end
@@ -60,10 +66,11 @@ while 1
             indata=input2(1:imgcol*imgrow);
             img=reshape(indata,[imgcol,imgrow]);
             img=img.';
-            colormap(gray);
-            image(img);
-            axis equal;
-            drawnow;
+%             colormap(gray);
+%             image(img);
+%             axis equal;
+            im.CData=img;
+            drawnow nocallbacks ;
         end
     end
 end

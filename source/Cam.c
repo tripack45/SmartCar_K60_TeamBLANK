@@ -79,7 +79,8 @@ void Cam_Algorithm(){
   
   
   //This pointer points to corresponding frame buffer
-  
+  //u8 header[SIG_SIZE]={0xFF,0x00,0xFF};
+  //u8 tail[SIG_SIZE]={0xA0,0x00,0xA0};
   u32 img_row_used;
   for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
     // For every row:
@@ -96,17 +97,26 @@ void Cam_Algorithm(){
       SET_LOCK(PLOCK_BASE,processing_frame_indicator);
       //Prepare the read/write pointer
       img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
+      TICK();//ITM_EVENT32(1, processing_frame);
     }
 
-     //for(int i=0;i<50000;i++);
+    //for(int i=0;i<50000;i++);
   }
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
-  LED1_Tog();
+  LED1_Tog(); 
+  
+  LPLD_USB_VirtualCom_Tx(&(img_buffer[0][0])-SIG_SIZE, 
+                         IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+  //while(is_usr_usb_sending);
+ 
+  ITM_EVENT32(3, processing_frame);
+  TOCK();
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;
+  //cam_usb();
 
 }
 
@@ -120,9 +130,9 @@ void PORTC_IRQHandler(){
        && (cam_row % IMG_STEP == 0)
        && (cam_row > 12) 
       ){
-      ITM_EVENT8_WITH_PC(2,24);
+      //ITM_EVENT32(1, img_row);
       for(int i=1;i<170;i++)asm("NOP");
-      ITM_EVENT8_WITH_PC(4,24);
+      //ITM_EVENT8_WITH_PC(4,24);
       DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
       DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
       ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
@@ -131,7 +141,7 @@ void PORTC_IRQHandler(){
     cam_row++;
   }
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
-    ITM_EVENT8_WITH_PC(3,24);
+    
     PORTC->ISFR |= PORT_ISFR_ISF(1 << 9);
     e_debug_num= cam_row;
     cam_row = img_row = 0;
@@ -147,6 +157,7 @@ void PORTC_IRQHandler(){
     static u32 t=0;
     debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
     t-=debug_num;
+    ITM_EVENT32(1, loading_frame);
   }
 }
 
@@ -154,7 +165,7 @@ void DMA0_IRQHandler(){
   //if(e_debug_num==1)
   //{e_debug_num=2;
   DMA0->CINT &= ~DMA_CINT_CINT(7);
-  ITM_EVENT8_WITH_PC(1,25);
+  //ITM_EVENT32(1, 0);
   img_row++; 
   
   
@@ -261,6 +272,7 @@ void Cam_Init(){
 #undef INIT_BUFFER
 }
 
+#ifndef ENABLE_USB
 void DMA1_IRQHandler(){
   //One frame is sent!
   //TOCK();
@@ -282,3 +294,30 @@ void DMA1_IRQHandler(){
   LED2_Tog();
   //TICK();
 }
+#endif
+
+#ifdef ENABLE_USB
+
+void cam_usb(){
+  //One frame is sent!
+  //TOCK();
+  
+  send_diff=sending_frame-last_sent_frame;
+  last_sent_frame=sending_frame;
+  sending_frame=loading_frame-1;
+  
+  uint8 t=last_frame_indicator;//This Ensures atomic operation
+  CLEAR_LOCK(SLOCK_BASE);
+  SET_LOCK(SLOCK_BASE, t);
+  sending_buffer=buffer_ptr[t]-SIG_SIZE;
+  
+  sending_frame_indicator=t;
+  
+  //DMA0->INT=DMA_INT_INT1_MASK;
+  ITM_EVENT32(3, sending_frame);
+  LPLD_USB_VirtualCom_Tx( sending_buffer,
+                               IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+  LED2_Tog();
+  //TICK();
+}
+#endif

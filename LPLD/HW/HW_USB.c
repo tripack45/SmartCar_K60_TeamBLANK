@@ -96,9 +96,13 @@ uint8 LPLD_USB_VirtualCom_Rx(uint8 *rx_buf)
 *  输出：0x00   发送成功
 *        非0x00 发送失败
 */
-uint8 LPLD_USB_VirtualCom_Tx(uint8 *tx_buf,uint8 len)
+extern vint8 is_usr_usb_sending;
+extern vint8 usb_valid;
+uint8 LPLD_USB_VirtualCom_Tx(uint8 *tx_buf,uint32_t len)
 {
+  if(!usb_valid)return -1;
   uint8 status = 0;
+  is_usr_usb_sending=1;
   status = USB_Class_CDC_Interface_DIC_Send_Data(CONTROLLER_ID,tx_buf,len);
   return status;
 }

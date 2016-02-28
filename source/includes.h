@@ -23,5 +23,7 @@
 #include "Flash.h"
 
 #include "Bluetooth.h"
+#include "HW_USB.h"
+#include "USB_callback.h"
 
 #include <arm_itm.h>

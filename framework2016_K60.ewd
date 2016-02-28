@@ -2053,7 +2053,7 @@
         </option>
         <option>
           <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
+          <state></state>
         </option>
         <option>
           <name>ICpuName</name>
@@ -2241,7 +2241,7 @@
         </option>
         <option>
           <name>CCCpuClockEdit</name>
-          <state>100.0</state>
+          <state>96</state>
         </option>
         <option>
           <name>CCSwoClockAuto</name>

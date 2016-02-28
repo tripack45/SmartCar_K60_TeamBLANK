@@ -63,7 +63,7 @@ void LPLD_USB_SetRevIsr(USB_REV_ISR_CALLBACK);
 //USB 虚拟串口 接收函数
 uint8 LPLD_USB_VirtualCom_Rx(uint8 *rx_buf);
 //USB 虚拟串口 发送函数
-uint8 LPLD_USB_VirtualCom_Tx(uint8 *tx_buf,uint8_t len);
+uint8 LPLD_USB_VirtualCom_Tx(uint8 *tx_buf,uint32_t len);
 //USB恢复接收到的数据到用户内存函数
 void LPLD_USB_QueueData(void);
 #endif

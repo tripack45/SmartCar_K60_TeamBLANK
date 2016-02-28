@@ -34,7 +34,7 @@ extern u8 sending_frame_indicator; //sending frame indicator
 
   // write your algorithm in this func
 void Cam_Algorithm();
-
+extern void cam_usb();
   // Init
 void Cam_Init();
 

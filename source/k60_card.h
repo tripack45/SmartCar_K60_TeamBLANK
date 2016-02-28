@@ -41,7 +41,7 @@
  * LPLD提示：MK60DZ10不推荐使用100MHz以上频率，可能引起不可修复的故障
  *           此列表为LPLD固件库列出的常用频率，可以满足各种功能、功耗需求
  */
-#define CORE_CLK_MHZ        PLL_100       
+#define CORE_CLK_MHZ        PLL_96
    
 /*
  * 总线频率定义(BUS_CLK_MHZ)
@@ -51,7 +51,7 @@
  * LPLD提示：MK60DZ10额定最高总线频率为50MHz
  *           此处设置的为期望值，即最终输出频率不会高于此频率
 */
-#define BUS_CLK_MHZ         50u    
+#define BUS_CLK_MHZ         48u    
    
 /*
  * Flex总线频率定义(FLEXBUS_CLK_MHZ)
@@ -118,5 +118,8 @@
  */
 #define CPU_MK60DZ10
 
+#define USB_DEVICE_CLASS USB_DEVICE_CLASS_CDC
+
+#define ENABLE_USB 
 
 #endif /* __K60_CARD_H__ */
