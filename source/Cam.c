@@ -107,10 +107,11 @@ void Cam_Algorithm(){
   //Post Frame Processing
   LED1_Tog(); 
   
+#ifdef ENABLE_USB
   LPLD_USB_VirtualCom_Tx(&(img_buffer[0][0])-SIG_SIZE, 
                          IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
   //while(is_usr_usb_sending);
- 
+#endif
   ITM_EVENT32(3, processing_frame);
   TOCK();
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
