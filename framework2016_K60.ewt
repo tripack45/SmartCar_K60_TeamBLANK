@@ -269,10 +269,19 @@
       <name>$PROJ_DIR$\source\Cam.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\source\Camer.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\source\CCD.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\source\CCD.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Drive.cpp</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Drive.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\source\Flash.c</name>
