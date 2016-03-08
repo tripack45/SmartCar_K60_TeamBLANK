@@ -97,8 +97,11 @@ void PIT0_IRQHandler(){
   
   
   
-#else               // Camera
-  
+#else 
+  // Camera
+#ifdef ENABLE_USB
+  if(usb_valid)cam_usb();
+#endif
   // Results of camera are automatically put in cam_buffer[].
   
   

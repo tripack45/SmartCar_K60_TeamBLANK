@@ -123,7 +123,7 @@ void Key3_Downspin_Func(){
   // --- Spin_Func ---
   // triggered when spinning tacho with no Key pushed.
 void Spin_Func(){
-  Bell_Request(1);
+  //Bell_Request(1);
 
 }
 

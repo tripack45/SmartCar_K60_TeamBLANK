@@ -37,13 +37,13 @@ typedef struct {
 
 void UI_SystemInfo(){
   //Oled_Putstr(0,0,"Car Type"); Oled_Putnum(0,11,CAR_TYPE);
-  //Oled_Putstr(1,0,"battery"); Oled_Putnum(1,11,battery);
+  Oled_Putstr(1,0,"battery"); Oled_Putnum(1,11,battery);
   Oled_Putstr(2,0,"Dbg"); Oled_Putnum(2,5,debug_num);
                           Oled_Putnum(2,11,e_debug_num);
   Oled_Putstr(3,0,"pit0/1"); Oled_Putnum(3,5,(s16)pit0_time);
                               Oled_Putnum(3,11,(s16)pit1_time);
-  //Oled_Putstr(4,0,"tac0/1"); Oled_Putnum(4,5,tacho0);
-  //                            Oled_Putnum(4,11,tacho1);
+  Oled_Putstr(4,0,"tac0/1"); Oled_Putnum(4,5,tacho0);
+                              Oled_Putnum(4,11,tacho1);
   Oled_Putstr(5,0,(void*)debug_msg);
 #if (CAR_TYPE==0)   // Magnet and Balance
   

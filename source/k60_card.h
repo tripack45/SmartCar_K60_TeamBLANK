@@ -121,5 +121,6 @@
 #define USB_DEVICE_CLASS USB_DEVICE_CLASS_CDC
 
 #define ENABLE_USB 
+#define UART_CMD
 
 #endif /* __K60_CARD_H__ */

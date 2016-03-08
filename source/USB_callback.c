@@ -11,10 +11,8 @@ void USB_RecieveCallback(void)
 }
 
 void USB_SentCallback(void){
-  if(is_usr_usb_sending){
-  ITM_EVENT32(4, processing_frame);
+  //if(is_usr_usb_sending)ITM_EVENT32(4, processing_frame);
   is_usr_usb_sending=0;
-  //cam_usb();
-  }
+  
 }
 #endif

@@ -27,4 +27,8 @@ void UART_SetMode(uint8);
 #define IS_UART_DMA_COMPLETE() ((DMA0->TCD[1].CSR) & (DMA_CSR_DONE_MASK)) 
 #define IS_UART_SEND_COMPLETE()  ((UART3->S1) & (UART_S1_TC_MASK))
 
+#ifdef UART_CMD
+void CMD_Handler(u8);
+#endif 
+
 #endif

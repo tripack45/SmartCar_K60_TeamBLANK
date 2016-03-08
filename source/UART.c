@@ -10,14 +10,16 @@ Adaptation Made By tripack
 Implements UART_Buffer, ETC.
 */
 
+#ifdef UART_RECIEVE_BUFFER
 #define UART_BUFFER_SIZE 64
 #define PREC(ptr) ((ptr + UART_BUFFER_SIZE -1) % UART_BUFFER_SIZE)
 #define SUCC(ptr) ((ptr + 1) % UART_BUFFER_SIZE)
 
 uint8 uart_buffer[UART_BUFFER_SIZE]={0}; //FIFO QUEUE
 uint8 uart_top_ptr,uart_bot_ptr=0; //UART Buffer Pointer
+#endif
 
-
+#ifdef UART_RECIEVE_BUFFER
 void UART_Push(uint8 data){
 
   if(SUCC(uart_top_ptr)==uart_bot_ptr)
@@ -40,17 +42,72 @@ uint8 UART_Available(){
   //If not empty, return the number of remaining terms
   return uart_top_ptr-uart_bot_ptr;
 }
-  
+#endif
   
 
 // === Receive ISR ===
 void UART3_IRQHandler(void){
   uint8 tmp = UART_GetChar();
+  
+#ifdef UART_RECIEVE_BUFFER
   UART_Push(tmp);
+#endif
+  
+#ifdef UART_CMD
+  CMD_Handler(tmp);
+#endif
   LED2_Tog();
   return;
 }
 
+#ifdef UART_CMD
+void CMD_Handler(u8 cmd){
+#define PKG_LENGTH 5
+#define PKG_HEADER 0xAC
+#define CMDACK 0xA0
+#define CMDSET_SPD 0xB0
+#define CMDSET_DIR 0xC0
+
+  static u8 cmdbuf[PKG_LENGTH]={0};
+  static u8 curr=0;
+  
+  if(cmd==PKG_HEADER){
+    curr=0;
+  }else if(curr==0)
+    return;
+  
+  cmdbuf[curr]=cmd;
+  curr++;
+  
+  if(curr==PKG_LENGTH){
+    curr=0;
+    u8 sum=0;
+    for(u8 i=0;i<PKG_LENGTH-1;i++)
+      sum+=cmdbuf[i];
+      //validating checksum
+    if(sum == cmdbuf[PKG_LENGTH-1]){
+      //checksum valid, Executing
+      int16 para=(uint16)((uint16)(cmdbuf[3]<<8)+(uint16)(cmdbuf[2]));
+      //int16 para= (int16)( ((u16)cmdbuf[2])<<8 + ((u16)cmdbuf[3]));
+      switch(cmdbuf[1]){
+      case CMDACK:
+        //ITM_EVENT16_WITH_PC(1,para);
+        return;
+        break;
+      case CMDSET_SPD:
+        //ITM_EVENT16_WITH_PC(2,para);
+        return;
+        break;
+      case CMDSET_DIR:
+        //ITM_EVENT16_WITH_PC(3,para);
+        return;
+        break;
+      }
+    }
+  }
+  return;
+}
+#endif
 
 // ----- Basic Functions -----
 

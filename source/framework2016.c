@@ -86,6 +86,10 @@ UART_SetMode(UART_MODE_DMA_MANNUAL);
   while(t--)
     Bluetooth_SendDataChunkSync((uint8*)tdata,sizeof(tdata));
   //TOCK();*/
+  
+  //MotorL_Output(400);
+  //Servo_Output(-500);
+  
 #ifndef ENABLE_USB
 UART_SetMode(UART_MODE_DMA_CONTINUOUS);
 #endif
@@ -119,27 +123,25 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   LPLD_USB_Init();
   NVIC_SetPriority(USB0_IRQn, NVIC_EncodePriority(NVIC_GROUP, 2, 1));
   LPLD_USB_SetRevIsr(USB_RecieveCallback);
-  while(!usb_valid);
+  //while(!usb_valid);
   //cam_usb();
 #endif
 
-/*
-  uint8 *p=(uint8*)tdata;
+
+/*  uint8 *p=(uint8*)tdata;
   int t=sizeof(tdata);
   for(int i=1;i<t;i++){
     p[i]=p[i-1]+1;
   }
   //preparing testdata
   while(1){
-  t=100;
-  ITM_EVENT8_WITH_PC(1,25);
-  while(t--){
-      debug_num=LPLD_USB_VirtualCom_Tx((uint8*)tdata,sizeof(tdata));
-  //for(int i=1;i<10000000;i++)asm("NOP");
-  while(is_usr_usb_sending);
-  }
-  ITM_EVENT8_WITH_PC(2,25);
-  }*/ 
+  //t=1;
+  ITM_EVENT16_WITH_PC(2,25);
+  //while(t--){
+      debug_num=LPLD_USB_VirtualCom_Tx((uint8*)sending_buffer-3,IMG_ROWS * IMG_COLS + 2 * 3);
+  for(int i=1;i<10000000;i++)asm("NOP");
+  //}
+  }*/
   while(1)
   {
     // Don't use oled or sensors' functions here !!!
