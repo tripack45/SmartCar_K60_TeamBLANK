@@ -88,3 +88,8 @@ FLASH/*
 RAM/*
 BOOT/*
 *.sim
+settings/framework2016.wspos
+settings/framework2016.wsdt
+*.wspos
+settings/framework2016.wsdt
+*.mat

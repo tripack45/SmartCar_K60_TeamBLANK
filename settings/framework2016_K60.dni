@@ -17,7 +17,7 @@ TracePortSize=0x00000004
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
 [DebugChecksum]
-Checksum=38021049
+Checksum=-577675585
 [CodeCoverage]
 Enabled=_ 0
 [CallStack]
@@ -70,10 +70,11 @@ FlashEraseSelection=0 1
 [Breakpoints]
 Count=0
 [array_types]
-Fmt0=u8[4906]	3	0
-Fmt1=u8[5165]	3	0
-Fmt2=u8[5]	4	0
-Fmt3=uint8[100]	4	0
+Fmt0=u8[32]	4	0
+Fmt1=u8[4906]	3	0
+Fmt2=u8[5165]	3	0
+Fmt3=u8[5]	4	0
+Fmt4=uint8[100]	4	0
 [SWOTraceWindow]
 PcSampling=0
 InterruptLogs=0
