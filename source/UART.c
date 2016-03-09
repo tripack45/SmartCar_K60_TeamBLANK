@@ -75,8 +75,7 @@ void CMD_Handler(u8 cmd){
   
   static u8 cmdbuf[PKG_LENGTH]={0};
   static u8 curr=0;
-  static int16 currspd=350;
-  static int16 currdir=500;
+
   if(cmd==PKG_HEADER){
     curr=0;
   }else if(curr==0)
@@ -117,23 +116,19 @@ void CMD_Handler(u8 cmd){
         
       case CMDFASTER :
         currspd+=10;
-        currspd= (currspd<1000?currspd:1000);
-        MotorL_Output(currspd);
+        currspd= (currspd<MOTOR_MAX?currspd:MOTOR_MAX);
         return;
       case CMDSLOWER :
         currspd-=10;
-        currspd= (currspd>300?currspd:300);
-        MotorL_Output(currspd);        
+        currspd= (currspd>300?currspd:300);      
         return;
       case CMDLEFT :
         currdir-=40;
         currdir= (currdir>0?currdir:0);
-        Servo_Output(currdir-500);
         return;
       case CMDRIGHT :
         currdir+=40;
-        currdir= (currdir<1000?currdir:1000);
-        Servo_Output(currdir-500);
+        currdir= (currdir<2*SERVO_MAX ?currdir:2*SERVO_MAX);
         return;
       }
     }
