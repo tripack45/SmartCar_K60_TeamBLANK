@@ -120,7 +120,7 @@ void CMD_Handler(u8 cmd){
         return;
       case CMDSLOWER :
         currspd-=10;
-        currspd= (currspd>300?currspd:300);      
+        currspd= (currspd>300?currspd:0);      
         return;
       case CMDLEFT :
         currdir-=40;

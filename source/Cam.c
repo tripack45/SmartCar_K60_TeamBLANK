@@ -111,6 +111,11 @@ void Cam_Algorithm(){
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
+  
+  ITM_EVENT32_WITH_PC(1,0x01);
+  DetectBoundary();
+  DirCtrl();
+  ITM_EVENT32_WITH_PC(2,0x02);
   LED1_Tog(); 
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
