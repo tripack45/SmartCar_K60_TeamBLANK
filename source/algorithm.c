@@ -5,29 +5,43 @@ GuideGenerator guide_generator;
 DirectionPID dir_pid;
 
 void DetectBoundary(){
-  u8 nLBeginScan = 2, nLEndScan = IMG_COLS-2;
-  u8 row=0; u8 col=0;
-  for (row = 0; row<IMG_ROWS; ++row) {guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
-  for (col = nLBeginScan; col <= nLEndScan; ++col){//IMG_MIDDLE
-    if ((s16)img_buffer[row][col + 2] - img_buffer[row][col - 1]>CONTRAST_THRESHOLD &&
-        img_buffer[row][col - 2]<BLACK_THRESHOLD /*&&
-        img_buffer[row][col - IMG_BLACK_MID_WIDTH]>BLACK_THRESHOLD*/){
-          boundary_detector.LBound[row] = col;
-          guide_generator.LBoundaryFlag[row] = TRUE;
-          break;
-	}
+  u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
+  u8 RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH-ABANDON, REndScan = IMG_COLS / 2 + IMG_BLACK_MID_WIDTH;
+  u8 row = 0, col = 0, LPredict = LBeginScan, RPredict= RBeginScan, BoundaryShift = 2, LUnCap = 0, RUnCap = 0;
+  for (row = IMG_ROWS-5; row >= 1; --row){
+    guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
+    for (col = LBeginScan; col <= LEndScan; ++col){
+      if ((s16)img_buffer[row][col + IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
+          img_buffer[row][col]<BLACK_THRESHOLD){
+              LPredict = boundary_detector.LBound[row] = col;
+              guide_generator.LBoundaryFlag[row] = TRUE;
+              LUnCap = 0;
+              break;
+      }
+    }
+    LUnCap++;
+    if (LUnCap > 8){LUnCap=8;}
+    LBeginScan = LPredict-BoundaryShift*LUnCap;
+    if (LBeginScan < IMG_BLACK_MID_WIDTH + ABANDON) {LBeginScan = IMG_BLACK_MID_WIDTH + ABANDON;}
+    LEndScan = LPredict+BoundaryShift*LUnCap;
+    if (LEndScan > IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON) {LEndScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;}
+    for (col = RBeginScan; col >= REndScan; --col){
+      if ((s16)img_buffer[row][col - IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
+          img_buffer[row][col]<BLACK_THRESHOLD){
+              RPredict = boundary_detector.RBound[row] = col;
+              guide_generator.RBoundaryFlag[row] = TRUE;
+              RUnCap = 0;
+              break;
+      }
+    }
+    RUnCap++;
+    if (RUnCap > 8) {RUnCap=8;}
+    RBeginScan = RPredict+BoundaryShift*RUnCap;
+    if (RBeginScan > IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON) {RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;}
+    REndScan = RPredict-BoundaryShift*RUnCap;
+    if (REndScan < IMG_BLACK_MID_WIDTH + ABANDON) {REndScan = IMG_BLACK_MID_WIDTH + ABANDON;}
   }
-  for (col = nLEndScan; col >= nLBeginScan; --col){
-    if ((s16)img_buffer[row][col - 2] - img_buffer[row][col + 1]>CONTRAST_THRESHOLD &&
-        img_buffer[row][col + 2]<BLACK_THRESHOLD /*&& 
-        img_buffer[row][col + IMG_BLACK_MID_WIDTH]>BLACK_THRESHOLD*/){
-          boundary_detector.RBound[row] = col;
-          guide_generator.RBoundaryFlag[row] = TRUE;
-          break;
-	}
-  }}
 }
-
 
 //Dir
 U8 DIR_P=20,DIR_D=100;
@@ -49,7 +63,7 @@ void DirCtrl(void){
   s16 s16temp;
   g_nDirPos=0;
   
-  for (row=IMG_ROWS;row>=1; --row)
+  for (row=IMG_ROWS-5;row>=1; --row)
   {
     //TrackWidth[row]=insert_in(TrackWidth[row],TrackWidth[row-1]-2,TrackWidth[row-1]+2);
     if (guide_generator.LBoundaryFlag[row]&& guide_generator.RBoundaryFlag[row]){
@@ -57,11 +71,11 @@ void DirCtrl(void){
       break;
     }
     else if (guide_generator.LBoundaryFlag[row]){
-      g_nDirPos=s16temp=2*boundary_detector.LBound[row] - TrackWidth[row];guide_generator.GuideLine[row][0]=(s16temp)/2;
+      g_nDirPos=s16temp=2*boundary_detector.LBound[row] + TrackWidth[row];guide_generator.GuideLine[row][0]=(s16temp)/2;
       break;
     }
     else if (guide_generator.RBoundaryFlag[row]){
-      g_nDirPos=s16temp=2*boundary_detector.RBound[row] + TrackWidth[row];guide_generator.GuideLine[row][0]=(s16temp)/2;
+      g_nDirPos=s16temp=2*boundary_detector.RBound[row] - TrackWidth[row];guide_generator.GuideLine[row][0]=(s16temp)/2;
       break;
     }
   }
@@ -75,7 +89,7 @@ s16 Dir_PID(s16 position){
   s16Tmp=((s32)DIR_P*position+DIR_D*(position-dir_pid.LastDirection))/10;
   dir_pid.LastDirection=position;
   //if (s16Tmp<DIR_PWM_ZERO) s16Tmp=((s32)s16Tmp-DIR_PWM_ZERO)*120/100+DIR_PWM_ZERO
-  g_nServoOut=s16Tmp/(PID_SENSITIVITY);//-100~100
+  g_nServoOut=s16Tmp*(PID_SENSITIVITY);//-100~100
   return g_nServoOut;
   //if (g_bRAChecked) std::cout<<(s16)(s8)g_nServoOut<<std::endl;
 }

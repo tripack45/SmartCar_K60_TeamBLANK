@@ -15,9 +15,13 @@
 #define IMG_BLACK_MID_WIDTH 2 
 #define CONTRAST_THRESHOLD 8 //g_nEdgThre
 #define BLACK_THRESHOLD 50    //g_nBlacThre
+#define WHITE_THRESHOLD 60
+#define ABANDON 2
+
 typedef struct BoundaryDectectorConf{
   uint8 LBound[IMG_ROWS+1]; //nCBLLPos
   uint8 RBound[IMG_ROWS+1]; //nCBLRPos
+  uint8 yaotui; //Return a line number which indicates how long the middle line lasts
 }BoundaryDetector;
 
 extern const u8 TrackWidth[IMG_ROWS];
@@ -41,7 +45,7 @@ typedef struct DirectionGeneratorConf{
 #define PID_P 20        //DIR_P
 #define PID_I 0         //DIR_I
 #define PID_D 100       //DIR_D
-#define PID_SENSITIVITY 500
+#define PID_SENSITIVITY 1
 typedef struct DirectionPIDConf{
   //===========INPUTS==============
     //Uses DGuidePos
