@@ -17,18 +17,32 @@ disp('Reopening Com');
 %com_ack = serial('COM28','BaudRate',115200,'DataBits',8);
 %fopen(com_ack);
 global com;
-com = serial('COM11','BaudRate',115200*500,'DataBits',8);
+com = serial('COM18','BaudRate',115200*500,'DataBits',8);
 %com = serial('COM28','BaudRate',115200,'DataBits',8);
 set(com,'InputBufferSize',imgrow*100*4);
 fopen(com); %opens the Serial Port
 fwrite(com,'abc');
 disp('Preparing to buffer')
-currimg=ones(imgrow,imgcol);
-colormap(gray);
-im=image(currimg);
+
+
+%% Graphic Initializations
+h1=figure;
+colormap(h1,gray);
+im=image(ones(imgrow,imgcol));
 axis equal;
 set(gcf,'KeyPressFcn',@keyboard_callback);
 
+h2=figure;
+imalg=image(ones(imgrow,imgcol));
+colormap(h2,colorcube);
+axis equal;
+caxis manual;
+caxis([0,255]);
+text(0,-1,'DIR:','Color','Black');
+text(20,-1,'SPD:','Color','Black');
+t1=text( 7,-1,'000','Color','Black');
+t2=text( 27,-1,'000','Color','Black');
+TrackWidth=z;
 %
 % hgraph=imshow(currimg);
 % colormap(gray);
@@ -88,9 +102,16 @@ while 1
     if length(indata)==imgcol*imgrow
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
-        im.CData=img;
+        set(im,'CData',img);
         frame(:,:,end+1)=img;
         drawnow;
+        
+        [out dir spd]=alg(img);
+        set(imalg,'CData',out);
+        set(t1,'String',num2str(dir));
+        set(t2,'String',num2str(spd));
+        drawnow;
+       
         %drawnow nocallbacks ;
         %toc;
     else
