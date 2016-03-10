@@ -21,17 +21,8 @@ typedef long int s32;
 typedef unsigned long long int u64;
 typedef long long int s64;
 
-typedef volatile unsigned char B2;
-typedef unsigned char b2;
-
 #define abs(x) (x>0?x:(-x))
 #define Nop asm("nop")
-#define insert(a,b,c) if ((a)<(b)) a=b;else if ((a)>(c)) a=c;
-#define judge_in(a,b,c) (((b)<=(a)&&(a)<=(c))?1:0)
-#define insert_in(a,b,c) ((a)<(b)?(b):(a)>(c)?c:a)
-#define maxab(a,b) ((a)<(b)?b:a)
-#define minab(a,b) ((a)>(b)?b:a)
-#define abs0(a) ((a)>0?a:0)
 
 
 #endif
