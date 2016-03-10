@@ -61,6 +61,7 @@ const u8 TrackWidth[IMG_ROWS]=
 void DirCtrl(void){
   u8 row,nMidCol=IMG_COLS;
   s16 s16temp;
+  s32 nShift=0,nDenom=0;
   g_nDirPos=0;
   
   for (row=IMG_ROWS-5;row>=1; --row)
@@ -79,7 +80,25 @@ void DirCtrl(void){
       break;
     }
   }
-  g_nDirPos=g_nDirPos-nMidCol;
+  for (row=row;row>=1;--row){
+		if (guide_generator.LBoundaryFlag[row]&& guide_generator.RBoundaryFlag[row])
+		{
+			s16temp=insert_in((s16)boundary_detector.LBound[row]+boundary_detector.RBound[row],s16temp-6*row/IMG_ROWS,s16temp+16*row/IMG_ROWS);
+			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+		}
+		else if (guide_generator.LBoundaryFlag[row])
+		{
+			s16temp=insert_in((s16)boundary_detector.LBound[row]*2-TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
+			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+		}
+		else if (guide_generator.RBoundaryFlag[row])
+		{
+			s16temp=insert_in((s16)boundary_detector.RBound[row]*2+TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
+			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+		}
+	}
+  if (nDenom!=0&& g_nDirPos-nMidCol<DangerZone ) g_nDirPos=nShift/nDenom;
+  else g_nDirPos=g_nDirPos-nMidCol;
   currdir=Dir_PID(g_nDirPos);
 }
 
