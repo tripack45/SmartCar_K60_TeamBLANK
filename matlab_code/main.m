@@ -30,12 +30,14 @@ h1=figure;
 colormap(h1,gray);
 im=image(ones(imgrow,imgcol));
 axis equal;
+axis manual;
 set(gcf,'KeyPressFcn',@keyboard_callback);
 
 h2=figure;
 imalg=image(ones(imgrow,imgcol));
 colormap(h2,colorcube);
 axis equal;
+axis manual;
 caxis manual;
 caxis([0,255]);
 text(0,-1,'DIR:','Color','Black');
