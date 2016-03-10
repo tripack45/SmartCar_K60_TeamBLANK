@@ -3,6 +3,7 @@
 BoundaryDetector boundary_detector;
 GuideGenerator guide_generator;
 DirectionPID dir_pid;
+MotorPID motor_pid;
 
 void DetectBoundary(){
   u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
@@ -113,3 +114,19 @@ s16 Dir_PID(s16 position){
   //if (g_bRAChecked) std::cout<<(s16)(s8)g_nServoOut<<std::endl;
 }
 
+
+/*void MotorCtrl(void){
+  u8 ExpectSpeed=boundary_detector.yaotui*2;
+  if (g_bRAChecked) ExpectSpeed=40;
+}*/
+
+
+void Speed_PID(u8 Expect){
+  s16 Error,Speed,Power;
+  Speed=tacho0*TACHO_SENSITIVITY;
+  Error=Expect-Speed;
+  Power=insert_in(MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
+  motor_pid.LastError=Error;
+  if (tacho0) currspd=MOTOR_DEAD_REST+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+  else currspd=MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+}

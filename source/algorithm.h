@@ -34,6 +34,7 @@ typedef struct GuideGeneratorConf{
   s16 DGuidePos;                 //g_nDirPos
 }GuideGenerator;
 
+#define DangerZone 60
 typedef struct DirectionGeneratorConf{
   //===========INPUTS============
      //USES DGuidePos
@@ -46,22 +47,49 @@ typedef struct DirectionGeneratorConf{
 #define PID_I 0         //DIR_I
 #define PID_D 100       //DIR_D
 #define PID_SENSITIVITY 1
-#define DangerZone 60
 typedef struct DirectionPIDConf{
   //===========INPUTS==============
     //Uses DGuidePos
-   s16 LastDirection; //nLastPostion
+   s16 LastDirection;//nLastPostion
   //=============OUTPUS=============
     //Global Variable currdir
   u8 NOTHING;
 }DirectionPID;
 
+typedef struct PowerGeneratorConf{
+  //===========INPUTS============
+     //USES yaotui
+  //===========OUTPUTS===========
+     //Returns ExpectSpeed
+  u8 NOTHING;
+}PowerGenerator;
+
+
+#define MOTOR_PID_P 10         //SPEED_KI
+#define MOTOR_PID_I 0          
+#define MOTOR_PID_D 30         //SPEED_KP
+#define MOTOR_PID_SENSITIVITY 1
+#define TACHO_SENSITIVITY 1
+#define MOTOR_DEAD_RUN 400
+#define MOTOR_DEAD_REST 400
+#define SPEED_MAX 500
+typedef struct MotorPIDConf{
+  //===========INPUTS============
+   //USES ExpectSpeed
+  s16 LastError; //st_nLastError
+  //===========OUTPUTS===========
+  //Returns Variable currspd
+  u8 NOTHING;
+} MotorPID;
+
 extern BoundaryDetector boundary_detector;
 extern GuideGenerator guide_generator;
 extern DirectionPID dir_pid;
+extern MotorPID motor_pid;
 
 void DirCtrl();
 void DetectBoundary();
 s16 Dir_PID(s16 position);
+//void MotorCtrl()
 
 #endif
