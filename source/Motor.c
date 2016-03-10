@@ -15,6 +15,8 @@ License : MIT
 
 // --- Global ----
 S16 tacho0, tacho1;
+S16 currdir=SERVO_MAX;
+S16 currspd=0;
 
 // --- Local ---
 U16 tacho1_tmp,tacho0_tmp,ftm1cnt_last;
@@ -32,14 +34,14 @@ u8 Tacho1_Dir();
 
 
 void Servo_Output(s16 x){
-  if(x>400) x = 400;
-  if(x<-400) x = -400;
+  if(x>SERVO_MAX) x = SERVO_MAX;
+  if(x<-SERVO_MAX) x = -SERVO_MAX;
   FTM2->CONTROLS[0].CnV=SERVO_MID + x;
 }
 
 void MotorL_Output(s16 x){
-  if(x>1000) x=1000;
-  if(x<-1000) x=-1000;
+  if(x>MOTOR_MAX) x=MOTOR_MAX;
+  if(x<-MOTOR_MAX) x=-MOTOR_MAX;
   if(x<0){
     FTM0->CONTROLS[5].CnV = -x;
     FTM0->CONTROLS[4].CnV = 0;
@@ -55,8 +57,8 @@ void MotorL_Output(s16 x){
 }
 
 void MotorR_Output(s16 x){
-  if(x>1000) x=1000;
-  if(x<-1000) x=-1000;
+  if(x>MOTOR_MAX) x=MOTOR_MAX;
+  if(x<-MOTOR_MAX) x=-MOTOR_MAX;
   if(x>0){
     FTM0->CONTROLS[6].CnV = x;
     FTM0->CONTROLS[7].CnV = 0;

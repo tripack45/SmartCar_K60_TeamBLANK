@@ -93,23 +93,33 @@ void Cam_Algorithm(){
       processing_frame=loading_frame;
       processing_frame_indicator=current_frame_indicator;
       //Locking the buffer
-      //SET_LOCK(PLOCK_BASE,processing_frame_indicator);
+      SET_LOCK(PLOCK_BASE,processing_frame_indicator);
       //Prepare the read/write pointer
-      //img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
-      //TICK();//ITM_EVENT32(1, processing_frame);
+      img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
     }
-
-    //for(int i=0;i<50000;i++);
+    // Line processing here
+    
+    
+    
+    
+    
+    
+    
+    
+    //===========End============
   }
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
+  
+  ITM_EVENT32_WITH_PC(1,0x01);
+  DetectBoundary();
+  DirCtrl();
+  ITM_EVENT32_WITH_PC(2,0x02);
   LED1_Tog(); 
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;
-  //cam_usb();
-
 }
 
 // ====== Basic Drivers ======

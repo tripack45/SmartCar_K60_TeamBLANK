@@ -77,7 +77,9 @@ void PIT0_IRQHandler(){
   
   // UI operation input
   ui_operation_cnt += tacho0;  // use tacho0 or tacho1
-    
+  
+  Servo_Output(currdir);
+  //MotorL_Output(currspd);
     
   
 #if (CAR_TYPE==0)   // Magnet and Balance
@@ -93,10 +95,7 @@ void PIT0_IRQHandler(){
   
   CCD1_GetLine();
   CCD2_GetLine();
-  
-  
-  
-  
+
 #else 
   // Camera
 #ifdef ENABLE_USB

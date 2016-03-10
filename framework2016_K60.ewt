@@ -257,6 +257,12 @@
   <group>
     <name>app</name>
     <file>
+      <name>$PROJ_DIR$\source\algorithm.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\algorithm.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\source\Bluetooth.c</name>
     </file>
     <file>

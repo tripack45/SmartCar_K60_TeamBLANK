@@ -1,10 +1,14 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
+
+#define SERVO_MAX 650
+#define MOTOR_MAX 1000
+
 // ===== Glabal Variables =====
 
 extern S16 tacho0, tacho1;
-
+extern S16 currdir, currspd;
 
 
 

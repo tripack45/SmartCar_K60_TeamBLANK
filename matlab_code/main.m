@@ -14,10 +14,11 @@ imgcol=77;
 %fclose(com);
 disp('Reopening Com');
 
-com_ack = serial('COM26','BaudRate',115200,'DataBits',8);
-fopen(com_ack);
-
+%com_ack = serial('COM28','BaudRate',115200,'DataBits',8);
+%fopen(com_ack);
+global com;
 com = serial('COM11','BaudRate',115200*500,'DataBits',8);
+%com = serial('COM28','BaudRate',115200,'DataBits',8);
 set(com,'InputBufferSize',imgrow*100*4);
 fopen(com); %opens the Serial Port
 fwrite(com,'abc');
@@ -26,6 +27,7 @@ currimg=ones(imgrow,imgcol);
 colormap(gray);
 im=image(currimg);
 axis equal;
+set(gcf,'KeyPressFcn',@keyboard_callback);
 
 %
 % hgraph=imshow(currimg);
@@ -37,7 +39,7 @@ axis equal;
 % sbuffer=[];
 
 %%
-frames=ones(imgrow,imgcol,1);
+frame=ones(imgrow,imgcol,1);
 disp('Recieving');
 b_buffer=[];
 while 1
@@ -81,14 +83,15 @@ while 1
     end
     %disp('drawing');
     
-    fwrite(com_ack,[172,160,0,0,76]);
+    %fwrite(com,[172,160,0,0,76]);
     
     if length(indata)==imgcol*imgrow
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
         im.CData=img;
         frame(:,:,end+1)=img;
-        drawnow nocallbacks ;
+        drawnow;
+        %drawnow nocallbacks ;
         %toc;
     else
         disp('Invalid frame size!');
