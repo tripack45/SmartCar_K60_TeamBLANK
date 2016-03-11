@@ -8,7 +8,7 @@ IMG_COLS=imgcol;
 
 %constants
 CONTRAST_THRESHOLD = 8;
-BLACK_THRESHOLD=50s;
+BLACK_THRESHOLD=50;
 WHITE_THRESHOLD=60;
 IMG_BLACK_MID_WIDTH=2;
 ABANDON=2;
@@ -116,9 +116,7 @@ dir=s16Tmp/(PID_SENSITIVITY);
 
 %% Output to graph
 out=zeros(imgrow,imgcol)+57;
-lBoundary=lBoundary+1;
-rBoundary=rBoundary+1;
-guideLine=guideLine+1;
+lBou
 for row=1:imgrow
     if lBoundaryFlag(row)
         out(row,lBoundary(row))=50;

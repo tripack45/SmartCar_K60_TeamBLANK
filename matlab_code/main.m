@@ -17,7 +17,8 @@ disp('Reopening Com');
 %com_ack = serial('COM28','BaudRate',115200,'DataBits',8);
 %fopen(com_ack);
 global com;
-com = serial('COM18','BaudRate',115200*500,'DataBits',8);
+
+com = serial('COM11','BaudRate',115200*500,'DataBits',8);
 %com = serial('COM28','BaudRate',115200,'DataBits',8);
 set(com,'InputBufferSize',imgrow*100*4);
 fopen(com); %opens the Serial Port
@@ -44,7 +45,7 @@ text(0,-1,'DIR:','Color','Black');
 text(20,-1,'SPD:','Color','Black');
 t1=text( 7,-1,'000','Color','Black');
 t2=text( 27,-1,'000','Color','Black');
-TrackWidth=z;
+load TrackWidth;
 %
 % hgraph=imshow(currimg);
 % colormap(gray);
@@ -108,7 +109,7 @@ while 1
         frame(:,:,end+1)=img;
         drawnow;
         
-        [out dir spd]=alg(img);
+        [out dir spd]=alg(img,TrackWidth);
         set(imalg,'CData',out);
         set(t1,'String',num2str(dir));
         set(t2,'String',num2str(spd));
