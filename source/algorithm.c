@@ -12,8 +12,9 @@ void DetectBoundary(){
   for (row = IMG_ROWS-5; row >= 1; --row){
     guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
     for (col = LBeginScan; col <= LEndScan; ++col){
+      ITM_EVENT16(4,(s16)img_buffer[row][col]<BLACK_THRESHOLD);
       if ((s16)img_buffer[row][col + IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
-          img_buffer[row][col]<BLACK_THRESHOLD){
+          (s16)img_buffer[row][col]<BLACK_THRESHOLD){
               LPredict = boundary_detector.LBound[row] = col;
               guide_generator.LBoundaryFlag[row] = TRUE;
               LUnCap = 0;
@@ -60,10 +61,10 @@ const u8 TrackWidth[IMG_ROWS]=
  72,72,72,73,73,74,75};
 
 void DirCtrl(void){
-  u8 row,nMidCol=IMG_COLS;
+  u8 row;
   s16 s16temp;
   s32 nShift=0,nDenom=0;
-  g_nDirPos=0;
+  g_nDirPos=IMG_COLS;
   
   for (row=IMG_ROWS-5;row>=1; --row)
   {
@@ -85,21 +86,22 @@ void DirCtrl(void){
 		if (guide_generator.LBoundaryFlag[row]&& guide_generator.RBoundaryFlag[row])
 		{
 			s16temp=insert_in((s16)boundary_detector.LBound[row]+boundary_detector.RBound[row],s16temp-6*row/IMG_ROWS,s16temp+16*row/IMG_ROWS);
-			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+			nShift+=(s16temp-IMG_COLS);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
 		}
 		else if (guide_generator.LBoundaryFlag[row])
 		{
-			s16temp=insert_in((s16)boundary_detector.LBound[row]*2-TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
-			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+			s16temp=insert_in((s16)boundary_detector.LBound[row]*2+TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
+			nShift+=(s16temp-IMG_COLS);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
 		}
 		else if (guide_generator.RBoundaryFlag[row])
 		{
-			s16temp=insert_in((s16)boundary_detector.RBound[row]*2+TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
-			nShift+=(s16temp-nMidCol);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
+			s16temp=insert_in((s16)boundary_detector.RBound[row]*2-TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
+			nShift+=(s16temp-IMG_COLS);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
 		}
+                
 	}
-  if (nDenom!=0&& g_nDirPos-nMidCol<DangerZone ) g_nDirPos=nShift/nDenom;
-  else g_nDirPos=g_nDirPos-nMidCol;
+  if (nDenom!=0&& g_nDirPos-IMG_COLS<DangerZone ) g_nDirPos=nShift/nDenom;
+  else g_nDirPos=g_nDirPos-IMG_COLS;
   currdir=Dir_PID(g_nDirPos);
 }
 
@@ -127,6 +129,6 @@ void Speed_PID(u8 Expect){
   Error=Expect-Speed;
   Power=insert_in(MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
   motor_pid.LastError=Error;
-  if (tacho0) currspd=MOTOR_DEAD_REST+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
-  else currspd=MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+  if (tacho0) currspd=MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+  else currspd=MOTOR_DEAD_REST+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
 }

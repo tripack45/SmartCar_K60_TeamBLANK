@@ -46,7 +46,7 @@ typedef struct DirectionGeneratorConf{
 #define PID_P 20        //DIR_P
 #define PID_I 0         //DIR_I
 #define PID_D 100       //DIR_D
-#define PID_SENSITIVITY 1
+#define PID_SENSITIVITY 3
 typedef struct DirectionPIDConf{
   //===========INPUTS==============
     //Uses DGuidePos
@@ -71,7 +71,7 @@ typedef struct PowerGeneratorConf{
 #define MOTOR_PID_SENSITIVITY 1
 #define TACHO_SENSITIVITY 1
 #define MOTOR_DEAD_RUN 400
-#define MOTOR_DEAD_REST 400
+#define MOTOR_DEAD_REST 330
 #define SPEED_MAX 500
 typedef struct MotorPIDConf{
   //===========INPUTS============
