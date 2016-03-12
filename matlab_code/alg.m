@@ -4,7 +4,6 @@ imgrow=size(rawframe,1);
 imgcol=size(rawframe,2);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
-
 try
     
     %% Boundary Detector

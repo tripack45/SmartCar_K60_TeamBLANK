@@ -57,8 +57,8 @@ t1=text( 7,-10,'000','Color','Black');
 t2=text( 27,-10,'000','Color','Black');
 %text(-30,-10,'Time:','Color','Black');
 %t3=text(-23,-10,'000','Color','Black');
-%%
 
+%%
 frame=ones(imgrow,imgcol,1);
 disp('Recieving');
 b_buffer=[];
