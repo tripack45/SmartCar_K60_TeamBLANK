@@ -2,11 +2,13 @@
 %setup¡¢
 clc;
 disp('Closing com');
-if(exist('com'))
+try 
     fclose(com);
+catch
 end
-if(exist('com_ack'))
+try
     fclose(com_ack);
+catch
 end
 imgrow=67;
 imgcol=77;
@@ -27,35 +29,36 @@ disp('Preparing to buffer')
 
 
 %% Graphic Initializations
-h1=figure;
-colormap(h1,gray);
-im=image(ones(imgrow,imgcol));
+try
+    set(h,'Visible','on');
+    figure(h);
+catch
+    h=figure;
+end
+set(h,'Renderer','OpenGL');
+set(h,'Position',[58,126,1300,557]);
+
+ax1=subplot(1,2,1);
+imin=image(ones(imgrow,imgcol));
+colormap(ax1,gray);
 axis equal;
 axis manual;
-set(gcf,'KeyPressFcn',@keyboard_callback);
 
-h2=figure;
+ax2=subplot(1,2,2);
 imalg=image(ones(imgrow,imgcol));
-colormap(h2,colorcube);
+colormap(ax2,colorcube);
 axis equal;
 axis manual;
 caxis manual;
 caxis([0,255]);
-text(0,-1,'DIR:','Color','Black');
-text(20,-1,'SPD:','Color','Black');
-t1=text( 7,-1,'000','Color','Black');
-t2=text( 27,-1,'000','Color','Black');
-load TrackWidth;
-%
-% hgraph=imshow(currimg);
-% colormap(gray);
-% drawnow;
-%
-%
-% global sbuffer;
-% sbuffer=[];
-
+text(0,-10,'DIR:','Color','Black');
+text(20,-10,'SPD:','Color','Black');
+t1=text( 7,-10,'000','Color','Black');
+t2=text( 27,-10,'000','Color','Black');
+%text(-30,-10,'Time:','Color','Black');
+%t3=text(-23,-10,'000','Color','Black');
 %%
+
 frame=ones(imgrow,imgcol,1);
 disp('Recieving');
 b_buffer=[];
@@ -105,7 +108,7 @@ while 1
     if length(indata)==imgcol*imgrow
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
-        set(im,'CData',img);
+        set(imin,'CData',img);
         frame(:,:,end+1)=img;
         drawnow;
         

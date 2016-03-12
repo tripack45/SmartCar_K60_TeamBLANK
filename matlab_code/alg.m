@@ -10,7 +10,7 @@ try
     %% Boundary Detector
     %constants
     CONTRAST_THRESHOLD = 8;
-    BLACK_THRESHOLD=50s;
+    BLACK_THRESHOLD=50;
     WHITE_THRESHOLD=60;
     IMG_BLACK_MID_WIDTH=2;
     ABANDON=2;
@@ -102,6 +102,8 @@ try
             pos=t;
             guideLine(row)=floor(t/2);
             %break;
+        else
+            pos=0;
         end
     end
     pos=pos-imgcol;
@@ -136,7 +138,8 @@ try
     spd=0;
     
 catch exception
-    disp(get(exception,'message');
+    disp(exception);
+    %rethrow(exception);
     graph=zeros(imgrow,imgcol);
     spd=0;
     dir=0;
