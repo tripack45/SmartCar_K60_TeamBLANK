@@ -1053,7 +1053,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>MK60DN512xxx10	Freescale MK60DN512xxx10</state>
+          <state>MK60DN512Zxxx10	Freescale MK60DN512Zxxx10</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -1673,7 +1673,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>C:\Users\lichunchao\Documents\GitHub\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
+          <state>E:\freescale_racing\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
