@@ -3,7 +3,7 @@ imgrow=67;
 imgcol=77;
 source=frame;
 fps=150;
-start=5000;
+start=1;
 
 %% Set up the figures
 try
@@ -30,19 +30,23 @@ caxis manual;
 caxis([0,255]);
 text(0,-10,'DIR:','Color','Black');
 text(20,-10,'SPD:','Color','Black');
+text(40,-10,'SP:','Color','Black');
 t1=text( 7,-10,'000','Color','Black');
 t2=text( 27,-10,'000','Color','Black');
+t3=text( 47,-10,'000','Color','Black');
+
 text(-30,-10,'Time:','Color','Black');
-t3=text(-23,-10,'000','Color','Black');
+t255=text(-23,-10,'000','Color','Black');
 
 %% Applying Algorithms and Applying them
 for i=start:size(source,3)
-    set(t3,'String',num2str(i/50));
-     [out dir spd]=alg(source(:,:,i),TrackWidth);
+    set(t255,'String',num2str(i/50));
+     [out dir spd spc]=alg(source(:,:,i),TrackWidth);
     set(imrep,'CData',source(:,:,i));
     set(imalg,'CData',out);
     set(t1,'String',num2str(dir));
     set(t2,'String',num2str(spd));
+    set(t3,'String',num2str(spc.CaseNumber));
     pause(1/200);
     %drawnow nocallbacks;
 end

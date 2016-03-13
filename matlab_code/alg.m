@@ -1,7 +1,7 @@
-function [graph,dir,spd] = alg(rawframe,TrackWidth)
+function [graph,dir,spd,special_case] = alg(img_buffer,TrackWidth)
 %% Setup
-imgrow=size(rawframe,1);
-imgcol=size(rawframe,2);
+imgrow=size(img_buffer,1);
+imgcol=size(img_buffer,2);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 try
@@ -37,8 +37,8 @@ try
         lBoundaryFlag(row) = false;
         rBoundaryFlag(row) = false;
         for col = LBeginScan:LEndScan
-            if( rawframe(row,col+IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD...
-                    && rawframe(row,col)<BLACK_THRESHOLD)
+            if( img_buffer(row,col+IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD...
+                    && img_buffer(row,col)<BLACK_THRESHOLD)
                 LPredict = col;
                 lBoundary(row)= col;
                 lBoundaryFlag(row) = true;
@@ -59,8 +59,8 @@ try
             LEndScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;
         end
         for col = RBeginScan:-1:REndScan
-            if (rawframe(row,col - IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD ...
-                    && rawframe(row,col)<BLACK_THRESHOLD)
+            if (img_buffer(row,col - IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD ...
+                    && img_buffer(row,col)<BLACK_THRESHOLD)
                 RPredict = col;
                 rBoundary(row) = col;
                 rBoundaryFlag(row) = true;
@@ -80,6 +80,30 @@ try
         if (REndScan < IMG_BLACK_MID_WIDTH + ABANDON)
             REndScan = IMG_BLACK_MID_WIDTH + ABANDON;
         end
+    end
+    
+    %% Special Case Handler
+    RT_TURN_THRESHOLD=8;
+    RT_TURN_LINETHRESHOLD=8;
+    special_case=struct('CaseFound',false,...
+                        'CaseNumber',0);
+    lcounter=0;
+    for(row=1:floor(imgrow/2))
+       counter=0;
+       for(col=1:imgcol)
+           if(img_buffer(row,col)>WHITE_THRESHOLD)
+                counter=counter+1;
+           end
+       end
+       if(counter<RT_TURN_THRESHOLD);
+               lcounter=lcounter+1;
+       end
+       if(lcounter>RT_TURN_LINETHRESHOLD)
+            special_case.CaseFound=true;
+            special_case.CaseNumber=1;
+            disp('RT_FOUND');
+            break;
+       end
     end
     
     %% Guideline Generator
