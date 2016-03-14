@@ -115,12 +115,12 @@ void CMD_Handler(u8 cmd){
         return;
         
       case CMDFASTER :
-        currspd+=10;
+        currspd+=5;
         currspd= (currspd<MOTOR_MAX?currspd:MOTOR_MAX);
         return;
       case CMDSLOWER :
-        currspd-=10;
-        currspd= (currspd>300?currspd:0);      
+        currspd-=5;
+        currspd= (currspd>0?currspd:0);      
         return;
       case CMDLEFT :
         currdir-=40;
