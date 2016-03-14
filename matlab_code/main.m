@@ -12,6 +12,7 @@ catch
 end
 imgrow=67;
 imgcol=77;
+extraInfoSize=6;
 %COM4, BuadRate 115200, DataBits 8
 %fclose(com);
 disp('Reopening Com');
@@ -22,7 +23,7 @@ global com;
 
 com = serial('COM11','BaudRate',115200*500,'DataBits',8);
 %com = serial('COM28','BaudRate',115200,'DataBits',8);
-set(com,'InputBufferSize',imgrow*100*4);
+set(com,'InputBufferSize',imgrow*100*40);
 fopen(com); %opens the Serial Port
 fwrite(com,'abc');
 disp('Preparing to buffer')
@@ -43,6 +44,13 @@ imin=image(ones(imgrow,imgcol));
 colormap(ax1,gray);
 axis equal;
 axis manual;
+text(0,-10,'DIR:','Color','Black');
+text(20,-10,'SPD:','Color','Black');
+text(40,-10,'TCH:','Color','Black');
+
+t3=text( 7,-10,'000','Color','Black');
+t4=text( 27,-10,'000','Color','Black');
+t5=text( 47,-10,'000','Color','Black');
 
 ax2=subplot(1,2,2);
 imalg=image(ones(imgrow,imgcol));
@@ -105,7 +113,18 @@ while 1
     
     %fwrite(com,[172,160,0,0,76]);
     
-    if length(indata)==imgcol*imgrow
+    if length(indata)==imgcol*imgrow+extraInfoSize
+        spdu8=indata(end-5:end-4);
+        diru8=indata(end-3:end-2);
+        tachou8=indata(end-1:end);
+        spd=typecast(uint8(spdu8),'int16');
+        dir=typecast(uint8(diru8),'int16');
+        tacho=typecast(uint8(tachou8),'int16');
+        set(t3,'String',num2str(dir));
+        set(t4,'String',num2str(double(spd)/100*27));
+        set(t5,'String',num2str(tacho));
+        
+        indata=indata(1:end-extraInfoSize);
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
         set(imin,'CData',img);

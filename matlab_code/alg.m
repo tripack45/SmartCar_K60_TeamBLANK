@@ -2,6 +2,7 @@ function [graph,dir,spd,special_case] = alg(img_buffer,TrackWidth)
 %% Setup
 imgrow=size(img_buffer,1);
 imgcol=size(img_buffer,2);
+%img_buffer=CArray(img_buffer);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 try
@@ -90,7 +91,7 @@ try
     lcounter=0;
     for(row=1:floor(imgrow/2))
        counter=0;
-       for(col=1:imgcol)
+       for(col=1:imgcol-1)
            if(img_buffer(row,col)>WHITE_THRESHOLD)
                 counter=counter+1;
            end
