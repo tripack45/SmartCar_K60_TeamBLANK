@@ -37,7 +37,7 @@ catch
 end
 set(h,'Renderer','OpenGL');
 set(h,'Position',[58,126,1300,557]);
-
+set(h,'KeyPressFcn',@keyboard_callback);
 ax1=subplot(1,2,1);
 imin=image(ones(imgrow,imgcol));
 colormap(ax1,gray);

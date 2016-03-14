@@ -101,7 +101,7 @@ try
        if(lcounter>RT_TURN_LINETHRESHOLD)
             special_case.CaseFound=true;
             special_case.CaseNumber=1;
-            disp('RT_FOUND');
+            %disp('RT_FOUND');
             break;
        end
     end
