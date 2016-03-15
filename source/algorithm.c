@@ -10,15 +10,19 @@ void DetectBoundary(){
   u8 RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH-ABANDON, REndScan = IMG_COLS / 2 + IMG_BLACK_MID_WIDTH;
   u8 row = 0, col = 0, LPredict = LBeginScan, RPredict= RBeginScan, BoundaryShift = 2, LUnCap = 0, RUnCap = 0;
   for (row = IMG_ROWS-5; row >= 1; --row){
+    u8 lFlag=1,RFlag=1;
     guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
-    for (col = LBeginScan; col <= LEndScan; ++col){
-      ITM_EVENT16(4,(s16)img_buffer[row][col]<BLACK_THRESHOLD);
-      if ((s16)img_buffer[row][col + IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
-          (s16)img_buffer[row][col]<BLACK_THRESHOLD){
+    if (img_buffer[row][3] >WHITE_THRESHOLD) {lFlag=0;}
+    if (lFlag){
+      for (col = LBeginScan; col <= LEndScan; ++col){
+        ITM_EVENT16(4,(s16)img_buffer[row][col]<BLACK_THRESHOLD);
+        if ((s16)img_buffer[row][col + IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
+            (s16)img_buffer[row][col]<BLACK_THRESHOLD){
               LPredict = boundary_detector.LBound[row] = col;
               guide_generator.LBoundaryFlag[row] = TRUE;
               LUnCap = 0;
               break;
+            }
       }
     }
     LUnCap++;
@@ -27,13 +31,16 @@ void DetectBoundary(){
     if (LBeginScan < IMG_BLACK_MID_WIDTH + ABANDON) {LBeginScan = IMG_BLACK_MID_WIDTH + ABANDON;}
     LEndScan = LPredict+BoundaryShift*LUnCap;
     if (LEndScan > IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON) {LEndScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;}
-    for (col = RBeginScan; col >= REndScan; --col){
-      if ((s16)img_buffer[row][col - IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
-          img_buffer[row][col]<BLACK_THRESHOLD){
+    if (img_buffer[row][IMG_COLS-2] >WHITE_THRESHOLD) {RFlag=0;}
+    if (RFlag){
+      for (col = RBeginScan; col >= REndScan; --col){
+        if ((s16)img_buffer[row][col - IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
+            img_buffer[row][col]<BLACK_THRESHOLD){
               RPredict = boundary_detector.RBound[row] = col;
               guide_generator.RBoundaryFlag[row] = TRUE;
               RUnCap = 0;
               break;
+            }
       }
     }
     RUnCap++;

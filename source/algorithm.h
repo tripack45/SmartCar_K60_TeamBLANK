@@ -12,7 +12,7 @@
 #define abs0(a) ((a)>0?a:0)
 #define maxabs(a,b) (abs(a)<abs(b)?b:a)
 
-#define IMG_BLACK_MID_WIDTH 2 
+#define IMG_BLACK_MID_WIDTH 1 
 #define CONTRAST_THRESHOLD 8 //g_nEdgThre
 #define BLACK_THRESHOLD 50    //g_nBlacThre
 #define WHITE_THRESHOLD 60
