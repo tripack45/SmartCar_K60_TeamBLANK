@@ -38,7 +38,10 @@ t3=text( 47,-10,'000','Color','Black');
 text(-30,-10,'Time:','Color','Black');
 t255=text(-23,-10,'000','Color','Black');
 
-%% Applying Algorithms and Applying them
+%% Applying Algorithms and Drawing them
+tic;
+last_draw_toc=0;
+last_frame_toc=0;
 for i=start:size(source,3)
     set(t255,'String',num2str(i/50));
      [out dir spd spc]=alg(source(:,:,i),TrackWidth);
@@ -47,6 +50,12 @@ for i=start:size(source,3)
     set(t1,'String',num2str(dir));
     set(t2,'String',num2str(spd));
     set(t3,'String',num2str(spc.CaseNumber));
-    pause(1/200);
+    if (toc-last_draw_toc)>(1/20) 
+        drawnow nocallbacks;
+        last_draw_toc=toc;
+    end
+    while (toc-last_frame_toc)<(1/fps)
+    end
+    last_frame_toc=toc;
     %drawnow nocallbacks;
 end

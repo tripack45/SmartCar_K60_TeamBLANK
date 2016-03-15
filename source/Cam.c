@@ -5,9 +5,11 @@ License : MIT
 */
 
 #include "includes.h"
-#define SIG_SIZE 3
 
 #define VALID_COLS IMG_COLS
+
+#define SIG_SIZE 3
+#define EXTRA_INFO_SIZE 6
 
 // ====== Variables ======
 
@@ -15,10 +17,10 @@ License : MIT
 u8 cam_row = 0, img_row = 0;
 
 
-u8 cam_buffer0[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
-u8 cam_buffer1[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
-u8 cam_buffer2[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
-u8 cam_buffer3[ IMG_ROWS * IMG_COLS + 2 * SIG_SIZE ];
+u8 cam_buffer0[ IMG_ROWS * IMG_COLS + EXTRA_INFO_SIZE + 2 * SIG_SIZE ];
+u8 cam_buffer1[ IMG_ROWS * IMG_COLS + EXTRA_INFO_SIZE + 2 * SIG_SIZE ];
+u8 cam_buffer2[ IMG_ROWS * IMG_COLS + EXTRA_INFO_SIZE + 2 * SIG_SIZE ];
+u8 cam_buffer3[ IMG_ROWS * IMG_COLS + EXTRA_INFO_SIZE + 2 * SIG_SIZE ];
 
 u8* buffer_ptr[4]={ cam_buffer0+SIG_SIZE, cam_buffer1+SIG_SIZE,
                     cam_buffer2+SIG_SIZE, cam_buffer3+SIG_SIZE };
@@ -98,24 +100,21 @@ void Cam_Algorithm(){
       img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
     }
     // Line processing here
-    
-    
-    
-    
-    
-    
-    
-    
     //===========End============
   }
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
   
-  ITM_EVENT32_WITH_PC(1,0x01);
+  //Writing Current Extra Infomation into the buffer
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+1]=((uint16)currspd)>>8;
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+2]=((uint16)currdir)&0xff;
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+3]=((uint16)currdir)>>8;
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
+  ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
   DetectBoundary();
   DirCtrl();
-  ITM_EVENT32_WITH_PC(2,0x02);
   LED1_Tog(); 
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
@@ -292,7 +291,9 @@ void DMA1_IRQHandler(){
   DMA0->INT=DMA_INT_INT1_MASK;
   
   Bluetooth_SendDataChunkAsync( sending_buffer,
-                               IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+                               IMG_ROWS * VALID_COLS 
+                               + EXTRA_INFO_SIZE
+                               + 2 * SIG_SIZE );
   LED2_Tog();
   //TICK();
 }
@@ -321,7 +322,9 @@ void cam_usb(){
       //DMA0->INT=DMA_INT_INT1_MASK;
       //ITM_EVENT32(3, sending_frame);
       LPLD_USB_VirtualCom_Tx( sending_buffer,
-                             IMG_ROWS * VALID_COLS + 2 * SIG_SIZE );
+                             IMG_ROWS * VALID_COLS
+                             + EXTRA_INFO_SIZE 
+                             + 2 * SIG_SIZE );
       LED2_Tog();
       //TICK();
     }
