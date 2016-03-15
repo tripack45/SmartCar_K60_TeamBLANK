@@ -90,6 +90,7 @@ extern MotorPID motor_pid;
 void DirCtrl();
 void DetectBoundary();
 s16 Dir_PID(s16 position);
+s16 Speed_PID(u8 Expect);
 //void MotorCtrl()
 
 #endif
