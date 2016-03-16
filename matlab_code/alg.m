@@ -25,7 +25,7 @@ try
     row = 0;
     col = 0;
     LCap = 0;
-    row =MATLABZERO+ IMG_ROWS-6;
+    row =MATLABZERO+ IMG_ROWS-8;
     for col = LBeginScan:LEndScan
         if( img_buffer(row,col) > WHITE_THRESHOLD...
                 && img_buffer(row,col-1)<BLACK_THRESHOLD)
@@ -38,7 +38,7 @@ try
         row=lBoundary(MATLABZERO,1);
         LNum=MATLABZERO+1;
     else
-        row=MATLABZERO+IMG_ROWS-6;
+        row=MATLABZERO+IMG_ROWS-8;
         col= LBeginScan;
         LNum=MATLABZERO;
     end
@@ -104,7 +104,7 @@ try
     it=@(y)c2*y/(1-c1*y);
     inv_trans=@(y) it(y-zrow)*scale+zrow;
     
-    s50=@(x) 43+(70-43)/51*(x-3);
+    s50=@(x) 38+(70-38)/51*(x-3);
     
     result=[];
     if(LNum>5)
@@ -122,7 +122,7 @@ try
     %rBoundary=rBoundary+1;
     %guideLine=guideLine+1;
     for row=1:length(result);
-        out(result(row,1)+50,result(row,2)+25)=50;%50/55/65
+        out(result(row,1)+50,result(row,2)+50)=50;%50/55/65
     end
     graph=out;
     spd=0;
