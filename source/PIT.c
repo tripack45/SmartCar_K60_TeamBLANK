@@ -78,8 +78,8 @@ void PIT0_IRQHandler(){
   // UI operation input
   ui_operation_cnt += tacho0;  // use tacho0 or tacho1
   
-  Servo_Output(currdir);
-  MotorL_Output( Speed_PID(currspd) );
+  //Servo_Output(currdir);
+  //MotorL_Output( Speed_PID(currspd) );
     
   
 #if (CAR_TYPE==0)   // Magnet and Balance

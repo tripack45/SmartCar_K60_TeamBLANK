@@ -1,4 +1,4 @@
-function [graph,dir,spd,special_case] = alg(img_buffer,TrackWidth)
+function [graph,dir,spd,special_case] = alg(img_buffer)
 %% Setup
 imgrow=size(img_buffer,1);
 imgcol=size(img_buffer,2);
@@ -6,164 +6,132 @@ imgcol=size(img_buffer,2);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 try
-    
-    %% Boundary Detector
+ %% Boundary Detection
+ 
     %constants
-    CONTRAST_THRESHOLD = 8;
+    lBoundary=zeros(1,2);
+    ABANDON=2;
+    MATLABZERO=1;
+    LBeginScan =ABANDON+MATLABZERO+1;
+    LEndScan = IMG_COLS / 2+MATLABZERO;
     BLACK_THRESHOLD=50;
     WHITE_THRESHOLD=60;
-    IMG_BLACK_MID_WIDTH=2;
-    ABANDON=2;
+    %0 is left; 1 is up; 2 is right; 3 is down;
     %input: rawframe
     %rawframe=f;
-    %output: rBoundaryFlag,rBoundary
-    %        lBoundaryFlag,lBoundary
-    rBoundaryFlag=false(imgrow,1);
-    lBoundaryFlag=false(imgrow,1);
-    rBoundary=zeros(imgrow,1);
-    lBoundary=zeros(imgrow,1);
+    %output: rBoundary
+    %        lBoundary
     
-    LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON;
-    LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
-    RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH-ABANDON;
-    REndScan = IMG_COLS / 2 + IMG_BLACK_MID_WIDTH;
     row = 0;
     col = 0;
-    LPredict = LBeginScan;
-    RPredict = RBeginScan;
-    BoundaryShift = 2;
-    LUnCap = 0;
-    RUnCap = 0;
-    for row = IMG_ROWS-5:-1:1
-        lBoundaryFlag(row) = false;
-        rBoundaryFlag(row) = false;
-        for col = LBeginScan:LEndScan
-            if( img_buffer(row,col+IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD...
-                    && img_buffer(row,col)<BLACK_THRESHOLD)
-                LPredict = col;
-                lBoundary(row)= col;
-                lBoundaryFlag(row) = true;
-                LUnCap = 0;
-                break;
-            end
-        end
-        LUnCap=LUnCap+1;
-        if (LUnCap > 8)
-            LUnCap=8;
-        end
-        LBeginScan = LPredict-BoundaryShift*LUnCap;
-        if (LBeginScan < IMG_BLACK_MID_WIDTH + ABANDON)
-            LBeginScan = IMG_BLACK_MID_WIDTH + ABANDON;
-        end
-        LEndScan = LPredict+BoundaryShift*LUnCap;
-        if (LEndScan > IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON)
-            LEndScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;
-        end
-        for col = RBeginScan:-1:REndScan
-            if (img_buffer(row,col - IMG_BLACK_MID_WIDTH) > WHITE_THRESHOLD ...
-                    && img_buffer(row,col)<BLACK_THRESHOLD)
-                RPredict = col;
-                rBoundary(row) = col;
-                rBoundaryFlag(row) = true;
-                RUnCap = 0;
-                break;
-            end
-        end
-        RUnCap=RUnCap+1;
-        if (RUnCap > 8)
-            RUnCap=8;
-        end
-        RBeginScan = RPredict+BoundaryShift*RUnCap;
-        if (RBeginScan > IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON)
-            RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH - ABANDON;
-        end
-        REndScan = RPredict-BoundaryShift*RUnCap;
-        if (REndScan < IMG_BLACK_MID_WIDTH + ABANDON)
-            REndScan = IMG_BLACK_MID_WIDTH + ABANDON;
-        end
-    end
-    
-    %% Special Case Handler
-    RT_TURN_THRESHOLD=8;
-    RT_TURN_LINETHRESHOLD=8;
-    special_case=struct('CaseFound',false,...
-                        'CaseNumber',0);
-    lcounter=0;
-    for(row=1:floor(imgrow/2))
-       counter=0;
-       for(col=1:imgcol-1)
-           if(img_buffer(row,col)>WHITE_THRESHOLD)
-                counter=counter+1;
-           end
-       end
-       if(counter<RT_TURN_THRESHOLD);
-               lcounter=lcounter+1;
-       end
-       if(lcounter>RT_TURN_LINETHRESHOLD)
-            special_case.CaseFound=true;
-            special_case.CaseNumber=1;
-            %disp('RT_FOUND');
+    LCap = 0;
+    row =MATLABZERO+ IMG_ROWS-6;
+    for col = LBeginScan:LEndScan
+        if( img_buffer(row,col) > WHITE_THRESHOLD...
+                && img_buffer(row,col-1)<BLACK_THRESHOLD)
+            lBoundary(MATLABZERO,:)= [row col];
+            LCap=1;
             break;
-       end
-    end
-    
-    %% Guideline Generator
-    %Output: guideline
-    guideLine=zeros(imgrow,1);
-    for row=imgrow-5:-1:1
-        if lBoundaryFlag(row) && rBoundary(row)
-            t= lBoundary(row)+rBoundary(row);
-            pos=t;
-            guideLine(row)=floor(t/2);
-            %break;
-        elseif lBoundaryFlag(row)
-            t = 2 * lBoundary(row) + TrackWidth(row);
-            pos=t;
-            guideLine(row)=floor(t/2);
-            %break;
-        elseif rBoundaryFlag(row)
-            t = 2 * rBoundary(row) - TrackWidth(row);
-            pos=t;
-            guideLine(row)=floor(t/2);
-            %break;
-        else
-            pos=0;
         end
     end
-    pos=pos-imgcol;
+    if (LCap)
+        row=lBoundary(MATLABZERO,1);
+        LNum=MATLABZERO+1;
+    else
+        row=MATLABZERO+IMG_ROWS-6;
+        col= LBeginScan;
+        LNum=MATLABZERO;
+    end
+    lastDirection=1;
+    moveable=1;
+    movestep=0;
+    while (moveable && row<MATLABZERO+IMG_ROWS-3 && movestep<300 )
+        %judge
+        if ((img_buffer(row,col+1)<BLACK_THRESHOLD...
+                || img_buffer(row,col-1)<BLACK_THRESHOLD...
+                || img_buffer(row+1,col)<BLACK_THRESHOLD...
+                || img_buffer(row-1,col)<BLACK_THRESHOLD)...
+                &&(img_buffer(row,col+1)> WHITE_THRESHOLD...
+                || img_buffer(row,col-1)> WHITE_THRESHOLD...
+                || img_buffer(row+1,col)> WHITE_THRESHOLD...
+                || img_buffer(row-1,col)> WHITE_THRESHOLD)...
+                )%need improvement
+            lBoundary(LNum,:)=[row col];
+            LNum=LNum+1;
+        end
+        %move
+        moveable=0;
+        for step=1:4
+            switch mod(lastDirection+step+2,4);
+                case 0
+                    if (col>MATLABZERO+ABANDON+1 && img_buffer(row,col-1)> WHITE_THRESHOLD)
+                        moveable=1;
+                        col=col-1;
+                        lastDirection=0;
+                    end
+                case 1
+                    if (row>MATLABZERO+1 &&img_buffer(row-1,col)> WHITE_THRESHOLD)
+                        moveable=1;
+                        row=row-1;
+                        lastDirection=1;
+                    end
+                case 2
+                    if (col<MATLABZERO+IMG_COLS-ABANDON-2 &&img_buffer(row,col+1)> WHITE_THRESHOLD)
+                        moveable=1;
+                        col=col+1;
+                        lastDirection=2;
+                    end
+                case 3
+                    if (row<MATLABZERO+IMG_ROWS-1 &&img_buffer(row+1,col)> WHITE_THRESHOLD)
+                        moveable=1;
+                        row=row+1;
+                        lastDirection=3;
+                    end
+            end
+            if (moveable)
+                break;
+            end
+        end
+        movestep=movestep+1;
+    end
     
-    %% Servo PID
-    DIR_P=20;
-    DIR_D=100;
-    PID_SENSITIVITY=1;
-    global LastDirection;
-    s16Tmp=DIR_P*pos+DIR_D*(pos-LastDirection)/10;
-    LastDirection=pos;
-    dir=s16Tmp/(PID_SENSITIVITY);
+    %% Inverse Transerfering
+    scale=70/50; % 70pts=50cm
+    zrow=35; zcol=39; % zero on graph: (35,39);
+    input=lBoundary;
+    c1=-0.0104; c2=0.817;
+    t=@(y)y/(c1*y+c2);
+    it=@(y)c2*y/(1-c1*y);
+    inv_trans=@(y) it(y-zrow)*scale+zrow;
     
+    s50=@(x) 43+(70-43)/51*(x-3);
+    
+    result=[];
+    if(LNum>5)
+        for row=1:length(input)
+            %result(row,1)=ceil(input(row,1));
+            result(row,1)=ceil(inv_trans(input(row,1)));
+            %result(row,2)=ceil(input(row,2));
+            result(row,2)=ceil( (input(row,2)-zcol)/s50(input(row,1))*70+zcol);
+        end
+    end
     
     %% Output to graph
-    out=zeros(imgrow,imgcol)+57;
-    lBoundary=lBoundary+1;
-    rBoundary=rBoundary+1;
-    guideLine=guideLine+1;
-    for row=1:imgrow
-        if lBoundaryFlag(row)
-            out(row,lBoundary(row))=50;
-        end
-        if rBoundaryFlag(row)
-            out(row,rBoundary(row))=55;
-        end
-        if ~guideLine(row)==0
-            out(row,guideLine(row))=65;
-        end
+    out=zeros(150,150)+57;
+    %lBoundary=lBoundary+1;
+    %rBoundary=rBoundary+1;
+    %guideLine=guideLine+1;
+    for row=1:length(result);
+        out(result(row,1)+50,result(row,2)+25)=50;%50/55/65
     end
     graph=out;
     spd=0;
+    dir=0;
+    special_case.CaseNumer=0;
     
 catch exception
     disp(exception);
-    %rethrow(exception);
+    rethrow(exception);
     graph=zeros(imgrow,imgcol);
     spd=0;
     dir=0;
