@@ -12,7 +12,6 @@ void DetectBoundary(){
   for (row = IMG_ROWS-5; row >= 1; --row){
     guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
     for (col = LBeginScan; col <= LEndScan; ++col){
-      ITM_EVENT16(4,(s16)img_buffer[row][col]<BLACK_THRESHOLD);
       if ((s16)img_buffer[row][col + IMG_BLACK_MID_WIDTH] > WHITE_THRESHOLD &&
           (s16)img_buffer[row][col]<BLACK_THRESHOLD){
             LPredict = boundary_detector.LBound[row] = col;
