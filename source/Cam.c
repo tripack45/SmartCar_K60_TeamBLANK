@@ -139,6 +139,7 @@ void PORTC_IRQHandler(){
       ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
       DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
     }
+    
     cam_row++;
   }
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
@@ -165,6 +166,7 @@ void PORTC_IRQHandler(){
 void DMA0_IRQHandler(){
   //if(e_debug_num==1)
   //{e_debug_num=2;
+
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
   img_row++; 
