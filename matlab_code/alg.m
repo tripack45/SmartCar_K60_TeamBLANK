@@ -22,7 +22,6 @@ try
     %output: rBoundary
     %        lBoundary
     
-    row = 0;
     col = 0;
     LCap = 0;
     row =MATLABZERO+ IMG_ROWS-8;
@@ -35,10 +34,8 @@ try
         end
     end
     if (LCap)
-        row=lBoundary(MATLABZERO,1);
         LNum=MATLABZERO+1;
     else
-        row=MATLABZERO+IMG_ROWS-8;
         col= LBeginScan;
         LNum=MATLABZERO;
     end
