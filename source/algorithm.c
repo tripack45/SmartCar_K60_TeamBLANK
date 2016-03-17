@@ -5,10 +5,17 @@ GuideGenerator guide_generator;
 DirectionPID dir_pid;
 MotorPID motor_pid;
 
+
+
 void DetectBoundary(){
   u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
   u8 RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH-ABANDON, REndScan = IMG_COLS / 2 + IMG_BLACK_MID_WIDTH;
   u8 row = 0, col = 0, LPredict = LBeginScan, RPredict= RBeginScan, BoundaryShift = 2, LUnCap = 0, RUnCap = 0;
+  u16 counter=0;
+  
+  boundary_detector.straightGuide=0;
+
+  
   for (row = IMG_ROWS-5; row >= 1; --row){
     guide_generator.RBoundaryFlag[row] = guide_generator.LBoundaryFlag[row] = FALSE;
     for (col = LBeginScan; col <= LEndScan; ++col){
@@ -69,6 +76,7 @@ void DirCtrl(void){
   s16 s16temp;
   s32 nShift=0,nDenom=0;
   g_nDirPos=IMG_COLS;
+  
   
   for (row=IMG_ROWS-5;row>=1; --row)
   {
@@ -134,7 +142,7 @@ s16 Speed_PID(u8 Expect){
   Power=insert_in(MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
   motor_pid.LastError=Error;
   if (tacho0) 
-    return MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+    return -MOTOR_DEAD_RUN-100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
   else 
-    return MOTOR_DEAD_REST+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
+    return -MOTOR_DEAD_REST-100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
 }
