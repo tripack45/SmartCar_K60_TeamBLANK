@@ -2,8 +2,8 @@
 imgrow=67;
 imgcol=77;
 source=frame;
-fps=150;
-start=500;
+fps=50;
+start=900;
 
 %% Set up the figures
 try
@@ -44,14 +44,14 @@ last_draw_toc=0;
 last_frame_toc=0;
 for i=start:size(source,3)
     set(t255,'String',num2str(i/50));
-     [out dir spd]=alg(source(:,:,i));
+     [out]=alg(source(:,:,i));
     set(imrep,'CData',source(:,:,i));
     set(imalg,'CData',out);
     set(t1,'String',num2str(dir));
     set(t2,'String',num2str(spd));
     set(t3,'String',num2str(0));
     if (toc-last_draw_toc)>(1/20) 
-        drawnow nocallbacks;
+        drawnow;
         last_draw_toc=toc;
     end
     while (toc-last_frame_toc)<(1/fps)
