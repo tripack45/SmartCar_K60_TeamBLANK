@@ -129,7 +129,6 @@ while 1
         img=img.';
         set(imin,'CData',img);
         frame(:,:,end+1)=img;
-        drawnow;
         
         [out dir spd]=alg(img);
         set(imalg,'CData',out);

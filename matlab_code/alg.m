@@ -122,7 +122,7 @@ try
     %rBoundary=rBoundary+1;
     %guideLine=guideLine+1;
     for row=1:length(result);
-        out(result(row,1)+50,result(row,2)+50)=50;%50/55/65
+        out(result(row,1)+50,result(row,2)+30)=50;%50/55/65
     end
     graph=out;
     spd=0;
