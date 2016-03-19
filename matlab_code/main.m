@@ -2,7 +2,7 @@
 %setup¡¢
 clc;
 disp('Closing com');
-try 
+try
     fclose(com);
 catch
 end
@@ -129,13 +129,19 @@ while 1
         img=img.';
         set(imin,'CData',img);
         frame(:,:,end+1)=img;
+        dirlog(end+1)=dir;
+        spdlog(end+1)=spd;
+        tacholog(end+1)=tacho;
         
         [out dir spd]=alg(img);
         set(imalg,'CData',out);
         set(t1,'String',num2str(dir));
         set(t2,'String',num2str(spd));
-        drawnow;
-       
+        try
+            drawnow nocallbacks;
+        catch
+            drawnow;
+        end
         %drawnow nocallbacks ;
         %toc;
     else
