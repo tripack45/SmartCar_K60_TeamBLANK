@@ -1,4 +1,4 @@
-function [graph,dir,spd,special_case] = alg(img_buffer)
+function [graph,dir,spd] = alg(img_buffer)
 %% Setup
 imgrow=size(img_buffer,1);
 imgcol=size(img_buffer,2);
@@ -169,7 +169,6 @@ try
     graph=out;
     spd=0;
     dir=0;
-    special_case.CaseNumer=0;
     
 catch exception
     disp(exception);
