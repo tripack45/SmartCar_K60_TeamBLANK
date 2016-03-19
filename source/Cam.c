@@ -9,7 +9,8 @@ License : MIT
 #define VALID_COLS IMG_COLS
 
 #define SIG_SIZE 3
-#define EXTRA_INFO_SIZE 6
+#define EXTRA_INFO_SIZE 6 
+
 
 // ====== Variables ======
 
@@ -306,14 +307,14 @@ void DMA1_IRQHandler(){
 void cam_usb(){
   //One frame is sent!
   //TOCK();
-  if(last_sent_frame != loading_frame - 1){
-    //if there is an unsent frame
-    if(!is_usr_usb_sending){
-      //if the system is not currently sending.
-      send_diff=sending_frame-last_sent_frame;
-      last_sent_frame=sending_frame;
+  if(!is_usr_usb_sending){
+    //if the system is not currently sending.
+    //current sending frame is complete
+    last_sent_frame=sending_frame;
+    if(last_sent_frame < loading_frame - 1){
+      //if there is an unsent frame
       sending_frame=loading_frame-1;
-      
+      send_diff=sending_frame-last_sent_frame; 
       uint8 t=last_frame_indicator;//This Ensures atomic operation
       CLEAR_LOCK(SLOCK_BASE);
       SET_LOCK(SLOCK_BASE, t);
@@ -322,11 +323,11 @@ void cam_usb(){
       sending_frame_indicator=t;
       
       //DMA0->INT=DMA_INT_INT1_MASK;
-      //ITM_EVENT32(3, sending_frame);
+      //ITM_EVENT32(4, sending_frame);
       LPLD_USB_VirtualCom_Tx( sending_buffer,
                              IMG_ROWS * VALID_COLS
-                             + EXTRA_INFO_SIZE 
-                             + 2 * SIG_SIZE );
+                               + EXTRA_INFO_SIZE 
+                                 + 2 * SIG_SIZE );
       LED2_Tog();
       //TICK();
     }

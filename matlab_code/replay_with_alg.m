@@ -3,7 +3,7 @@ imgrow=67;
 imgcol=77;
 source=frame;
 fps=150;
-start=1;
+start=500;
 
 %% Set up the figures
 try
@@ -22,7 +22,7 @@ axis equal;
 axis manual;
 
 ax2=subplot(1,2,2);
-imalg=image(ones(imgrow,imgcol));
+imalg=image(ones(150,150));
 colormap(ax2,colorcube);
 axis equal;
 axis manual;
@@ -44,14 +44,18 @@ last_draw_toc=0;
 last_frame_toc=0;
 for i=start:size(source,3)
     set(t255,'String',num2str(i/50));
-     [out dir spd spc]=alg(source(:,:,i),TrackWidth);
+     [out dir spd]=alg(source(:,:,i));
     set(imrep,'CData',source(:,:,i));
     set(imalg,'CData',out);
     set(t1,'String',num2str(dir));
     set(t2,'String',num2str(spd));
-    set(t3,'String',num2str(spc.CaseNumber));
+    set(t3,'String',num2str(0));
     if (toc-last_draw_toc)>(1/20) 
-        drawnow nocallbacks;
+        try
+            drawnow nocallbacks;
+        catch 
+            drawnow;
+        end
         last_draw_toc=toc;
     end
     while (toc-last_frame_toc)<(1/fps)

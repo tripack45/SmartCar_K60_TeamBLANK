@@ -53,7 +53,7 @@ t4=text( 27,-10,'000','Color','Black');
 t5=text( 47,-10,'000','Color','Black');
 
 ax2=subplot(1,2,2);
-imalg=image(ones(imgrow,imgcol));
+imalg=image(ones(150,150));
 colormap(ax2,colorcube);
 axis equal;
 axis manual;
