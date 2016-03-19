@@ -7,41 +7,46 @@ IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 try
  %% Boundary Detection
- 
     %constants
-    lBoundary=zeros(1,2);
-    ABANDON=2;
+    Boundary=[];
+    LBoundary=[];
+    RBoundary=[];
+    ABANDON=3;
     MATLABZERO=1;
     LBeginScan =ABANDON+MATLABZERO+1;
     LEndScan = IMG_COLS / 2+MATLABZERO;
     BLACK_THRESHOLD=50;
     WHITE_THRESHOLD=60;
     %0 is left; 1 is up; 2 is right; 3 is down;
+    
     %input: rawframe
     %rawframe=f;
     %output: rBoundary
     %        lBoundary
-    
     col = 0;
-    LCap = 0;
-    row =MATLABZERO+ IMG_ROWS-8;
+    Cap = 0;
+    row =MATLABZERO+ IMG_ROWS-6;
     for col = LBeginScan:LEndScan
         if( img_buffer(row,col) > WHITE_THRESHOLD...
                 && img_buffer(row,col-1)<BLACK_THRESHOLD)
-            lBoundary(MATLABZERO,:)= [row col];
-            LCap=1;
+            Boundary(MATLABZERO,:)= [row col];
+            Cap=1;
             break;
         end
     end
-    if (LCap)
-        LNum=MATLABZERO+1;
+    if (Cap)
+        Num=MATLABZERO+1;
     else
         col= LBeginScan;
-        LNum=MATLABZERO;
+        Num=MATLABZERO;
     end
     lastDirection=1;
     moveable=1;
     movestep=0;
+    counter=0;
+    BFlag=zeros(4,1);
+    BFFlag=1;
+    oldNum=1;
     while (moveable && row<MATLABZERO+IMG_ROWS-3 && movestep<300 )
         %judge
         if ((img_buffer(row,col+1)<BLACK_THRESHOLD...
@@ -53,9 +58,13 @@ try
                 || img_buffer(row+1,col)> WHITE_THRESHOLD...
                 || img_buffer(row-1,col)> WHITE_THRESHOLD)...
                 )%need improvement
-            lBoundary(LNum,:)=[row col];
-            LNum=LNum+1;
+            Boundary(Num,:)=[row col];
+            Num=Num+1;
+            counter=0;
+        else
+            counter=counter+1;
         end
+        
         %move
         moveable=0;
         for step=1:4
@@ -90,12 +99,35 @@ try
             end
         end
         movestep=movestep+1;
+        if (Num~=oldNum&&(counter>10||row==MATLABZERO+IMG_ROWS-3))
+            BFlag(BFFlag)=Num;
+            oldNum=Num;
+            BFFlag=BFFlag+1;
+        end
+    end
+    if (~isempty(Boundary))
+        if(BFlag(4))
+            LBoundary=Boundary(1:BFlag(2)-1,:);
+            RBoundary=Boundary(BFlag(2):end,:);
+        elseif(BFlag(3))
+            x=1;
+        elseif (BFlag(2))
+            LBoundary=Boundary(1:BFlag(1)-1,:);
+            RBoundary=Boundary(BFlag(1):end,:);
+        elseif (BFlag(1))
+            if (Boundary(1,2)>IMG_COLS-10||img_buffer(Boundary(1,1),Boundary(1,2)+10)<WHITE_THRESHOLD)
+                RBoundary=Boundary(:,:);
+            else
+                LBoundary=Boundary(:,:);
+            end
+        end
     end
     
     %% Inverse Transerfering
     scale=70/50; % 70pts=50cm
     zrow=35; zcol=39; % zero on graph: (35,39);
-    input=lBoundary;
+    lInput=LBoundary;
+    rInput=RBoundary;
     c1=-0.0104; c2=0.817;
     t=@(y)y/(c1*y+c2);
     it=@(y)c2*y/(1-c1*y);
@@ -103,13 +135,23 @@ try
     
     s50=@(x) 38+(70-38)/51*(x-3);
     
-    result=[];
-    if(LNum>5)
-        for row=1:length(input)
+    lResult=[];
+    if(size(lInput,1)>5)
+        for row=1:length(lInput)
             %result(row,1)=ceil(input(row,1));
-            result(row,1)=ceil(inv_trans(input(row,1)));
+            lResult(row,1)=ceil(inv_trans(lInput(row,1)));
             %result(row,2)=ceil(input(row,2));
-            result(row,2)=ceil( (input(row,2)-zcol)/s50(input(row,1))*70+zcol);
+            lResult(row,2)=ceil( (lInput(row,2)-zcol)/s50(lInput(row,1))*70+zcol);
+        end
+    end
+    
+    rResult=[];
+    if(size(rInput,1)>5)
+        for row=1:length(rInput)
+            %result(row,1)=ceil(input(row,1));
+            rResult(row,1)=ceil(inv_trans(rInput(row,1)));
+            %result(row,2)=ceil(input(row,2));
+            rResult(row,2)=ceil( (rInput(row,2)-zcol)/s50(rInput(row,1))*70+zcol);
         end
     end
     
@@ -118,8 +160,11 @@ try
     %lBoundary=lBoundary+1;
     %rBoundary=rBoundary+1;
     %guideLine=guideLine+1;
-    for row=1:length(result);
-        out(result(row,1)+50,result(row,2)+30)=50;%50/55/65
+    for row=1:length(lResult);
+        out(lResult(row,1)+50,lResult(row,2)+30)=50;%50/55/65
+    end
+    for row=1:length(rResult);
+        out(rResult(row,1)+50,rResult(row,2)+30)=55;%50/55/65
     end
     graph=out;
     spd=0;
