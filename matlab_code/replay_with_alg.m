@@ -51,7 +51,11 @@ for i=start:size(source,3)
     set(t2,'String',num2str(spd));
     set(t3,'String',num2str(0));
     if (toc-last_draw_toc)>(1/20) 
-        drawnow nocallbacks;
+        try
+            drawnow nocallbacks;
+        catch 
+            drawnow;
+        end
         last_draw_toc=toc;
     end
     while (toc-last_frame_toc)<(1/fps)
