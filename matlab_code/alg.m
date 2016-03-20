@@ -157,18 +157,29 @@ try
         end
     end
     
+    carPosY=65;
+    carPosX=30;
+    tCarPosY=ceil(inv_trans(carPosY));
+    tCarPosX=ceil( (carPosX-zcol)/ s50(carPosY) *70+zcol);
+    
     %% Output to graph
     out=zeros(150,150)+57;
     %lBoundary=lBoundary+1;
     %rBoundary=rBoundary+1;
     %guideLine=guideLine+1;
     for row=1:length(lResult);
-        out(lResult(row,1)+50,lResult(row,2)+30)=50;%50/55/65
+        out(lResult(row,1)+50,lResult(row,2)+30)=50;%9/44/50/55/65
     end
     for row=1:length(rResult);
         out(rResult(row,1)+50,rResult(row,2)+30)=55;%50/55/65
     end
     
+    for ii=-1:1
+        for jj=-1:1
+            out(tCarPosY+jj+50,tCarPosX+ii+30)=9;
+        end
+    end
+
     
     %% Calculating the corresponding circle
     if(length(lResult)>length(rResult))
@@ -194,6 +205,9 @@ try
         r=r+dr;
         xx=r*cos(p)+x0;
         yy=r.*sin(p)+y0;
+        for ii=1:length(x)
+            out(x(ii)+50,y(ii)+30)=44;
+        end
         for row=1:length(xx)
             if (0<xx(row)&& xx(row)<150&&0<yy(row)&&yy(row)<150)
                 out(floor(xx(row))+50 ,floor(yy(row))+30)=65;

@@ -2,8 +2,8 @@
 imgrow=67;
 imgcol=77;
 source=frame;
-fps=50;
-start=500;
+fps=3;
+start=1000;
 
 %% Set up the figures
 try
