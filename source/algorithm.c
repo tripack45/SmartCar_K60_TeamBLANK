@@ -130,7 +130,7 @@ s16 Speed_PID(u8 Expect){
   s16 Error,Speed,Power;
   Speed=tacho0*TACHO_SENSITIVITY;
   Error=Expect-Speed;
-  Power=insert_in(MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
+  Power=insert_in(Expect*EXP_SEN+MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
   motor_pid.LastError=Error;
   if (tacho0) 
     return MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
