@@ -2,7 +2,7 @@
 imgrow=67;
 imgcol=77;
 source=frame;
-fps=150;
+fps=50;
 start=500;
 
 %% Set up the figures

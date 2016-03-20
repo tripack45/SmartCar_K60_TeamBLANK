@@ -169,10 +169,19 @@ try
         out(rResult(row,1)+50,rResult(row,2)+30)=55;%50/55/65
     end
     
+    
     %% Calculating the corresponding circle
-    if (length(lResult)>10)
-        x=lResult(1:5:length(lResult),1);
-        y=lResult(1:5:length(lResult),2);
+    if(length(lResult)>length(rResult))
+        input=lResult;
+        dr=25;
+    else
+        input=rResult;
+        dr=-25;
+    end
+    
+    if (length(input)>10)
+        x=input(1:5:length(input),1);
+        y=input(1:5:length(input),2);
         A=[sum(x.*x) sum(y.*x) sum(x);
             sum(x.*y) sum(y.*y) sum(y);
             sum(x) sum(y) sum(x./x)];
@@ -182,6 +191,7 @@ try
         y0=-C(2)/2;
         r=sqrt(-C(3)+x0^2+y0^2);
         p=[0:2*pi/100:2*pi];
+        r=r+dr;
         xx=r*cos(p)+x0;
         yy=r.*sin(p)+y0;
         for row=1:length(xx)
