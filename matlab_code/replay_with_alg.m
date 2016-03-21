@@ -28,7 +28,7 @@ for i=start:size(source,3)
     tacho=tacholog(i);
     
     %Frame Number
-    FrameNum=i;
+    frameNum=i;
     
     if (toc-last_draw_toc)>(1/20) 
         UpdateFigures;
