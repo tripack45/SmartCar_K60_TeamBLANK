@@ -1673,7 +1673,7 @@
         </option>
         <option>
           <name>IlinkIcfFile</name>
-          <state>E:\freescale_racing\SmartCar_K60_TeamBLANK\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
+          <state>$PROJ_DIR$\iar_config_files\LPLD_K60DN512_FLASH.icf</state>
         </option>
         <option>
           <name>IlinkIcfFileSlave</name>
