@@ -4,8 +4,8 @@ imgcol=77;
 algrow=150;
 algcol=150;
 source=frame;
-fps=20;
-start=500;
+fps=10;
+start=900;
 
 %% Set up the figures
 InitializeFigures;
@@ -18,6 +18,13 @@ for i=start:size(source,3)
     
     %Load A Frame
     img=source(:,:,i);
+    
+    %Preprocess A Frame
+    for i=2:imgrow
+        if any(img(i,end-20:end)'<10)
+            img(i,:)=img(i-1,:);
+        end
+    end
     
     %Apply Algorithms.
     [out algdir algspd]=alg(img);
