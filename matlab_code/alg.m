@@ -202,9 +202,13 @@ try
         y0=-C(2)/2;
         r=sqrt(-C(3)+x0^2+y0^2);
         p=[0:2*pi/100:2*pi];
+        if(y0>tCarPosX)
+            dr=-dr;
+        end
         r=r+dr;
         xx=r*cos(p)+x0;
         yy=r.*sin(p)+y0;
+
         for ii=1:length(x)
             out(x(ii)+50,y(ii)+30)=44;
         end
