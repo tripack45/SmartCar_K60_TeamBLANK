@@ -35,6 +35,7 @@ text(100,ypos,'ASPD:','Color','Black','Units','Pixels');
 
 tADir=text( 0   + offset,ypos,'000','Color','Black','Units','Pixels');
 tASpd=text( 100 + offset,ypos,'000','Color','Black','Units','Pixels');
+tACode=text( 200 + offset,ypos,'000','Color','Black','Units','Pixels');
 
 text(-200,ypos,'Frame:','Color','Black','Units','Pixels');
 tFrame=text(-200 + 50,ypos,'000','Color','Black','Units','Pixels');

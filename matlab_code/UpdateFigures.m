@@ -7,6 +7,7 @@ set(tTch,'String',num2str(tacho));
 set(imalg,'CData',out);
 set(tADir,'String',num2str(algdir));
 set(tASpd,'String',num2str(algspd));
+set(tACode,'String',num2str(code));
 
 
 %Draw the image
