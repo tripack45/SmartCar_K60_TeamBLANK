@@ -18,29 +18,29 @@
 
 // ===== Global Variables =====
 
-extern U16 data[DATA_NUM];
+extern U16 flashData[DATA_NUM];
 
   // data[0] is reserved. 
   // Every time writting to the Flash, data_flag is set to 1.
   // So when it's not 1, it means the Flash lose its datas.
-#define data_flag                   data[0]
+#define data_flag                   (flashData[ 0])
 
   // define aliases for your datas ( Here's mine for example)
-#define KF_switch                   data[1]
-#define balance_deform              data[2]
-#define balance_K                   data[3]
-#define balance_P                   data[4]
-#define balance_D                   data[5]
-#define balance_dt                  data[6]
-#define accZ_offset                 data[7]
-#define P_speed                     data[8]
-#define D_speed                     data[9]
-#define PWM_DZL                     data[10]
-#define PWM_DZR                     data[11]
-#define wheel_P                     data[12]
-#define wheel_I                     data[13]
-#define wheel_D                     data[14]
-#define I_speed                     data[15]
+#define KF_switch                   (flashData[ 1])
+#define balance_deform              (flashData[ 2])
+#define balance_K                   (flashData[ 3])
+#define balance_P                   (flashData[ 4])
+#define balance_D                   (flashData[ 5])
+#define balance_dt                  (flashData[ 6])
+#define accZ_offset                 (flashData[ 7])
+#define P_speed                     (flashData[ 8])
+#define D_speed                     (flashData[ 9])
+#define PWM_DZL                     (flashData[10])
+#define PWM_DZR                     (flashData[11])
+#define wheel_P                     (flashData[12])
+#define wheel_I                     (flashData[13])
+#define SAVE_VAR                    (flashData[14])
+#define TESTDATA                    (flashData[15])
 
 
 // ======= APIs =======

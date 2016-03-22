@@ -35,7 +35,9 @@ void PIT1_IRQHandler(){
     
   if(SW1())
     UI_SystemInfo();
-    
+  else 
+    UI_Debug();
+  
   //------------ Other -------------
   
   pit1_time_tmp = pit1_time_tmp - PIT2_VAL();
@@ -107,37 +109,6 @@ void PIT0_IRQHandler(){
 #endif
   
   
-  
-  // -------- Sensor Algorithm --------- ( Users need to realize this )
-  
-  // mag example : dir_error = Mag_Algorithm(mag_val);
-  // ccd example : dir_error = CCD_Algorithm(ccd1_line,ccd2_line);
-  // cam is complex. realize it in Cam_Algorithm() in Cam.c
-  
-  //-------- Controller --------
-  
-  
-  // not balance example : dir_output = Dir_PIDController(dir_error);
-  // example : get 'motorL_output' and  'motorR_output'
-  
-  
-  // ------- Output -----
-  
-  
-  // not balance example : Servo_Output(dir_output);  
-  // example : MotorL_Output(motorL_output); MotorR_Output(motorR_output);
-  
-  
-  
-  // ------- UART ---------
-  
-  
-  //UART_SendDataHead();
-  //UART_SendData(battery);
-  
-  
-  
-  // ------- other --------
   
   pit0_time = pit0_time - PIT2_VAL();
   pit0_time = pit0_time / (g_bus_clock/1000000); //us

@@ -26,5 +26,6 @@
 #include "HW_USB.h"
 #include "USB_callback.h"
 #include "algorithm.h"
+#include "Debug.h"
 
 #include <arm_itm.h>
