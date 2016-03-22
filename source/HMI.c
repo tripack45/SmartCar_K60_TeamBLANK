@@ -47,12 +47,14 @@ void LED2(u8 x){
 void LED2_Tog(){
   PTA->PTOR |= 1<<7;
 }
+
 void LED1(u8 x){
   if(x)
     PTA->PSOR |= 1<<6;
   else
     PTA->PCOR |= 1<<6;
 }
+
 void LED1_Tog(){
   PTA->PTOR |= 1<<6;
 }

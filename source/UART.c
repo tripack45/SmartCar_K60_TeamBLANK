@@ -56,26 +56,15 @@ void UART3_IRQHandler(void){
 #ifdef UART_CMD
   CMD_Handler(tmp);
 #endif
-  LED2_Tog();
+  //LED2_Tog();
   return;
 }
 
-#ifdef UART_CMD
 void CMD_Handler(u8 cmd){
 #define PKG_LENGTH 5
 #define PKG_HEADER 0xAC
-#define CMDACK 0xA0
-#define CMDKILL 0xFF
-#define CMDSET_SPD 0xB0
-#define CMDSET_DIR 0xC0
-#define CMDFASTER 0xD1
-#define CMDSLOWER 0xD2
-#define CMDLEFT 0xD3
-#define CMDRIGHT 0xD4
-  
   static u8 cmdbuf[PKG_LENGTH]={0};
   static u8 curr=0;
-
   if(cmd==PKG_HEADER){
     curr=0;
   }else if(curr==0)
@@ -89,53 +78,15 @@ void CMD_Handler(u8 cmd){
     u8 sum=0;
     for(u8 i=0;i<PKG_LENGTH-1;i++)
       sum+=cmdbuf[i];
-      //validating checksum
+    //validating checksum
     if(sum == cmdbuf[PKG_LENGTH-1]){
       //checksum valid, Executing
-      int16 para=(uint16)((uint16)(cmdbuf[3]<<8)+(uint16)(cmdbuf[2]));
-      //int16 para= (int16)( ((u16)cmdbuf[2])<<8 + ((u16)cmdbuf[3]));
-      switch(cmdbuf[1]){
-      case CMDACK :
-        return;
-        
-      case CMDKILL :
-        //Emergency Stop
-        MotorL_Output(0);
-        Servo_Output(0);
-        for(int i=0;i<1000;i++)asm("NOP");
-        __disable_irq();
-        Oled_Clear();
-        Oled_Putstr(3,0,"SYSTEM DEADLOCK");
-        while(1);
-        return;
-        
-      case CMDSET_SPD :
-        return;
-      case CMDSET_DIR :
-        return;
-        
-      case CMDFASTER :
-        currspd+=5;
-        currspd= (currspd<MOTOR_MAX?currspd:MOTOR_MAX);
-        return;
-      case CMDSLOWER :
-        currspd-=5;
-        currspd= (currspd>0?currspd:0);      
-        return;
-      case CMDLEFT :
-        currdir-=40;
-        currdir= (currdir>0?currdir:0);
-        return;
-      case CMDRIGHT :
-        currdir+=40;
-        currdir= (currdir<2*SERVO_MAX ?currdir:2*SERVO_MAX);
-        return;
-      }
+      ExecuteDebugCommand(cmdbuf[1],cmdbuf+2);
     }
+    return;
   }
-  return;
 }
-#endif
+
 
 // ----- Basic Functions -----
 
