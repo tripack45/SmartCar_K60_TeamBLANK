@@ -40,6 +40,7 @@ void Servo_Output(s16 x){
 }
 
 void MotorL_Output(s16 x){
+  x=-x;
   if(x>MOTOR_MAX) x=MOTOR_MAX;
   if(x<-MOTOR_MAX) x=-MOTOR_MAX;
   if(x<0){
@@ -74,7 +75,6 @@ void MotorR_Output(s16 x){
 }
 
 void MotorL_Enable(u8 x){
-  x=-x;
   if(x)
     PTD->PSOR |= 1<<2;
   else
