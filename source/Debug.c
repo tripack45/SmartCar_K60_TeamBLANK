@@ -3,7 +3,7 @@
 #define GET_INT16_FROM_UINT8(x,y) ((int16)(uint16)((uint16)(x<<8)+(uint16)(y)))
 
 
-int16* varAddr=(void*)NULL;
+int16* varAddr=(void*)&currspd;
 
 //Debug Menu
 u8 varEdit=15; u8 isEditing=0;
@@ -86,7 +86,7 @@ const char* varName[]=
                "6  NONE",             //Flash[6]
                "7  NONE",             //Flash[7]
                "8  NONE",             //Flash[8]
-               "9  NONE",             //Flash[9]
+               "9  SLBOND",            //Flash[9]
                "10 SpdPd_I",          //Flash[10]
                "11 EXP_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]

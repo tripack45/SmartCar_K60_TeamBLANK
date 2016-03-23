@@ -35,7 +35,7 @@ typedef struct GuideGeneratorConf{
 }GuideGenerator;
 
 #define DANGERZONE 60
-#define SLOWBOUND  20
+#define SLOWBOUND  F_SLOWBOUND
 typedef struct DirectionGeneratorConf{
   //===========INPUTS============
      //USES DGuidePos
@@ -63,7 +63,7 @@ typedef struct PowerGeneratorConf{
      //USES ifSpeedUp
   //===========OUTPUTS===========
      //Returns currspd
-  u8 NOTHING;
+     u8 doubleSpeedSen;
 }PowerGenerator;
 
 

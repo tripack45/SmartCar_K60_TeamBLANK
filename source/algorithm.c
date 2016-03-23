@@ -5,6 +5,7 @@ GuideGenerator guide_generator;
 DirectionPID dir_pid;
 MotorPID motor_pid;
 DirectionGenerator direction_generator;
+PowerGenerator power_generator;
 
 void DetectBoundary(){
   u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
@@ -127,10 +128,10 @@ s16 Dir_PID(s16 position){
 
 void MotorCtrl(void){
   if (direction_generator.ifSpeedUp){
-    currspd=30;
+    power_generator.doubleSpeedSen=3;
   }
   else{
-    currspd=20;
+    power_generator.doubleSpeedSen=2;
   }
 }
             
