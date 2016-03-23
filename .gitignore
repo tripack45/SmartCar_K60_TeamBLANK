@@ -91,8 +91,7 @@ BOOT/*
 settings/framework2016.wspos
 settings/framework2016.wsdt
 *.wspos
-settings/framework2016.wsdt
 *.mat
 *.asv
-framework2016_K60.dep
 *.tmp
+*.dep

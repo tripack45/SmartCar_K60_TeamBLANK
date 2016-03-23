@@ -75,6 +75,7 @@ void MotorR_Output(s16 x){
 }
 
 void MotorL_Enable(u8 x){
+  x=-x;
   if(x)
     PTD->PSOR |= 1<<2;
   else
