@@ -26,7 +26,7 @@ extern U16 flashData[DATA_NUM];
 #define data_flag                   (flashData[ 0])
 
   // define aliases for your datas ( Here's mine for example)
-#define KF_switch                   (flashData[ 1])
+#define NONE1                       (flashData[ 1])
 #define balance_deform              (flashData[ 2])
 #define balance_K                   (flashData[ 3])
 #define balance_P                   (flashData[ 4])
@@ -36,11 +36,11 @@ extern U16 flashData[DATA_NUM];
 #define P_speed                     (flashData[ 8])
 #define D_speed                     (flashData[ 9])
 #define PWM_DZL                     (flashData[10])
-#define PWM_DZR                     (flashData[11])
-#define wheel_P                     (flashData[12])
-#define wheel_I                     (flashData[13])
+#define F_SPDEXP_SEN                (flashData[11])
+#define F_SPDPID_P                  (flashData[12])
+#define F_SPDPID_D                  (flashData[13])
 #define SAVE_VAR                    (flashData[14])
-#define TESTDATA                    (flashData[15])
+#define STEPLENGTH                  (flashData[15])
 
 
 // ======= APIs =======

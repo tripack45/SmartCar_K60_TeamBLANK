@@ -19,14 +19,14 @@ U16 data_initial[DATA_NUM]={
   85,	        //balance D
   95,	        //balance dt
   1635,	        //acc offset
-  40,            //P speed
-  10,            //D speed
+  40,           //P speed
+  10,           //D speed
   75,           //pwm deadzone left
-  70,           //pwm deadzone right
-  1,            //wheel p
-  1,            //wheel i
+  10,           //Speed Sensitivity 
+  30,           //Spped PD_P
+  100,          //Speed PD_D
   25,           // SAVE_VAR
-  15,           // TESTDATA
+  1,            // STEPLENGTH
 };
 
 

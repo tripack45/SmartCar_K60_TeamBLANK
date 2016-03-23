@@ -188,7 +188,7 @@ void Cam_Init(){
   PORTC->PCR[11] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
   
   NVIC_EnableIRQ(PORTC_IRQn);
-  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
+  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 0, 1));
   
   // --- AD ---
   

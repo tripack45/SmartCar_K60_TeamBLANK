@@ -28,4 +28,9 @@ void LoadVariable();
 void SaveVariable();
 
 void UI_Debug();
+
+void DebugKeyPress1();
+void DebugKeyPress2();
+void DebugKeyPress3();
+
 #endif
