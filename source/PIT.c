@@ -33,11 +33,15 @@ void PIT1_IRQHandler(){
   
   Bell_Service();
     
-  if(SW1())
+  if(SW1()){
+    if(isDebugging)Oled_Clear();
+    isDebugging=0;
     UI_SystemInfo();
-  else 
+  }else{ 
+    if(!isDebugging)Oled_Clear();
+    isDebugging=1;
     UI_Debug();
-  
+  }
   //------------ Other -------------
   
   pit1_time_tmp = pit1_time_tmp - PIT2_VAL();
@@ -80,9 +84,13 @@ void PIT0_IRQHandler(){
   // UI operation input
   ui_operation_cnt += tacho0;  // use tacho0 or tacho1
   
-  //Servo_Output(currdir);
-  //MotorL_Output( Speed_PID(currspd) );
-    
+  if(!isDebugging){
+    Servo_Output(currdir);
+    MotorL_Output( Speed_PID(currspd) );
+  }else{
+    Servo_Output(0);
+    MotorL_Output(0);
+  }
   
 #if (CAR_TYPE==0)   // Magnet and Balance
   
