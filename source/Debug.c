@@ -4,10 +4,10 @@
 
 
 int16* varAddr=(void*)NULL;
+u8 isDebugging=0;
 
 //Debug Menu
-u8 varEdit=15; u8 isEditing=0;
-
+u8 varEdit=14; u8 isEditing=0;
 
 void Debug_Init(){
   //Load the saved value into the position
@@ -39,7 +39,7 @@ void ExecuteDebugCommand(u8 CmdNumber, u8* para){
     SAVE_VAR=*varAddr;
     return;
   case CMDVARMINUS:
-    if(varAdd==NULL)return;
+    if(varAddr==NULL)return;
     *varAddr=SAVE_VAR;
     (*varAddr)-=5;
     SAVE_VAR=*varAddr;

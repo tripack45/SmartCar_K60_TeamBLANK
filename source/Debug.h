@@ -14,9 +14,7 @@
 #define CMDVARMINUS 0xC2
 #define CMDSAVEPARA 0xCF
 
-#define SPD_FLASH_INDEX 1
-#define DIR_FLASH_INDEX 3
-#define END_FLASH_INDEX 13
+extern u8 isDebugging;
 
 void Debug_Init();
 
