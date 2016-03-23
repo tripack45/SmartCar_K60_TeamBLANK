@@ -39,7 +39,7 @@ void ExecuteDebugCommand(u8 CmdNumber, u8* para){
     SAVE_VAR=*varAddr;
     return;
   case CMDVARMINUS:
-    if(varAdd==NULL)return;
+    if(varAddr==NULL)return;
     *varAddr=SAVE_VAR;
     (*varAddr)-=5;
     SAVE_VAR=*varAddr;
