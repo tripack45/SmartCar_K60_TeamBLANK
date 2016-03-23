@@ -5,6 +5,10 @@
 
 int16* varAddr=(void*)&currspd;
 
+//Debug Menu
+u8 varEdit=15; u8 isEditing=0;
+
+
 void Debug_Init(){
   //Load the saved value into the position
   LoadVariable();
@@ -38,6 +42,7 @@ void ExecuteDebugCommand(u8 CmdNumber, u8* para){
     (*varAddr)-=5;
     SAVE_VAR=*varAddr;
     return;
+  
   case CMDSAVEPARA:
     SaveVariable();
     return;
@@ -67,13 +72,79 @@ void SaveVariable(){
     Flash_Write(0);
 }
 
+const char* varName[]=
+              {"0  RESERVE",           //Flash[0]
+               "1  NONE",             //Flash[1]
+               "2  NONE",             //Flash[2]
+               "3  NONE",             //Flash[3]
+               "4  NONE",             //Flash[4]
+               "5  NONE",             //Flash[5]
+               "6  NONE",             //Flash[6]
+               "7  NONE",             //Flash[7]
+               "8  NONE",             //Flash[8]
+               "9  NONE",             //Flash[9]
+               "10 NONE",             //Flash[10]
+               "11 NONE",             //Flash[11]
+               "12 NONE",             //Flash[12]
+               "13 NONE",             //Flash[13]
+               "14 USRVAR",           //Flash[14] 
+               "15 STEPLEN"};         //Flash[15]   
+
+
+void DebugKeyPress1(){
+  if(isEditing){
+    if(varEdit==14){//User Variable
+      ExecuteDebugCommand(CMDVARPLUS,NULL);
+      return;
+    }
+    if(varEdit==15){
+      STEPLENGTH++;
+      return;
+    }
+    flashData[varEdit]+=STEPLENGTH;
+  }else
+    varEdit=(varEdit+1)&0x0f;
+}
+
+void DebugKeyPress2(){
+  if(isEditing){ 
+    if(varEdit==14){//User Variable
+      ExecuteDebugCommand(CMDVARMINUS,NULL);
+      return;
+    }
+    if(varEdit==15){
+      STEPLENGTH--;
+      return;
+    }
+    flashData[varEdit]-=STEPLENGTH;
+  }
+  else
+    varEdit=(varEdit-1)&0x000f;
+  
+}
+
+void DebugKeyPress3(){
+  if(isEditing)
+    ExecuteDebugCommand(CMDSAVEPARA,NULL);
+  isEditing=1-isEditing;
+}
+
 void UI_Debug(){
-   Oled_Putstr(2,0,"Select:");    Oled_Putnum(2,11,5);
-   Oled_Putstr(3,0,"4 NONE"); Oled_Putnum(3,11,0);
-   Oled_Putstr(4,0,"2 SAVEVAR"); Oled_Putnum(4,11,SAVE_VAR);
-   Oled_Putstr(5,0,"3 CURRDIR"); Oled_Putnum(5,11,currdir);
-   Oled_Putstr(6,0,"4 CURRSPD"); Oled_Putnum(6,11,currspd);
-   Oled_Putstr(7,0,"5 USR_VAR"); Oled_Putnum(7,11,*varAddr);
-   Oled_Putstr(1,0,"Prs Key3 to Save");
+  if(isEditing){
+    Oled_Putstr(1,0,"Editing:   ");
+  }
+  else{
+    Oled_Putstr(1,0,"Select Var ");
+  }
+  Oled_Putnum(1,11,varEdit);
+  
+  Oled_Putstr(3,0,"NONE"); Oled_Putnum(3,11,0);
+  Oled_Putstr(4,0,"USERVAR"); Oled_Putnum(4,11,*varAddr);
+  Oled_Putstr(5,0,"CURRDIR"); Oled_Putnum(5,11,currdir);
+  Oled_Putstr(6,0,"CURRSPD"); Oled_Putnum(6,11,currspd);
+  
+  Oled_Putstr(7,0,"           ");
+  Oled_Putstr(7,0,(u8*)(varName[varEdit]));
+  Oled_Putnum(7,11,flashData[varEdit]);
 }
 

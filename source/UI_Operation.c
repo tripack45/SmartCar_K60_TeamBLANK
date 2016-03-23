@@ -56,16 +56,16 @@ void Key3_Read();
 // triggered when Keyn rises after push with no spin of tacho.
 
 void Key1_Rise_Func(){
-  ExecuteDebugCommand(CMDVARPLUS,NULL);
+  DebugKeyPress1();
 }
 
 void Key2_Rise_Func(){
-  ExecuteDebugCommand(CMDVARMINUS,NULL);
+  DebugKeyPress2();
 }
 
 void Key3_Rise_Func(){   
   Bell_Request(3); 
-  ExecuteDebugCommand(CMDSAVEPARA,NULL);
+  DebugKeyPress3();
 }
 
   // --- Spin_Func ---
