@@ -69,14 +69,15 @@ typedef struct PowerGeneratorConf{
 }PowerGenerator;
 
 
-#define MOTOR_PID_P 10         //SPEED_KI
-#define MOTOR_PID_I 0          
-#define MOTOR_PID_D 30         //SPEED_KP
-#define MOTOR_PID_SENSITIVITY 1
-#define TACHO_SENSITIVITY 2
+#define EXP_SEN               F_SPDEXP_SEN
+#define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
+#define MOTOR_PID_I           F_SPDPID_I
+#define MOTOR_PID_D           F_SPDPID_D     //SPEED_KP
+#define MOTOR_PID_SENSITIVITY 7
+#define TACHO_SENSITIVITY 1
 #define MOTOR_DEAD_RUN 320
 #define MOTOR_DEAD_REST 400
-#define SPEED_MAX (MOTOR_MAX- MOTOR_DEAD_RUN)
+#define SPEED_MAX 700
 typedef struct MotorPIDConf{
   //===========INPUTS============
    //USES ExpectSpeed
