@@ -84,9 +84,9 @@ const char* varName[]=
                "8  NONE",             //Flash[8]
                "9  NONE",             //Flash[9]
                "10 NONE",             //Flash[10]
-               "11 NONE",             //Flash[11]
-               "12 NONE",             //Flash[12]
-               "13 NONE",             //Flash[13]
+               "11 EXP_SEN",             //Flash[11]
+               "12 SpdPd_P",             //Flash[12]
+               "13 SpdPd_D",             //Flash[13]
                "14 USRVAR",           //Flash[14] 
                "15 STEPLEN"};         //Flash[15]   
 
