@@ -33,13 +33,18 @@ disp('Preparing to buffer')
 
 
 %% Graphic Initializations
-InitialzieFigures;
+InitializeFigures;
 set(h,'KeyPressFcn',@keyboard_callback);
 
 %%
 
 disp('Recieving');
 b_buffer=[];
+imglog=[];
+dirlog=[];
+spdlog=[];
+tacholog=[];
+
 while 1
     if length(b_buffer)>3*imgcol*imgrow
         b_buffer=[];

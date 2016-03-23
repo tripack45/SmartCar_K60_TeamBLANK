@@ -8,7 +8,7 @@ License : MIT
 
 // ===== Global Variables =====
 
-U16 data[DATA_NUM];
+U16 flashData[DATA_NUM];
 
 U16 data_initial[DATA_NUM]={
   1,	        //data flag
@@ -19,14 +19,14 @@ U16 data_initial[DATA_NUM]={
   85,	        //balance D
   95,	        //balance dt
   1635,	        //acc offset
-  40,            //P speed
-  10,            //D speed
-  75,           //pwm deadzone left
-  70,           //pwm deadzone right
-  1,            //wheel p
-  1,            //wheel i
-  0,            //wheel d
-  15,           // I speed
+  40,           //P speed
+  10,           //D speed
+  10,           //Spped PD_I
+  10,           //Speed Sensitivity 
+  30,           //Spped PD_P
+  100,          //Speed PD_D
+  25,           // SAVE_VAR
+  1,            // STEPLENGTH
 };
 
 
@@ -39,7 +39,7 @@ void Flash_Write(U16 sector){
   U32 addr = ADDR + sector*SECTOR_SIZE;
   __disable_irq();
   Flash_Erase(sector);
-  Flash_Program(sector,DATA_NUM,data);
+  Flash_Program(sector,DATA_NUM,flashData);
   __enable_irq();
 }
 
@@ -53,14 +53,14 @@ U16 Flash_Read(U16 sector,U16 data_index){
 void Flash_Data_Update(U16 sector){
   U8 i;
   for(i=0;i<DATA_NUM;i++){
-    data[i] = Flash_Read(sector,i);
+    flashData[i] = Flash_Read(sector,i);
   }
 }
 
 void Flash_Data_Reset(void){
   U16 i;
   for(i=0;i<DATA_NUM;i++){
-    data[i] = data_initial[i];
+    flashData[i] = data_initial[i];
   }
   Flash_Write(0);
 }

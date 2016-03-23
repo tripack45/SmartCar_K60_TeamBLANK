@@ -2886,6 +2886,12 @@
       <name>$PROJ_DIR$\source\CCD.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\source\Debug.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Debug.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\source\Flash.c</name>
     </file>
     <file>

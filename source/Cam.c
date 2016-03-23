@@ -115,8 +115,7 @@ void Cam_Algorithm(){
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
   DetectBoundary();
-  DirCtrl();
-  LED1_Tog(); 
+  DirCtrl(); 
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;
@@ -189,8 +188,7 @@ void Cam_Init(){
   PORTC->PCR[11] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
   
   NVIC_EnableIRQ(PORTC_IRQn);
-  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
-  
+  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 0, 1));
   
   // --- AD ---
   
@@ -295,8 +293,6 @@ void DMA1_IRQHandler(){
                                IMG_ROWS * VALID_COLS 
                                + EXTRA_INFO_SIZE
                                + 2 * SIG_SIZE );
-  LED2_Tog();
-  //TICK();
 }
 #endif
 
@@ -319,14 +315,11 @@ void cam_usb(){
       sending_buffer=buffer_ptr[t]-SIG_SIZE;
       
       sending_frame_indicator=t;
-      
-      //DMA0->INT=DMA_INT_INT1_MASK;
-      //ITM_EVENT32(4, sending_frame);
       LPLD_USB_VirtualCom_Tx( sending_buffer,
                              IMG_ROWS * VALID_COLS
                                + EXTRA_INFO_SIZE 
                                  + 2 * SIG_SIZE );
-      LED2_Tog();
+      //LED2_Tog();
       //TICK();
     }
   }
