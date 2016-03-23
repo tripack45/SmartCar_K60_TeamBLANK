@@ -124,8 +124,7 @@ s16 Dir_PID(s16 position){
 u8 ExpectSpeed=boundary_detector.yaotui*2;
 if (g_bRAChecked) ExpectSpeed=40;
 }*/
-
-
+            
 s16 Speed_PID(u8 Expect){
   s16 Error,Speed,Power;
   Speed=tacho0*TACHO_SENSITIVITY;

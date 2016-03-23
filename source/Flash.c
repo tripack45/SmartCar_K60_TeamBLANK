@@ -26,7 +26,7 @@ U16 data_initial[DATA_NUM]={
   1,            //wheel p
   1,            //wheel i
   25,           // SAVE_VAR
-  15,           // TESTDATA
+  1,           // STEPLENGTH
 };
 
 
