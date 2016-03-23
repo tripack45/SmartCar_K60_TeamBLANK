@@ -3,7 +3,7 @@
 #define GET_INT16_FROM_UINT8(x,y) ((int16)(uint16)((uint16)(x<<8)+(uint16)(y)))
 
 
-int16* varAddr=(void*)&currspd;
+int16* varAddr=(void*)NULL;
 
 //Debug Menu
 u8 varEdit=15; u8 isEditing=0;
@@ -33,11 +33,13 @@ void ExecuteDebugCommand(u8 CmdNumber, u8* para){
     return;
 
   case CMDVARPLUS:
+    if(varAddr==NULL)return;
     *varAddr=SAVE_VAR;
     (*varAddr)+=5;
     SAVE_VAR=*varAddr;
     return;
   case CMDVARMINUS:
+    if(varAdd==NULL)return;
     *varAddr=SAVE_VAR;
     (*varAddr)-=5;
     SAVE_VAR=*varAddr;
@@ -64,10 +66,12 @@ void DebugDeadlock(){
 }
 
 void LoadVariable(){
+  if(varAddr!=NULL)
     (*varAddr)=SAVE_VAR;
 }
 
 void SaveVariable(){
+  if(varAddr!=NULL)
     SAVE_VAR=*varAddr;
     Flash_Write(0);
 }
@@ -83,10 +87,10 @@ const char* varName[]=
                "7  NONE",             //Flash[7]
                "8  NONE",             //Flash[8]
                "9  NONE",             //Flash[9]
-               "10 NONE",             //Flash[10]
-               "11 NONE",             //Flash[11]
-               "12 NONE",             //Flash[12]
-               "13 NONE",             //Flash[13]
+               "10 SpdPd_I",          //Flash[10]
+               "11 EXP_SEN",          //Flash[11]
+               "12 SpdPd_P",          //Flash[12]
+               "13 SpdPd_D",          //Flash[13]
                "14 USRVAR",           //Flash[14] 
                "15 STEPLEN"};         //Flash[15]   
 
