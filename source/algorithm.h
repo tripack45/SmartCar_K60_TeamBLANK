@@ -34,14 +34,16 @@ typedef struct GuideGeneratorConf{
   s16 DGuidePos;                 //g_nDirPos
 }GuideGenerator;
 
-#define DangerZone 60
+#define DANGERZONE 60
+#define SLOWBOUND  20
 typedef struct DirectionGeneratorConf{
   //===========INPUTS============
      //USES DGuidePos
   //===========OUTPUTS===========
      //Returns INPUT
-  u8 NOTHING;
-}DirectionGeneratior;
+     u8 ifSpeedUp;
+     u8 NOTHING;
+}DirectionGenerator;
 
 #define PID_P 20        //DIR_P
 #define PID_I 0         //DIR_I
@@ -58,9 +60,9 @@ typedef struct DirectionPIDConf{
 
 typedef struct PowerGeneratorConf{
   //===========INPUTS============
-     //USES yaotui
+     //USES ifSpeedUp
   //===========OUTPUTS===========
-     //Returns ExpectSpeed
+     //Returns currspd
   u8 NOTHING;
 }PowerGenerator;
 
@@ -92,6 +94,6 @@ void DirCtrl();
 void DetectBoundary();
 s16 Dir_PID(s16 position);
 s16 Speed_PID(u8 Expect);
-//void MotorCtrl()
+void MotorCtrl();
 
 #endif

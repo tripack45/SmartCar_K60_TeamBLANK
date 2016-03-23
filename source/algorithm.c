@@ -4,6 +4,7 @@ BoundaryDetector boundary_detector;
 GuideGenerator guide_generator;
 DirectionPID dir_pid;
 MotorPID motor_pid;
+DirectionGenerator direction_generator;
 
 void DetectBoundary(){
   u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
@@ -103,9 +104,13 @@ void DirCtrl(void){
     }
     
   }
-  if (nDenom!=0&& g_nDirPos-IMG_COLS<DangerZone ) g_nDirPos=nShift/nDenom;
+  if (nDenom!=0&& g_nDirPos-IMG_COLS<DANGERZONE ) g_nDirPos=nShift/nDenom;
   else g_nDirPos=g_nDirPos-IMG_COLS;
   currdir=10*g_nDirPos;
+  direction_generator.ifSpeedUp=0;
+  if (g_nDirPos<SLOWBOUND){
+    direction_generator.ifSpeedUp=1;
+  }
 }
 
 
@@ -120,10 +125,14 @@ s16 Dir_PID(s16 position){
 }
 
 
-/*void MotorCtrl(void){
-u8 ExpectSpeed=boundary_detector.yaotui*2;
-if (g_bRAChecked) ExpectSpeed=40;
-}*/
+void MotorCtrl(void){
+  if (direction_generator.ifSpeedUp){
+    currspd=30;
+  }
+  else{
+    currspd=20;
+  }
+}
             
 s16 Speed_PID(u8 Expect){
   s16 Error,Speed,Power;
