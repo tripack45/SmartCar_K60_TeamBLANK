@@ -28,7 +28,7 @@ for i=start:size(source,3)
     end
     
     %Apply Algorithms.
-    [out algdir algspd code]=alg(img);
+    [out algdir algspd]=alg(img);
     
     %Recall Logging Data
     dir=dirlog(i);
