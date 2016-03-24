@@ -15,7 +15,7 @@ axis manual;
 
 offset=40;
 ypos=475;
-global code;
+global endPoint;
 
 text(0,ypos,'DIR:','Color','Black','Units','Pixels');
 text(100,ypos,'SPD:','Color','Black','Units','Pixels');

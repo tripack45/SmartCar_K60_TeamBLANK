@@ -1,184 +1,232 @@
 function [graph,dir,spd] = alg(img_buffer)
 %% Setup
-global code;
+global endPoint;
 imgrow=size(img_buffer,1);
 imgcol=size(img_buffer,2);
 %img_buffer=CArray(img_buffer);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
-try
+img_buffer=uint8(img_buffer);
+ 
  %% Boundary Detection
     %constant
-    ABANDON=3;
-    MATLABZERO=1;
-    LBeginScan =ABANDON+MATLABZERO+1;
-    LEndScan = IMG_COLS / 2+MATLABZERO;
-    RBeginScan =IMG_COLS-ABANDON-1+MATLABZERO-1;
-    REndScan = IMG_COLS / 2+MATLABZERO;
-    BLACK_THRESHOLD=50;
-    WHITE_THRESHOLD=60;
-    START_LINE_WIDTH=10;
-    %0 is left; 1 is up; 2 is right; 3 is down;
+    TRUE              = int32(1);
+    FALSE             = int32(0);
+    DIS_ROW           = uint8(4);
+    DIS_COL           = uint8(3);
+    MZ                = uint8(1);
+    LBEGIN_SCAN       = uint8(DIS_COL);
+    LEND_SCAN         = uint8(IMG_COLS / 2);
+    WHITE_THRES       = int32(60);
+    START_LINE_HEIGHT = uint8(10);
+    BOUNDARY_LENGTH   = int32(300);
     
+    DIR_LEFT          = int32(0);
+    DIR_UP            = int32(1);
+    DIR_RIGHT         = int32(2);
+    DIR_DOWN          = int32(3);
     %input: rawframe
     %rawframe=f;
     %output: rBoundary
     %        lBoundary
-    Boundary=[];
-    LBoundary=[];
-    RBoundary=[];
-    code=[];
-    col = 0;
-    Cap = 0;
-    for (row =MATLABZERO+ IMG_ROWS-6:-1:MATLABZERO+ IMG_ROWS-6-START_LINE_WIDTH)
-        for col = LBeginScan:LEndScan
-            if( img_buffer(row,col) > WHITE_THRESHOLD...
-                    && img_buffer(row,col-1)<WHITE_THRESHOLD)
-                Boundary(MATLABZERO,:)= [row col];
-                Cap=1;
+    Boundary=uint8(zeros(BOUNDARY_LENGTH,2)); 
+    LBoundary=uint8(zeros(BOUNDARY_LENGTH,2)); 
+    RBoundary=uint8(zeros(BOUNDARY_LENGTH,2)); 
+    endPoint=uint8(zeros(8,1));
+    row  = uint8(0);
+    col  = uint8(0);
+    step = uint8(0);
+    currBoundaryPtr = uint8(0);
+    isCaptured = uint8(FALSE);
+    for (row = IMG_ROWS - 1 - DIS_ROW - 1: -1 :...
+            IMG_ROWS - 1 - DIS_ROW - 1 - START_LINE_HEIGHT) 
+        for (col = LBEGIN_SCAN : LEND_SCAN)
+            if (img_buffer(MZ + row, MZ + col) > WHITE_THRES...
+                    && img_buffer(MZ + row, MZ + col - 1) < WHITE_THRES...
+                    && img_buffer(MZ + row, MZ + col + 1) > WHITE_THRES)
+                Boundary(MZ + 0, MZ + 0) = row;
+                Boundary(MZ + 0, MZ + 1) = col;
+                isCaptured = TRUE;
                 break;
             end
         end
-        if (Cap)
-            break
+        if (isCaptured)
+            break;
         end
     end
-    if (Cap)
-        row=Boundary(MATLABZERO,1);
-        Num=MATLABZERO+1;
+    if (isCaptured)
+        row = Boundary(MZ + 0, MZ + 0);
+        col = Boundary(MZ + 0, MZ + 1);
+        currBoundaryPtr = currBoundaryPtr + 1;
     else
-        row=MATLABZERO+ IMG_ROWS-6;
-        col= LBeginScan;
-        Num=MATLABZERO;
+        row = IMG_ROWS - 1 - DIS_ROW - 1 ;
+        col = LBEGIN_SCAN;
     end
-    lastDirection=1;
-    moveable=1;
-    movestep=0;
-    counter=0;
-    BFlag=zeros(4,1);
-    BFFlag=1;
-    oldNum=1;
-    aflag=1;
-    bflag=0;
-    while (moveable && row<MATLABZERO+IMG_ROWS-3 && movestep<300 )
-        %judge
-        if ((img_buffer(row,col+1)<WHITE_THRESHOLD...
-                || img_buffer(row,col-1)<WHITE_THRESHOLD...
-                || img_buffer(row+1,col)<WHITE_THRESHOLD...
-                || img_buffer(row-1,col)<WHITE_THRESHOLD)...
-                &&(img_buffer(row,col+1)> WHITE_THRESHOLD...
-                || img_buffer(row,col-1)> WHITE_THRESHOLD...
-                || img_buffer(row+1,col)> WHITE_THRESHOLD...
-                || img_buffer(row-1,col)> WHITE_THRESHOLD)...
-                )%need improvement
-            Boundary(Num,:)=[row col];
-            Num=Num+1;
-            if (bflag)
-                code(2*BFFlag-2+MATLABZERO)=guideLoc(Boundary(BFlag(BFFlag-1)+1,:));
-                bflag=0;
-            end
-            counter=0;
-        else
-            counter=counter+1;
-        end
+    
+    lastDirection         = uint8(DIR_UP);   
+    isMoveable            = uint8(TRUE);
+    stepCounter           = uint8(0);
+    uncapturedStepCounter = uint8(0);
+    sectionTail           = uint8(zeros(5,1));
+    sectionHead           = uint8(zeros(5,1));
+    sectionCounter        = uint8(1);
+    while (isMoveable && row < IMG_ROWS - DIS_ROW -1 && stepCounter < 255)
         
         %move
-        moveable=0;
-        for step=1:4
-            switch mod(lastDirection+step+2,4);
+        isMoveable = FALSE;
+        for (step = 0 : 3)
+            switch mod(lastDirection + step + 3 , 4);
                 case 0
-                    if (col>MATLABZERO+ABANDON+1 && img_buffer(row,col-1)> WHITE_THRESHOLD)
-                        moveable=1;
-                        col=col-1;
-                        lastDirection=0;
+                    if (col > DIS_COL && ...
+                        img_buffer(MZ + row, MZ + col - 1) > WHITE_THRES)
+                        isMoveable = 1;
+                        col = col - 1;
+                        lastDirection = 0;
                     end
                 case 1
-                    if (row>MATLABZERO+1 &&img_buffer(row-1,col)> WHITE_THRESHOLD)
-                        moveable=1;
-                        row=row-1;
-                        lastDirection=1;
+                    if (row > 1 && ...
+                        img_buffer(MZ + row - 1, MZ + col) > WHITE_THRES)
+                        isMoveable = 1;
+                        row = row - 1;
+                        lastDirection = 1;
                     end
                 case 2
-                    if (col<MATLABZERO+IMG_COLS-ABANDON-2 &&img_buffer(row,col+1)> WHITE_THRESHOLD)
-                        moveable=1;
-                        col=col+1;
-                        lastDirection=2;
+                    if (col < IMG_COLS - DIS_COL - 1 && ...
+                        img_buffer(MZ + row, MZ + col + 1)> WHITE_THRES)
+                        isMoveable = 1;
+                        col = col + 1;
+                        lastDirection = 2;
                     end
                 case 3
-                    if (row<MATLABZERO+IMG_ROWS-1 &&img_buffer(row+1,col)> WHITE_THRESHOLD)
-                        moveable=1;
-                        row=row+1;
-                        lastDirection=3;
+                    if (row < IMG_ROWS - DIS_ROW && ...
+                        img_buffer(MZ + row + 1, MZ + col)> WHITE_THRES)
+                        isMoveable = 1;
+                        row = row + 1;
+                        lastDirection = 3;
                     end
             end
-            if (moveable)
+            if (isMoveable)
                 break;
             end
         end
-        movestep=movestep+1;
-        if (aflag&&Num>1)
-            code(MATLABZERO)=guideLoc(Boundary(1,:));
-            aflag=0;
-            continue
+        
+        %{
+        % yaotui's walking alg
+        moveDirX=[-1,0,1,0];
+        moveDirY=[0,-1,0,1];
+        
+        isMoveable = FALSE;
+        for( step = 0 : 3 )
+           nextDir=mod(lastDirection + step + 3 , 4);
+           if(img_buffer(MZ+ row+ moveDirY(MZ + nextDir), ...
+                   MZ+col+moveDirX(MZ + nextDir))> WHITE_THRES ...
+               && col > DIS_COL && col < IMG_COLS - DIS_COL - 1 ...
+               && row > 1       && row < IMG_ROWS - DIS_ROW ...
+               )
+               isMoveable       = TRUE;
+               col              = col + moveDirX(MZ + nextDir);
+               row              = row + moveDirY(MZ + nextDir);
+               lastDirection    = nextDir;
+               break;
+           end
         end
-        if (Num~=oldNum&&~(moveable && row<MATLABZERO+IMG_ROWS-3 && movestep<300))
-            BFlag(BFFlag)=Num-1;
-            oldNum=Num;
-            code(2*BFFlag-1+MATLABZERO)=guideLoc(Boundary(BFlag(BFFlag)-1,:));
-            continue
+        %}
+        
+        stepCounter = stepCounter + 1;  
+        
+        %find out boundary
+        if (      (img_buffer(MZ + row    , MZ + col + 1) < WHITE_THRES...
+                || img_buffer(MZ + row    , MZ + col - 1) < WHITE_THRES...
+                || img_buffer(MZ + row + 1, MZ + col    ) < WHITE_THRES...
+                || img_buffer(MZ + row - 1, MZ + col    ) < WHITE_THRES)...
+                &&(img_buffer(MZ + row    , MZ + col + 1) > WHITE_THRES...
+                || img_buffer(MZ + row    , MZ + col - 1) > WHITE_THRES...
+                || img_buffer(MZ + row + 1, MZ + col    ) > WHITE_THRES...
+                || img_buffer(MZ + row - 1, MZ + col    ) > WHITE_THRES)...
+                )%need improvement
+            Boundary(MZ + currBoundaryPtr, MZ + 0) = row;
+            Boundary(MZ + currBoundaryPtr, MZ + 1) = col;
+            currBoundaryPtr = currBoundaryPtr + 1;
+            uncapturedStepCounter = 0;
+        else
+            uncapturedStepCounter = uncapturedStepCounter + 1;
         end
         
-        if (Num~=oldNum&& (col>=MATLABZERO+IMG_COLS-ABANDON-3|| row<=MATLABZERO+2 || col<=MATLABZERO+ABANDON+2)&&counter>3)
-             BFlag(BFFlag)=Num-1;
-            if (BFFlag==1&&BFlag(BFFlag)>0&&BFlag(BFFlag)<=20)
-                BFlag=zeros(4,1);
-                BFFlag=1;
-                oldNum=1;
-                Boundary=[];
-                code=[];
-                Num=1;
-                aflag=1;
-                continue
+        %divide the boundary
+        if ( sectionHead(MZ + sectionCounter - 1) ~= currBoundaryPtr ...
+                &&(((col ==  IMG_COLS - DIS_COL - 1  || row == 1 ...
+                || col == DIS_COL ) ...
+                && uncapturedStepCounter > 3) ...
+                || ~(isMoveable && row < IMG_ROWS - DIS_ROW -1 ...
+                && stepCounter < 255)) )
+            if (currBoundaryPtr -1 ...
+                    - sectionHead(MZ + sectionCounter - 1) > 0 ...
+                    && currBoundaryPtr -1 ...
+                    - sectionHead(MZ + sectionCounter - 1) < 20)
+                sectionHead(MZ + sectionCounter - 1) = currBoundaryPtr;
+            else
+                sectionTail(MZ + sectionCounter - 1) =...
+                    currBoundaryPtr - 1;
+                endPoint(MZ + 2 * (sectionCounter - 1)) =...
+                    guideLoc(Boundary(MZ + sectionTail(MZ + sectionCounter - 1),:));
+                endPoint(MZ + 2 * (sectionCounter - 1)+1) =...
+                    guideLoc(Boundary(MZ + sectionHead(MZ + sectionCounter - 1),:));
+                sectionCounter = sectionCounter +1;
+                sectionHead(MZ + sectionCounter - 1) = currBoundaryPtr;
             end
-            if (BFFlag>1&& BFlag(BFFlag)-BFlag(BFFlag-1)>0&&BFlag(BFFlag)-BFlag(BFFlag-1)<=20)
-               BFlag(BFFlag)=0;
-               Boundary((BFlag(BFFlag-1)+1):(Num-1),:)=[];
-               Num=BFlag(BFFlag-1)+1;
-               code(2*BFFlag-2+MATLABZERO)=[];
-               bflag=1;
-               continue
+        end
+        
+    end
+
+  % code for drawing convinience not for c  
+    
+    if (~isempty(Boundary))
+        switch sectionCounter
+            case 5
+            LBoundary = Boundary(MZ + sectionHead(1) :...
+                MZ + sectionTail(2),:);
+            RBoundary = Boundary(MZ + sectionHead(2) : ...
+                MZ + sectionTail(4), : );
+            case 4
+            endPoint(5:6)=0;
+            LBoundary=Boundary(MZ + sectionHead(1) : MZ + sectionTail(1),:);
+            RBoundary=Boundary(MZ + sectionHead(2) : MZ + sectionTail(2),:);
+            case 3
+            LBoundary=Boundary(MZ + sectionHead(1) : MZ + sectionTail(1),:);
+            RBoundary=Boundary(MZ + sectionHead(2) : MZ + sectionTail(2),:);
+            case 2
+            if (Boundary(MZ + sectionHead(1), MZ + 0)<Boundary(MZ + sectionTail(1),MZ + 0))
+                RBoundary=Boundary(MZ + sectionHead(1):sectionTail(1),:);
+            else
+                LBoundary=Boundary(MZ + sectionHead(1):sectionTail(1),:);
             end
-            oldNum=Num;
-            code(2*BFFlag-1+MATLABZERO)=guideLoc(Boundary(BFlag(BFFlag),:));
-            BFFlag=BFFlag+1;
-            bflag=1;
         end
     end
-    if (~isempty(Boundary))
-        if(BFlag(4))
-            LBoundary=Boundary(1:BFlag(2),:);
-            RBoundary=Boundary(BFlag(2)+1:end,:);
-        elseif(BFlag(3))
-            code(5:6)=[];
-            LBoundary=Boundary(1:BFlag(1),:);
-            RBoundary=Boundary(BFlag(1)+1:BFlag(2),:);
-        elseif (BFlag(2))
-            LBoundary=Boundary(1:BFlag(1),:);
-            RBoundary=Boundary(BFlag(1)+1:end,:);
-        elseif (BFlag(1))
-            if (Boundary(1,1)<Boundary(BFlag(1),1))
-                RBoundary=Boundary(:,:);
-            else
-                LBoundary=Boundary(:,:);
-            end
-        end
+    
+    if sum(LBoundary)>0
+        LBoundary=LBoundary+1;
+    else
+        LBoundary=[];
+    end
+    if sum(RBoundary)>0
+        RBoundary=RBoundary+1;
+    else
+        RBoundary=[];
+    end
+    
+
+    %%
+    if(length(LBoundary)>length(RBoundary))
+        newinput=LBoundary;
+    else
+        newinput=RBoundary;
     end
     
     %% Inverse Transerfering
     scale=70/50; % 70pts=50cm
     zrow=35; zcol=39; % zero on graph: (35,39);
-    lInput=LBoundary;
-    rInput=RBoundary;
+    lInput=double(LBoundary);
+    rInput=double(RBoundary);
     c1=-0.0104; c2=0.817;
     t=@(y)y/(c1*y+c2);
     it=@(y)c2*y/(1-c1*y);
@@ -322,37 +370,62 @@ try
             end
         end
     end
+    
+    %%
+    if(~isempty(newinput))
+        newx=newinput(1:5:length(newinput),1);
+        newy=newinput(1:5:length(newinput),2);
+        InnerThres=35;
+        inner=(newx(3)-newx(2))*(newx(2)-newx(1))+(newy(3)-newy(2))*(newy(2)-newy(1));
+        for ii=2:length(newx)-2
+            lastinner=inner;
+            inner=(newx(ii+2)-newx(ii+1))*(newx(ii+1)-newx(ii))+(newy(ii+2)-newy(ii+1))*(newy(ii+1)-newy(ii));
+            if (abs(inner-lastinner)>InnerThres)
+                out(1:3,1:3)=9;
+            end
+        end
+    end
+    
+    %%
+        
+    for ii=-1:1
+        for jj=-1:1
+            if(exist('x0')&&exist('y0'))
+               
+            if(x0+jj+50>0   && y0+ii+30>0 ...
+            && x0+jj+50<150 && y0+ii+30<150)
+                out(ceil(x0)+jj+50,ceil(y0)+ii+30)=9;
+            end
+            
+            end
+        end
+    end
+    
     graph=out;
     spd=0;
     dir=0;
     
     
-catch exception
-    disp(exception);
-    rethrow(exception);
-    graph=zeros(imgrow,imgcol);
-    spd=0;
-    dir=0;
-end
+
 
 end
 
-function code=guideLoc(point)
-MATLABZERO=1;
-ABANDON=3;
+function endPoint=guideLoc(point)
+MZ=1;
+DIS_COL=3;
 IMG_COLS=77;
 IMG_ROWS=67;
-code=0;
+endPoint=0;
 if (point(1)<IMG_ROWS/2)
-    code=code+4;
+    endPoint=endPoint+4;
 end
 if (point(2)>IMG_COLS/2)
-    code=code+2;
+    endPoint=endPoint+2;
 end
-if (point(2)>=MATLABZERO+IMG_COLS-ABANDON-3 || point(2)<=MATLABZERO+ABANDON+2)
-    code=code+2;
+if (point(2)>=MZ+IMG_COLS-DIS_COL-3 || point(2)<=MZ+DIS_COL+2)
+    endPoint=endPoint+2;
 else
-    code=code+1;
+    endPoint=endPoint+1;
 end
 end
 
