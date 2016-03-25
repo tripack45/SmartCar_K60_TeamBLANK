@@ -2,12 +2,12 @@
 
 #define GET_INT16_FROM_UINT8(x,y) ((int16)(uint16)((uint16)(x<<8)+(uint16)(y)))
 
-
 int16* varAddr=(void*)&currspd;
+u8 isDebugging=0;
+
 
 //Debug Menu
-u8 varEdit=15; u8 isEditing=0;
-
+u8 varEdit=14; u8 isEditing=0;
 
 void Debug_Init(){
   //Load the saved value into the position
