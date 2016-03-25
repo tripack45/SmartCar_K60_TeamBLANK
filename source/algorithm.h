@@ -89,6 +89,8 @@ extern BoundaryDetector boundary_detector;
 extern GuideGenerator guide_generator;
 extern DirectionPID dir_pid;
 extern MotorPID motor_pid;
+extern DirectionGenerator direction_generator;
+extern PowerGenerator power_generator;
 
 void DirCtrl();
 void DetectBoundary();
