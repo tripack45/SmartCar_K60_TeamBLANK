@@ -107,7 +107,7 @@ void DirCtrl(void){
   }
   if (nDenom!=0&& g_nDirPos-IMG_COLS<DANGERZONE ) g_nDirPos=nShift/nDenom;
   else g_nDirPos=g_nDirPos-IMG_COLS;
-  currdir=10*g_nDirPos;
+  currdir=DIR_SENSITIVITY*g_nDirPos;
   direction_generator.ifSpeedUp=0;
   if (g_nDirPos<SLOWBOUND){
     direction_generator.ifSpeedUp=1;
@@ -115,7 +115,7 @@ void DirCtrl(void){
 }
 
 
-s16 Dir_PID(s16 position){
+/*s16 Dir_PID(s16 position){
   s16 s16Tmp,g_nServoOut;
   s16Tmp=((s32)DIR_P*position+DIR_D*(position-dir_pid.LastDirection))/10;
   dir_pid.LastDirection=position;
@@ -123,15 +123,15 @@ s16 Dir_PID(s16 position){
   g_nServoOut=s16Tmp*(PID_SENSITIVITY);//-100~100
   return g_nServoOut;
   //if (g_bRAChecked) std::cout<<(s16)(s8)g_nServoOut<<std::endl;
-}
+}*/
 
 
 void MotorCtrl(void){
   if (direction_generator.ifSpeedUp){
-    power_generator.doubleSpeedSen=3;
+    power_generator.doubleSpeedSen=2;
   }
   else{
-    power_generator.doubleSpeedSen=2;
+    power_generator.doubleSpeedSen=3;
   }
 }
             

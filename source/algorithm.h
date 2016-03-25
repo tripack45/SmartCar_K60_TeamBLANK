@@ -48,7 +48,7 @@ typedef struct DirectionGeneratorConf{
 #define PID_P 20        //DIR_P
 #define PID_I 0         //DIR_I
 #define PID_D 100       //DIR_D
-#define PID_SENSITIVITY 3
+#define DIR_SENSITIVITY F_DIR_SENSITIVITY
 typedef struct DirectionPIDConf{
   //===========INPUTS==============
     //Uses DGuidePos

@@ -35,13 +35,13 @@ void ExecuteDebugCommand(u8 CmdNumber, u8* para){
   case CMDVARPLUS:
     if(varAddr==NULL)return;
     *varAddr=SAVE_VAR;
-    (*varAddr)+=5;
+    (*varAddr)+=1;
     SAVE_VAR=*varAddr;
     return;
   case CMDVARMINUS:
     if(varAddr==NULL)return;
     *varAddr=SAVE_VAR;
-    (*varAddr)-=5;
+    (*varAddr)-=1;
     SAVE_VAR=*varAddr;
     return;
   
@@ -85,8 +85,8 @@ const char* varName[]=
                "5  NONE",             //Flash[5]
                "6  NONE",             //Flash[6]
                "7  NONE",             //Flash[7]
-               "8  NONE",             //Flash[8]
-               "9  SLBOND",            //Flash[9]
+               "8  DIR_SEN",          //Flash[8]
+               "9  SLBOND",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
                "11 EXP_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]

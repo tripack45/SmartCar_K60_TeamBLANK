@@ -85,8 +85,8 @@ void PIT0_IRQHandler(){
   ui_operation_cnt += tacho0;  // use tacho0 or tacho1
   
   if(!isDebugging){
-  //Servo_Output(currdir);
-  //MotorL_Output( power_generator.doubleSpeedSen*Speed_PID(currspd)/2 );
+  Servo_Output(currdir);
+  MotorL_Output( Speed_PID(power_generator.doubleSpeedSen*currspd/2) );
   }else{
     Servo_Output(0);
     MotorL_Output(0);
