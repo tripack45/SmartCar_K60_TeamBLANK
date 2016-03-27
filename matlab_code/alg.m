@@ -71,57 +71,16 @@ img_buffer=uint8(img_buffer);
     sectionHead           = uint8(zeros(5,1));
     sectionCounter        = uint8(1);
     while (isMoveable && row < IMG_ROWS - DIS_ROW -1 && stepCounter < 255)
-        
-        %move
-        isMoveable = FALSE;
-        for (step = 0 : 3)
-            switch mod(lastDirection + step + 3 , 4);
-                case 0
-                    if (col > DIS_COL && ...
-                        img_buffer(MZ + row, MZ + col - 1) > WHITE_THRES)
-                        isMoveable = 1;
-                        col = col - 1;
-                        lastDirection = 0;
-                    end
-                case 1
-                    if (row > 1 && ...
-                        img_buffer(MZ + row - 1, MZ + col) > WHITE_THRES)
-                        isMoveable = 1;
-                        row = row - 1;
-                        lastDirection = 1;
-                    end
-                case 2
-                    if (col < IMG_COLS - DIS_COL - 1 && ...
-                        img_buffer(MZ + row, MZ + col + 1)> WHITE_THRES)
-                        isMoveable = 1;
-                        col = col + 1;
-                        lastDirection = 2;
-                    end
-                case 3
-                    if (row < IMG_ROWS - DIS_ROW && ...
-                        img_buffer(MZ + row + 1, MZ + col)> WHITE_THRES)
-                        isMoveable = 1;
-                        row = row + 1;
-                        lastDirection = 3;
-                    end
-            end
-            if (isMoveable)
-                break;
-            end
-        end
-        
-        %{
-        % yaotui's walking alg
         moveDirX=[-1,0,1,0];
         moveDirY=[0,-1,0,1];
-        
+        crit=[col > DIS_COL, row > 1, ...
+            col < IMG_COLS - DIS_COL - 1, row < IMG_ROWS - DIS_ROW];
         isMoveable = FALSE;
         for( step = 0 : 3 )
            nextDir=mod(lastDirection + step + 3 , 4);
            if(img_buffer(MZ+ row+ moveDirY(MZ + nextDir), ...
                    MZ+col+moveDirX(MZ + nextDir))> WHITE_THRES ...
-               && col > DIS_COL && col < IMG_COLS - DIS_COL - 1 ...
-               && row > 1       && row < IMG_ROWS - DIS_ROW ...
+               && crit(MZ+nextDir) ...
                )
                isMoveable       = TRUE;
                col              = col + moveDirX(MZ + nextDir);
@@ -130,10 +89,8 @@ img_buffer=uint8(img_buffer);
                break;
            end
         end
-        %}
-        
+
         stepCounter = stepCounter + 1;  
-        
         %find out boundary
         if (      (img_buffer(MZ + row    , MZ + col + 1) < WHITE_THRES...
                 || img_buffer(MZ + row    , MZ + col - 1) < WHITE_THRES...
@@ -161,7 +118,7 @@ img_buffer=uint8(img_buffer);
                 && stepCounter < 255)) )
             if (currBoundaryPtr -1 ...
                     - sectionHead(MZ + sectionCounter - 1) > 0 ...
-                    && currBoundaryPtr -1 ...
+                    && currBoundaryPtr - 1 ...
                     - sectionHead(MZ + sectionCounter - 1) < 20)
                 sectionHead(MZ + sectionCounter - 1) = currBoundaryPtr;
             else
@@ -224,23 +181,24 @@ img_buffer=uint8(img_buffer);
     
     %% Inverse Transerfering
     scale=70/50; % 70pts=50cm
-    zrow=35; zcol=39; % zero on graph: (35,39);
-    lInput=double(LBoundary);
-    rInput=double(RBoundary);
+    zrow=int32(35); zcol=int32(39); % zero on graph: (35,39);
+    lInput=LBoundary;
+    rInput=RBoundary;
     c1=-0.0104; c2=0.817;
     t=@(y)y/(c1*y+c2);
     it=@(y)c2*y/(1-c1*y);
-    inv_trans=@(y) it(y-zrow)*scale+zrow;
     
-    s50=@(x) 38+(70-38)/51*(x-3);
+    %inv_trans=@(y) it(y-zrow)*scale+zrow;
+    inv_trans=@(y) int32(c2*1000)*(y-zrow)*70/((1000-int32(1000*c1)*(y-zrow))*50)+zrow;
+    s50=@(x) 38+(70-38)*(int32(x)-3)/51;
     
     lResult=[];
     if(size(lInput,1)>5)
         for row=1:length(lInput)
             %result(row,1)=ceil(input(row,1));
-            lResult(row,1)=ceil(inv_trans(lInput(row,1)));
+            lResult(row,1)=inv_trans(int32(lInput(row,1)));
             %result(row,2)=ceil(input(row,2));
-            lResult(row,2)=ceil( (lInput(row,2)-zcol)/s50(lInput(row,1))*70+zcol);
+            lResult(row,2)=70*(int32(lInput(row,2))-zcol)/s50(lInput(row,1))+zcol;
         end
     end
     
@@ -248,16 +206,16 @@ img_buffer=uint8(img_buffer);
     if(size(rInput,1)>5)
         for row=1:length(rInput)
             %result(row,1)=ceil(input(row,1));
-            rResult(row,1)=ceil(inv_trans(rInput(row,1)));
+            rResult(row,1)=inv_trans(int32(rInput(row,1)));
             %result(row,2)=ceil(input(row,2));
-            rResult(row,2)=ceil( (rInput(row,2)-zcol)/s50(rInput(row,1))*70+zcol);
+            rResult(row,2)=70*(int32(rInput(row,2))-zcol)/s50(rInput(row,1))+zcol;
         end
     end
     
-    carPosY=65;
-    carPosX=30;
-    tCarPosY=ceil(inv_trans(carPosY));
-    tCarPosX=ceil( (carPosX-zcol)/ s50(carPosY) *70+zcol);
+    carPosY=int32(65);
+    carPosX=int32(30);
+    tCarPosY=inv_trans(carPosY);
+    tCarPosX=70*(carPosX-zcol)/ s50(carPosY)+zcol;
     
     %% Output to graph
     out=zeros(150,150)+57;
