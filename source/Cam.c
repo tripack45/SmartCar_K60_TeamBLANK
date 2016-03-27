@@ -134,7 +134,7 @@ void PORTC_IRQHandler(){
            //ITM_EVENT32(1, img_row);
            u8 errorFlag=0;
            if(img_row>1){ 
-             for(int i=IMG_COLS-1;i>IMG_COLS-15;i++){
+             for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
                if(loading_buffer[img_row-1][i]<10u){
                  errorFlag=1;
                }
