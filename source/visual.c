@@ -30,8 +30,9 @@
 u8 InversePerspectiveTransform(u8* xIn,u8* yIn, u8 size){
     u8* xOut=xIn;
     for(u8 i=0;i<size;i+=SAMPLE_RATE){
-        int32 numerator = PERSPECTIVE_SCALE * (xIn[i] - ORIGIN_X) * HEIGHT;
-        int32 denominator = TRAPZOID_UPPER + (TRAPZOID_LOWER = TRAPZOID_UPPER) * yIn[i];
+        int32 numerator = PERSPECTIVE_SCALE * (xIn - ORIGIN_X) * TRAPZOID_HEIGHT;
+        int32 denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  
+                + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn - 3);
         (*xOut)=numerator/denominator + ORIGIN_X;
         xOut ++; 
         numerator = PERSPECTIVE_SCALE* C2 * (yIn[i] - ORIGIN_Y);
