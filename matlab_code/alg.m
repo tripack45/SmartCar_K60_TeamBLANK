@@ -182,8 +182,8 @@ img_buffer=uint8(img_buffer);
     %% Inverse Transerfering
     scale=70/50; % 70pts=50cm
     zrow=int32(35); zcol=int32(39); % zero on graph: (35,39);
-    lInput=LBoundary;
-    rInput=RBoundary;
+    lInput=double(LBoundary);
+    rInput=double(RBoundary);
     c1=-0.0104; c2=0.817;
     t=@(y)y/(c1*y+c2);
     it=@(y)c2*y/(1-c1*y);
@@ -196,26 +196,25 @@ img_buffer=uint8(img_buffer);
     if(size(lInput,1)>5)
         for row=1:length(lInput)
             %result(row,1)=ceil(input(row,1));
-            lResult(row,1)=inv_trans(int32(lInput(row,1)));
-            %result(row,2)=ceil(input(row,2));
-            lResult(row,2)=70*(int32(lInput(row,2))-zcol)/s50(lInput(row,1))+zcol;
+            [lResult(row,2),lResult(row,1)]=  ...
+                InversePerspectiveTransform(lInput(row,2),lInput(row,1));
         end
+        lResult=ceil(lResult);
+        %disp(lResult);
     end
     
     rResult=[];
     if(size(rInput,1)>5)
         for row=1:length(rInput)
-            %result(row,1)=ceil(input(row,1));
-            rResult(row,1)=inv_trans(int32(rInput(row,1)));
-            %result(row,2)=ceil(input(row,2));
-            rResult(row,2)=70*(int32(rInput(row,2))-zcol)/s50(rInput(row,1))+zcol;
+            [rResult(row,2),rResult(row,1)]=  ...
+                InversePerspectiveTransform(rInput(row,2),rInput(row,1));
         end
+        rResult=ceil(rResult);
     end
     
     carPosY=int32(65);
     carPosX=int32(30);
-    tCarPosY=inv_trans(carPosY);
-    tCarPosX=70*(carPosX-zcol)/ s50(carPosY)+zcol;
+    [tCarPosX,tCarPosY]=InversePerspectiveTransform(30,65);
     
     %% Output to graph
     out=zeros(150,150)+57;
@@ -387,4 +386,40 @@ else
 end
 end
 
+function [xOut,yOut]=InversePerspectiveTransform(xIn,yIn)
+PERSPECTIVE_SCALE=70;
+REAL_WORLD_SCALE=50; %70pts==50cm
+%  * Transform: y'= y / (c1*y + c2 )
+%  * InverseTr: y = c2*y'/(1 - c1*y )
+%  * The frame of reference is at the center of the 
+%  * image, i.e. at (39,35)
+%  *   O ---------> x
+%  *    |
+%  *    |
+%  *    V y
+% */ 
+C1=-104;
+C2=8170; %// Scaled by 10000
+ORIGIN_X=39;
+ORIGIN_Y=35;
+TRAPZOID_HEIGHT=51;
+TRAPZOID_UPPER=38;
+TRAPZOID_LOWER=70;
+% /* Formula
+%    Standard_50(y')= Upeer + (Lower- Upper)* (y'-3) / Height
+%    x= PERSPECTIVE_SCALE * x' / Standard_50(y') 
+% */
+
+numerator = PERSPECTIVE_SCALE * (xIn - ORIGIN_X) * TRAPZOID_HEIGHT;
+denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  ...
+                + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn - 3);
+xOut=numerator/denominator + ORIGIN_X;
+
+numerator = PERSPECTIVE_SCALE * C2 * (yIn - ORIGIN_Y);
+denominator = REAL_WORLD_SCALE * (10000 - C1 * (yIn - ORIGIN_Y));
+yOut=numerator/denominator + ORIGIN_Y;
+
+xOut=ceil(xOut);
+yOut=ceil(yOut);
+end
 
