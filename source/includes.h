@@ -27,5 +27,6 @@
 #include "USB_callback.h"
 #include "algorithm.h"
 #include "Debug.h"
+#include "NewDetectBoundary.h"
 
 #include <arm_itm.h>
