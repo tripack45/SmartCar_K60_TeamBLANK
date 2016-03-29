@@ -5,6 +5,8 @@
 
 int16* varAddr=(void*)NULL;
 u8 isDebugging=0;
+int16 debugWatch[4]={0};
+
 
 //Debug Menu
 u8 varEdit=14; u8 isEditing=0;

@@ -15,6 +15,7 @@
 #define CMDSAVEPARA 0xCF
 
 extern u8 isDebugging;
+extern int16 debugWatch[4];
 
 void Debug_Init();
 
