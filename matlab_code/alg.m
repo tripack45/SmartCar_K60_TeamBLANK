@@ -361,9 +361,10 @@ img_buffer=uint8(img_buffer);
     graph=out;
     spd=0;
     dir=0;
-    
-    
-
+    if (~isempty(newinput))
+    disp(sum(newinput(:,1)))
+    disp(sum(newinput(:,2)))
+    end
 
 end
 
@@ -421,5 +422,7 @@ yOut=numerator/denominator + ORIGIN_Y;
 
 xOut=ceil(xOut);
 yOut=ceil(yOut);
+
+
 end
 

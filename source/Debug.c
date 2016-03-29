@@ -126,7 +126,6 @@ void DebugKeyPress2(){
   }
   else
     varEdit=(varEdit-1)&0x000f;
-  
 }
 
 void DebugKeyPress3(){
@@ -144,8 +143,8 @@ void UI_Debug(){
   }
   Oled_Putnum(1,11,varEdit);
   
-  Oled_Putstr(3,0,"NONE"); Oled_Putnum(3,11,0);
-  Oled_Putstr(4,0,"USERVAR"); Oled_Putnum(4,11,*varAddr);
+  Oled_Putstr(3,0,"DBG 0"); Oled_Putnum(3,11,debugWatch[0]);
+  Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
   Oled_Putstr(5,0,"CURRDIR"); Oled_Putnum(5,11,currdir);
   Oled_Putstr(6,0,"CURRSPD"); Oled_Putnum(6,11,currspd);
   

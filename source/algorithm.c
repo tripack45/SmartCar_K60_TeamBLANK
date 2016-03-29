@@ -27,12 +27,14 @@ void AlgorithmMain(){
         );
         length=RLength;
    }
-   debugWatch[0]=0;
-   debugWatch[1]=0;
+   s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
-        debugWatch[0] += boundaryX[i];
-        debugWatch[1] += boundaryY[i];
+        tx += boundaryX[i];
+        ty += boundaryY[i];
    }
+   
+   debugWatch[0]=tx;
+   debugWatch[1]=ty;
 }
 
 
