@@ -107,6 +107,9 @@ void Cam_Algorithm(){
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
   
+  AlgorithmMain();
+
+  
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+1]=((uint16)currspd)>>8;
@@ -114,8 +117,7 @@ void Cam_Algorithm(){
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+3]=((uint16)currdir)>>8;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
-  //DetectBoundary();
-  //DirCtrl(); 
+
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;

@@ -16,54 +16,7 @@
 #define WHITE_THRESHOLD 60
 #define ABANDON 2
 
-/*typedef struct BoundaryDectectorConf_Old{
-  uint8 LBound[IMG_ROWS+1]; //nCBLLPos
-  uint8 RBound[IMG_ROWS+1]; //nCBLRPos
-  uint8 yaotui; //Return a line number which indicates how long the middle line lasts
-}BoundaryDetector_Old;
-
-extern const u8 TrackWidth[IMG_ROWS];
-typedef struct GuideGeneratorConf{
-  //========INPUTS==========
-  uint8 LBoundaryFlag[IMG_ROWS]; //g_nLCap
-  uint8 RBoundaryFlag[IMG_ROWS]; //g_nRCap
-  //=======OUTPUS==========
-  s16 GuideLine[IMG_ROWS][1];     //GuideLine
-  s16 DGuidePos;                 //g_nDirPos
-}GuideGenerator;
-
-#define DANGERZONE 60
-#define SLOWBOUND  20
-typedef struct DirectionGeneratorConf{
-  //===========INPUTS============
-     //USES DGuidePos
-  //===========OUTPUTS===========
-     //Returns INPUT
-     u8 ifSpeedUp;
-     u8 NOTHING;
-}DirectionGenerator;
-
-#define PID_P 20        //DIR_P
-#define PID_I 0         //DIR_I
-#define PID_D 100       //DIR_D
-#define PID_SENSITIVITY 3
-typedef struct DirectionPIDConf{
-  //===========INPUTS==============
-    //Uses DGuidePos
-   s16 LastDirection;//nLastPostion
-  //=============OUTPUS=============
-    //Global Variable currdir
-  u8 NOTHING;
-}DirectionPID;*/
-
-/*typedef struct PowerGeneratorConf{
-  //===========INPUTS============
-     //USES ifSpeedUp
-  //===========OUTPUTS===========
-     //Returns currspd
-  u8 NOTHING;
-}PowerGenerator;*/
-
+void extern AlgorithmMain();
 
 #define EXP_SEN               F_SPDEXP_SEN
 #define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
@@ -153,7 +106,7 @@ void DetectBoundary();
 u8 GuideLoc(u8 pointrow,u8 pointcol);
 u8 InversePerspectiveTransform(u8* xIn,u8* yIn, u8 size);
 
-extern BoundaryDetector boundary_detector;
+extern BoundaryDetector boundaryDetector;
 
 
 

@@ -1,5 +1,5 @@
 #include "includes.h"
-BoundaryDetector boundary_detector;
+BoundaryDetector boundaryDetector;
 
 
 
@@ -36,8 +36,8 @@ void DetectBoundary(){
             if (img_buffer[MZ + row] [MZ + col] > WHITE_THRES
                     && img_buffer[MZ + row] [MZ + col - 1] < WHITE_THRES
                     && img_buffer[MZ + row] [MZ + col + 1] > WHITE_THRES){
-                boundary_detector.boundaryY [MZ + 0] = row;
-                boundary_detector.boundaryX [MZ + 0] = col;
+                boundaryDetector.boundaryY [MZ + 0] = row;
+                boundaryDetector.boundaryX [MZ + 0] = col;
                 isCaptured = TRUE;
                 break;
             }
@@ -47,8 +47,8 @@ void DetectBoundary(){
         }
     }
     if (isCaptured){
-        row = boundary_detector.boundaryY [MZ + 0] ;
-        col = boundary_detector.boundaryX [MZ + 0] ;
+        row = boundaryDetector.boundaryY [MZ + 0] ;
+        col = boundaryDetector.boundaryX [MZ + 0] ;
         currBoundaryPtr = currBoundaryPtr + 1;
     }else{
         row = IMG_ROWS - 1 - DIS_ROW - 1 ;
@@ -85,7 +85,7 @@ void DetectBoundary(){
         }
 
         stepCounter ++;
-        //find out boundary_detector.boundary
+        //find out boundaryDetector.boundary
         if (      (img_buffer[MZ + row    ] [MZ + col + 1] < WHITE_THRES
                 || img_buffer[MZ + row    ] [MZ + col - 1] < WHITE_THRES
                 || img_buffer[MZ + row + 1] [MZ + col    ] < WHITE_THRES
@@ -95,8 +95,8 @@ void DetectBoundary(){
                 || img_buffer[MZ + row + 1] [MZ + col    ] > WHITE_THRES
                 || img_buffer[MZ + row - 1] [MZ + col    ] > WHITE_THRES)
             ){//need improvement
-            boundary_detector.boundaryY [MZ + currBoundaryPtr] = row;
-            boundary_detector.boundaryX [MZ + currBoundaryPtr] = col;
+            boundaryDetector.boundaryY [MZ + currBoundaryPtr] = row;
+            boundaryDetector.boundaryX [MZ + currBoundaryPtr] = col;
             currBoundaryPtr ++;
             uncapturedStepCounter = 0;
         }else{
@@ -119,14 +119,14 @@ void DetectBoundary(){
                 sectionTail[MZ + sectionCounter - 1] =
                     currBoundaryPtr - 1;
                 endPoint[MZ + 2 * (sectionCounter - 1)] =
-                    GuideLoc(boundary_detector.boundaryY
+                    GuideLoc(boundaryDetector.boundaryY
                              [MZ + sectionTail[MZ + sectionCounter - 1]],
-                             boundary_detector.boundaryX
+                             boundaryDetector.boundaryX
                              [MZ + sectionTail[MZ + sectionCounter - 1]]);
                 endPoint[MZ + 2 * (sectionCounter - 1)+1] =
-                    GuideLoc(boundary_detector.boundaryY
+                    GuideLoc(boundaryDetector.boundaryY
                              [MZ + sectionHead[MZ + sectionCounter - 1]],
-                             boundary_detector.boundaryX
+                             boundaryDetector.boundaryX
                              [MZ + sectionHead[MZ + sectionCounter - 1]]);
                 sectionCounter ++;
                 sectionHead[MZ + sectionCounter - 1] = currBoundaryPtr;
@@ -136,46 +136,46 @@ void DetectBoundary(){
     }
     switch (sectionCounter){
     case 5: {
-      boundary_detector.LSectionHead = sectionHead[1];
-      boundary_detector.LSectionTail = sectionTail[2];  
-      boundary_detector.RSectionHead = sectionHead[3];  
-      boundary_detector.RSectionTail = sectionTail[4];  
+      boundaryDetector.LSectionHead = sectionHead[1];
+      boundaryDetector.LSectionTail = sectionTail[2];  
+      boundaryDetector.RSectionHead = sectionHead[3];  
+      boundaryDetector.RSectionTail = sectionTail[4];  
       break;
     }
     case 4: {
-      boundary_detector.LSectionHead = sectionHead[1];
-      boundary_detector.LSectionTail = sectionTail[1];  
-      boundary_detector.RSectionHead = sectionHead[2];  
-      boundary_detector.RSectionTail = sectionTail[2];  
+      boundaryDetector.LSectionHead = sectionHead[1];
+      boundaryDetector.LSectionTail = sectionTail[1];  
+      boundaryDetector.RSectionHead = sectionHead[2];  
+      boundaryDetector.RSectionTail = sectionTail[2];  
       break;
     }
     case 3: {
-      boundary_detector.LSectionHead = sectionHead[1];
-      boundary_detector.LSectionTail = sectionTail[1];  
-      boundary_detector.RSectionHead = sectionHead[2];  
-      boundary_detector.RSectionTail = sectionTail[2];  
+      boundaryDetector.LSectionHead = sectionHead[1];
+      boundaryDetector.LSectionTail = sectionTail[1];  
+      boundaryDetector.RSectionHead = sectionHead[2];  
+      boundaryDetector.RSectionTail = sectionTail[2];  
       break;
     }
     case 2: {
-      if (  boundary_detector.boundaryY[MZ + sectionHead[1]]  
-          < boundary_detector.boundaryY[MZ + sectionTail[1]] ){
-            boundary_detector.LSectionHead = 0;
-            boundary_detector.LSectionTail = 0;  
-            boundary_detector.RSectionHead = sectionHead[1];  
-            boundary_detector.RSectionTail = sectionTail[1]; 
+      if (  boundaryDetector.boundaryY[MZ + sectionHead[1]]  
+          < boundaryDetector.boundaryY[MZ + sectionTail[1]] ){
+            boundaryDetector.LSectionHead = 0;
+            boundaryDetector.LSectionTail = 0;  
+            boundaryDetector.RSectionHead = sectionHead[1];  
+            boundaryDetector.RSectionTail = sectionTail[1]; 
           }else{
-            boundary_detector.LSectionHead = sectionHead[1];
-            boundary_detector.LSectionTail = sectionTail[1];  
-            boundary_detector.RSectionHead = 0;  
-            boundary_detector.RSectionTail = 0; 
+            boundaryDetector.LSectionHead = sectionHead[1];
+            boundaryDetector.LSectionTail = sectionTail[1];  
+            boundaryDetector.RSectionHead = 0;  
+            boundaryDetector.RSectionTail = 0; 
           }
       break;
     }
     default :{
-      boundary_detector.LSectionHead = sectionHead[1];
-      boundary_detector.LSectionTail = sectionTail[1];  
-      boundary_detector.RSectionHead = sectionHead[2];  
-      boundary_detector.RSectionTail = sectionTail[2];
+      boundaryDetector.LSectionHead = sectionHead[1];
+      boundaryDetector.LSectionTail = sectionTail[1];  
+      boundaryDetector.RSectionHead = sectionHead[2];  
+      boundaryDetector.RSectionTail = sectionTail[2];
     }
     }
     
@@ -183,6 +183,10 @@ void DetectBoundary(){
 
 
 u8 GuideLoc(u8 pointrow,u8 pointcol){
+    return 1;
+}
+
+u8 uGuideLoc(u8 pointrow,u8 pointcol){
     u8 endPoint = 0;
     if (pointrow < IMG_ROWS / 2){ //maybe #define is better
         endPoint += 4;
