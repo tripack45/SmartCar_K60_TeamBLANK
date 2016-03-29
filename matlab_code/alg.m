@@ -175,8 +175,10 @@ img_buffer=uint8(img_buffer);
     %%
     if(length(LBoundary)>length(RBoundary))
         newinput=LBoundary;
+        side='left';
     else
         newinput=RBoundary;
+        side='right';
     end
     
     %% Inverse Transerfering
@@ -199,7 +201,7 @@ img_buffer=uint8(img_buffer);
             [lResult(row,2),lResult(row,1)]=  ...
                 InversePerspectiveTransform(lInput(row,2),lInput(row,1));
         end
-        lResult=ceil(lResult);
+  
         %disp(lResult);
     end
     
@@ -209,7 +211,7 @@ img_buffer=uint8(img_buffer);
             [rResult(row,2),rResult(row,1)]=  ...
                 InversePerspectiveTransform(rInput(row,2),rInput(row,1));
         end
-        rResult=ceil(rResult);
+
     end
     
     carPosY=int32(65);
@@ -222,15 +224,15 @@ img_buffer=uint8(img_buffer);
     %rBoundary=rBoundary+1;
     %guideLine=guideLine+1;
     for row=1:length(lResult);
-        out(lResult(row,1)+50,lResult(row,2)+30)=50;%9/44/50/55/65
+        out(lResult(row,1),lResult(row,2))=50;%9/44/50/55/65
     end
     for row=1:length(rResult);
-        out(rResult(row,1)+50,rResult(row,2)+30)=55;%50/55/65
+        out(rResult(row,1),rResult(row,2))=55;%50/55/65
     end
     
     for ii=-1:1
         for jj=-1:1
-            out(tCarPosY+jj+50,tCarPosX+ii+30)=9;
+            out(tCarPosY+jj,tCarPosX+ii)=9;
         end
     end
 
@@ -275,12 +277,12 @@ img_buffer=uint8(img_buffer);
         denom=n*sx2-sx^2;
         alpha=(n*sxy-sx*sy)/denom;
         beta=(sx2*sy-sx*sxy)/denom;
-        SquareResidue=sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx;
+        SquareResidue=floor(sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx);
         if (SquareResidue < SRThres)
-           for jj=0-50+1:150-50+1
+           for jj=0+1:150+1
               temp=ceil(alpha*jj+beta)+dr;
-              if (temp>=0-30+1 && temp<=150-30)
-                  out(jj+50,temp+30)=65;
+              if (temp>=0+1 && temp<=150)
+                  out(jj,temp)=65;
               end
            end
         else
@@ -296,10 +298,11 @@ img_buffer=uint8(img_buffer);
             sa8=sa6;
             sa9=sx2*sy2-sxy*sxy;
             C(1)=sa1*sb1+sa2*sb2+sa3*sb3;
-            C(1)=-C(1)/det;
             C(2)=sa4*sb1+sa5*sb2+sa6*sb3;
-            C(2)=-C(2)/det;
             C(3)=sa7*sb1+sa8*sb2+sa9*sb3;
+  %          disp(det);
+            C(1)=-C(1)/det;
+            C(2)=-C(2)/det;
             C(3)=-C(3)/det;
 %          A=[sum(x.*x) sum(y.*x) sum(x); 
 %          sum(x.*y) sum(y.*y) sum(y);
@@ -317,12 +320,12 @@ img_buffer=uint8(img_buffer);
             xx=r*cos(p)+x0;
             yy=r.*sin(p)+y0;
             for ii=1:length(x)
-               out(x(ii)+50,y(ii)+30)=44;
+               out(x(ii),y(ii))=44;
             end
             for row=1:length(xx)
-                if (0-50+1<xx(row)+1 && xx(row)<150-50 ...
-                    && 0-30+1<yy(row) && yy(row)<150-30+1)
-                    out(ceil(xx(row))+50 ,ceil(yy(row))+30)=65;
+                if (0+1<xx(row)+1 && xx(row)<150 ...
+                    && 0+1<yy(row) && yy(row)<150+1)
+                    out(ceil(xx(row)) ,ceil(yy(row)))=65;
                 end
             end
         end
@@ -349,9 +352,9 @@ img_buffer=uint8(img_buffer);
         for jj=-1:1
             if(exist('x0')&&exist('y0'))
                
-            if(x0+jj+50>0   && y0+ii+30>0 ...
-            && x0+jj+50<150 && y0+ii+30<150)
-                out(ceil(x0)+jj+50,ceil(y0)+ii+30)=9;
+            if(x0+jj>0   && y0+ii>0 ...
+            && x0+jj<150 && y0+ii<150)
+                out(ceil(x0)+jj,ceil(y0)+ii)=9;
             end
             
             end
@@ -361,10 +364,13 @@ img_buffer=uint8(img_buffer);
     graph=out;
     spd=0;
     dir=0;
-    if (~isempty(newinput))
-    disp(sum(newinput(:,1)))
-    disp(sum(newinput(:,2)))
-    end
+%     if (~isempty(rResult)&&~isempty(lResult))
+%     disp(sum(x));
+%     disp(sum(y));
+%      disp(length(x));
+%     disp(side);
+
+
 
 end
 
@@ -414,14 +420,13 @@ TRAPZOID_LOWER=70;
 numerator = PERSPECTIVE_SCALE * (xIn - ORIGIN_X) * TRAPZOID_HEIGHT;
 denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  ...
                 + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn - 3);
-xOut=numerator/denominator + ORIGIN_X;
+xOut=floor(numerator/denominator) + ORIGIN_X + 50;
 
 numerator = PERSPECTIVE_SCALE * C2 * (yIn - ORIGIN_Y);
 denominator = REAL_WORLD_SCALE * (10000 - C1 * (yIn - ORIGIN_Y));
-yOut=numerator/denominator + ORIGIN_Y;
+yOut=floor(numerator/denominator) + ORIGIN_Y + 40;
 
-xOut=ceil(xOut);
-yOut=ceil(yOut);
+
 
 
 end
