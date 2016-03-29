@@ -114,8 +114,8 @@ void Cam_Algorithm(){
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+3]=((uint16)currdir)>>8;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
-  DetectBoundary();
-  DirCtrl(); 
+  //DetectBoundary();
+  //DirCtrl(); 
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;

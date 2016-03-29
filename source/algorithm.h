@@ -1,8 +1,6 @@
 #ifndef ALGORITHM_H
 #define ALGORITHM_H
 
-#include "cam.h"
-#include "motor.h"
 
 #define insert(a,b,c) if ((a)<(b)) a=b;else if ((a)>(c)) a=c;
 #define judge_in(a,b,c) (((b)<=(a)&&(a)<=(c))?1:0)
@@ -18,11 +16,11 @@
 #define WHITE_THRESHOLD 60
 #define ABANDON 2
 
-typedef struct BoundaryDectectorConf{
+/*typedef struct BoundaryDectectorConf_Old{
   uint8 LBound[IMG_ROWS+1]; //nCBLLPos
   uint8 RBound[IMG_ROWS+1]; //nCBLRPos
   uint8 yaotui; //Return a line number which indicates how long the middle line lasts
-}BoundaryDetector;
+}BoundaryDetector_Old;
 
 extern const u8 TrackWidth[IMG_ROWS];
 typedef struct GuideGeneratorConf{
@@ -56,15 +54,15 @@ typedef struct DirectionPIDConf{
   //=============OUTPUS=============
     //Global Variable currdir
   u8 NOTHING;
-}DirectionPID;
+}DirectionPID;*/
 
-typedef struct PowerGeneratorConf{
+/*typedef struct PowerGeneratorConf{
   //===========INPUTS============
      //USES ifSpeedUp
   //===========OUTPUTS===========
      //Returns currspd
   u8 NOTHING;
-}PowerGenerator;
+}PowerGenerator;*/
 
 
 #define EXP_SEN               F_SPDEXP_SEN
@@ -85,15 +83,77 @@ typedef struct MotorPIDConf{
   u8 NOTHING;
 } MotorPID;
 
-extern BoundaryDetector boundary_detector;
-extern GuideGenerator guide_generator;
-extern DirectionPID dir_pid;
+//extern BoundaryDetector_Old boundary_detector_Old;
+//extern GuideGenerator guide_generator;
+//extern DirectionPID dir_pid;
 extern MotorPID motor_pid;
 
-void DirCtrl();
-void DetectBoundary();
-s16 Dir_PID(s16 position);
+//void DirCtrl();
+//void DetectBoundary();
+//s16 Dir_PID(s16 position);
 s16 Speed_PID(u8 Expect);
 void MotorCtrl();
+
+//Algorithm_Visual
+#define SAMPLE_RATE 5
+#define PERSPECTIVE_SCALE 70
+#define REAL_WORLD_SCALE 50 // 70pts==50cm
+/* Formula
+ * Transform: y'= y / (c1*y + c2 )
+ * InverseTr: y = c2*y'/(1 - c1*y )
+ * The frame of reference is at the center of the 
+ * image, i.e. at (39,35)
+ *   O ---------> x
+ *    |
+ *    |
+ *    V y
+*/ 
+#define ALGC1 -104
+#define ALGC2 8170 // Scaled by 10000
+#define ORIGIN_X 39
+#define ORIGIN_Y 35
+#define TRAPZOID_HEIGHT 51
+#define TRAPZOID_UPPER 38
+#define TRAPZOID_LOWER 70
+/* Formula
+   Standard_50(y')= Upeer + (Lower- Upper)* y' / Height
+   x= PERSPECTIVE_SCALE * x' / Standard_50(y') 
+*/
+
+
+
+#define TRUE              1
+#define FALSE             0
+#define DIS_ROW           4
+#define DIS_COL           3
+#define MZ                0
+#define LBEGIN_SCAN       DIS_COL
+#define LEND_SCAN         IMG_COLS / 2
+#define WHITE_THRES       60
+#define START_LINE_HEIGHT 10
+#define BOUNDARY_LENGTH   300
+#define DIR_LEFT          0
+#define DIR_UP            1
+#define DIR_RIGHT         2
+#define DIR_DOWN          3
+
+typedef struct BoundaryDectectorConf{
+    //========INPUTS==========
+    //image_buffer
+    //=======OUTPUS==========
+    u8 boundary[BOUNDARY_LENGTH][2];
+    u8 LSectionHead;
+    u8 LSectionTail;
+    u8 RSectionHead;
+    u8 RSectionTail;
+}BoundaryDetector;
+
+void DetectBoundary();
+u8 GuideLoc(u8 pointrow,u8 pointcol);
+u8 InversePerspectiveTransform(u8* xIn,u8* yIn, u8 size);
+
+extern BoundaryDetector boundary_detector;
+
+
 
 #endif

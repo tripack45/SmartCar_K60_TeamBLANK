@@ -1,5 +1,5 @@
-#ifndef NEWDETECTBOUNDARY_H
-#define NEWDETECTBOUNDARY_H
+#ifndef DETECTBOUNDARY_H
+#define DETECTBOUNDARY_H
 
 
 #define TRUE              1
@@ -17,7 +17,7 @@
 #define DIR_RIGHT         2
 #define DIR_DOWN          3
 
-typedef struct NewBoundaryDectectorConf{
+typedef struct BoundaryDectectorConf{
     //========INPUTS==========
     //image_buffer
     //=======OUTPUS==========
@@ -26,12 +26,12 @@ typedef struct NewBoundaryDectectorConf{
     u8 LSectionTail;
     u8 RSectionHead;
     u8 RSectionTail;
-}NewBoundaryDetector;
+}BoundaryDetector;
 
-void NewDetectBoundary();
+void DetectBoundary();
 u8 GuideLoc(u8 pointrow,u8 pointcol);
 
-extern NewBoundaryDetector Newboundary_detector;
+extern BoundaryDetector boundary_detector;
 
 
 #endif

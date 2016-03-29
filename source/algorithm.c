@@ -1,12 +1,14 @@
-#include "includes.h"
-#define MINUS(x,y) (x<y?0:x-y)
-BoundaryDetector boundary_detector;
-GuideGenerator guide_generator;
-DirectionPID dir_pid;
-MotorPID motor_pid;
-DirectionGenerator direction_generator;
 
-void DetectBoundary(){
+
+#include "includes.h"
+//#define MINUS(x,y) (x<y?0:x-y)
+/*BoundaryDetector_Old boundary_detector_Old;
+GuideGenerator guide_generator;
+DirectionPID dir_pid;*/
+//MotorPID motor_pid;
+/*DirectionGenerator direction_generator;
+
+void DetectBoundary_Old(){
   u8 LBeginScan = IMG_BLACK_MID_WIDTH+ABANDON, LEndScan = IMG_COLS / 2 - IMG_BLACK_MID_WIDTH;
   u8 RBeginScan = IMG_COLS - IMG_BLACK_MID_WIDTH-ABANDON, REndScan = IMG_COLS / 2 + IMG_BLACK_MID_WIDTH;
   u8 row = 0, col = 0, LPredict = LBeginScan, RPredict= RBeginScan, BoundaryShift = 2, LUnCap = 0, RUnCap = 0;
@@ -21,7 +23,7 @@ void DetectBoundary(){
             break;
           }
     }
-    
+
     LUnCap++;
     if (LUnCap > 8){LUnCap=8;}
     LBeginScan = MINUS(LPredict,BoundaryShift*LUnCap);
@@ -39,7 +41,7 @@ void DetectBoundary(){
             break;
           }
     }
-    
+
     RUnCap++;
     if (RUnCap > 8) {RUnCap=8;}
     RBeginScan = RPredict+BoundaryShift*RUnCap;
@@ -69,7 +71,7 @@ void DirCtrl(void){
   s16 s16temp;
   s32 nShift=0,nDenom=0;
   g_nDirPos=IMG_COLS;
-  
+
   for (row=IMG_ROWS-5;row>=1; --row)
   {
     //TrackWidth[row]=insert_in(TrackWidth[row],TrackWidth[row-1]-2,TrackWidth[row-1]+2);
@@ -102,7 +104,7 @@ void DirCtrl(void){
       s16temp=insert_in((s16)boundary_detector.RBound[row]*2-TrackWidth[row],s16temp-6*row/IMG_ROWS,s16temp+6*row/IMG_ROWS);
       nShift+=(s16temp-IMG_COLS);nDenom+=1;guide_generator.GuideLine[row][0]=(s16temp)/2;
     }
-    
+
   }
   if (nDenom!=0&& g_nDirPos-IMG_COLS<DANGERZONE ) g_nDirPos=nShift/nDenom;
   else g_nDirPos=g_nDirPos-IMG_COLS;
@@ -122,10 +124,10 @@ s16 Dir_PID(s16 position){
   g_nServoOut=s16Tmp*(PID_SENSITIVITY);//-100~100
   return g_nServoOut;
   //if (g_bRAChecked) std::cout<<(s16)(s8)g_nServoOut<<std::endl;
-}
+}*/
 
 
-void MotorCtrl(void){
+/*void MotorCtrl(void){
   if (direction_generator.ifSpeedUp){
     currspd=30;
   }
@@ -133,17 +135,17 @@ void MotorCtrl(void){
     currspd=20;
   }
 }
-            
+
 s16 Speed_PID(u8 Expect){
   s16 Error,Speed,Power;
-  static s16 sumError=0; 
+  static s16 sumError=0;
   Speed=tacho0*TACHO_SENSITIVITY;
   Error=Expect-Speed;
   Power=insert_in(Expect*EXP_SEN+MOTOR_PID_I*sumError/100+MOTOR_PID_P*Error +MOTOR_PID_D*(Error-motor_pid.LastError),0,SPEED_MAX);
   motor_pid.LastError=Error;
   sumError+=Error;
-  if (tacho0) 
+  if (tacho0)
     return MOTOR_DEAD_RUN+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
-  else 
+  else
     return MOTOR_DEAD_REST+100*Power/SPEED_MAX*MOTOR_PID_SENSITIVITY;
-}
+}*/
