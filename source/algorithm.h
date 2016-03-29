@@ -104,7 +104,7 @@ typedef struct BoundaryDectectorConf{
 
 void DetectBoundary();
 u8 GuideLoc(u8 pointrow,u8 pointcol);
-u8 InversePerspectiveTransform(u8* xIn,u8* yIn, u8 size);
+u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 
 extern BoundaryDetector boundaryDetector;
 

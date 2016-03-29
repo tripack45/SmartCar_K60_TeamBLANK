@@ -3,6 +3,7 @@
 #include "includes.h"
 
 void AlgorithmMain(){
+  ITM_EVENT8_WITH_PC(1,0x01);
    DetectBoundary();
    
    u8 LLength = boundaryDetector.LSectionTail 
@@ -15,26 +16,21 @@ void AlgorithmMain(){
    if (LLength > RLength){
         boundaryX=boundaryDetector.boundaryX + boundaryDetector.LSectionHead;
         boundaryY=boundaryDetector.boundaryY + boundaryDetector.LSectionHead;
-        InversePerspectiveTransform(
-            boundaryX, boundaryY, LLength
-        );
-        length=LLength;
+        length=InversePerspectiveTransform(boundaryX, boundaryY, LLength);
    } else {
         boundaryX=boundaryDetector.boundaryX + boundaryDetector.RSectionHead;
         boundaryY=boundaryDetector.boundaryY + boundaryDetector.RSectionHead;
-        InversePerspectiveTransform(
-            boundaryX, boundaryY, RLength
-        );
-        length=RLength;
+        length=InversePerspectiveTransform(boundaryX, boundaryY, RLength);
    }
+   ITM_EVENT8_WITH_PC(1,0x05);
    s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
         tx += boundaryX[i];
         ty += boundaryY[i];
    }
-   
    debugWatch[0]=tx;
    debugWatch[1]=ty;
+   debugWatch[2]=length;
 }
 
 
