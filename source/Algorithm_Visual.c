@@ -36,8 +36,8 @@ void DetectBoundary(){
             if (img_buffer[MZ + row] [MZ + col] > WHITE_THRES
                     && img_buffer[MZ + row] [MZ + col - 1] < WHITE_THRES
                     && img_buffer[MZ + row] [MZ + col + 1] > WHITE_THRES){
-                boundary_detector.boundary[MZ + 0] [MZ + 0] = row;
-                boundary_detector.boundary[MZ + 0] [MZ + 1] = col;
+                boundary_detector.boundaryY [MZ + 0] = row;
+                boundary_detector.boundaryX [MZ + 0] = col;
                 isCaptured = TRUE;
                 break;
             }
@@ -47,8 +47,8 @@ void DetectBoundary(){
         }
     }
     if (isCaptured){
-        row = boundary_detector.boundary[MZ + 0] [MZ + 0];
-        col = boundary_detector.boundary[MZ + 0] [MZ + 1];
+        row = boundary_detector.boundaryY [MZ + 0] ;
+        col = boundary_detector.boundaryX [MZ + 0] ;
         currBoundaryPtr = currBoundaryPtr + 1;
     }else{
         row = IMG_ROWS - 1 - DIS_ROW - 1 ;
@@ -95,8 +95,8 @@ void DetectBoundary(){
                 || img_buffer[MZ + row + 1] [MZ + col    ] > WHITE_THRES
                 || img_buffer[MZ + row - 1] [MZ + col    ] > WHITE_THRES)
             ){//need improvement
-            boundary_detector.boundary[MZ + currBoundaryPtr] [MZ + 0] = row;
-            boundary_detector.boundary[MZ + currBoundaryPtr] [MZ + 1] = col;
+            boundary_detector.boundaryY [MZ + currBoundaryPtr] = row;
+            boundary_detector.boundaryX [MZ + currBoundaryPtr] = col;
             currBoundaryPtr ++;
             uncapturedStepCounter = 0;
         }else{
@@ -119,15 +119,15 @@ void DetectBoundary(){
                 sectionTail[MZ + sectionCounter - 1] =
                     currBoundaryPtr - 1;
                 endPoint[MZ + 2 * (sectionCounter - 1)] =
-                    GuideLoc(boundary_detector.boundary
-                             [MZ + sectionTail[MZ + sectionCounter - 1]][1],
-                             boundary_detector.boundary
-                             [MZ + sectionTail[MZ + sectionCounter - 1]][2]);
+                    GuideLoc(boundary_detector.boundaryY
+                             [MZ + sectionTail[MZ + sectionCounter - 1]],
+                             boundary_detector.boundaryX
+                             [MZ + sectionTail[MZ + sectionCounter - 1]]);
                 endPoint[MZ + 2 * (sectionCounter - 1)+1] =
-                    GuideLoc(boundary_detector.boundary
-                             [MZ + sectionHead[MZ + sectionCounter - 1]][1],
-                             boundary_detector.boundary
-                             [MZ + sectionHead[MZ + sectionCounter - 1]][2]);
+                    GuideLoc(boundary_detector.boundaryY
+                             [MZ + sectionHead[MZ + sectionCounter - 1]],
+                             boundary_detector.boundaryX
+                             [MZ + sectionHead[MZ + sectionCounter - 1]]);
                 sectionCounter ++;
                 sectionHead[MZ + sectionCounter - 1] = currBoundaryPtr;
             }
@@ -157,8 +157,8 @@ void DetectBoundary(){
       break;
     }
     case 2: {
-      if (  boundary_detector.boundary[MZ + sectionHead[1]] [MZ + 0] 
-          < boundary_detector.boundary[MZ + sectionTail[1]] [MZ + 0]){
+      if (  boundary_detector.boundaryY[MZ + sectionHead[1]]  
+          < boundary_detector.boundaryY[MZ + sectionTail[1]] ){
             boundary_detector.LSectionHead = 0;
             boundary_detector.LSectionTail = 0;  
             boundary_detector.RSectionHead = sectionHead[1];  

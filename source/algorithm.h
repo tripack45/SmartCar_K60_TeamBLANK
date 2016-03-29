@@ -141,7 +141,8 @@ typedef struct BoundaryDectectorConf{
     //========INPUTS==========
     //image_buffer
     //=======OUTPUS==========
-    u8 boundary[BOUNDARY_LENGTH][2];
+    u8 boundaryX[BOUNDARY_LENGTH];
+    u8 boundaryY[BOUNDARY_LENGTH];
     u8 LSectionHead;
     u8 LSectionTail;
     u8 RSectionHead;
