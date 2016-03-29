@@ -4,21 +4,25 @@ BoundaryDetector boundaryDetector;
 
 
 
-u8 InversePerspectiveTransform(u8* xIn,u8* yIn, u8 size){
+u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size){
     u8* xOut=xIn;
     u8* yOut=yIn;
+    s32 numerator=0;
+    s32 denominator=0;
     for(u8 i=0;i<size;i+=SAMPLE_RATE){
-        int32 numerator = PERSPECTIVE_SCALE * (xIn[i] - ORIGIN_X) * TRAPZOID_HEIGHT;
-        int32 denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  
+        
+        numerator = PERSPECTIVE_SCALE * (xIn[i] - ORIGIN_X) * TRAPZOID_HEIGHT;
+        denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  
                 + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn[i] - 3);
-        (*xOut)=numerator/denominator + ORIGIN_X;
-        xOut ++; 
+        (*xOut)=numerator/denominator + ORIGIN_X + 50;
+        xOut ++;
+        
         numerator = PERSPECTIVE_SCALE* ALGC2 * (yIn[i] - ORIGIN_Y);
         denominator = REAL_WORLD_SCALE * (10000 - ALGC1 * (yIn[i] - ORIGIN_Y));
-        (*yOut)=numerator/denominator + ORIGIN_Y;
+        (*yOut)=numerator/denominator + ORIGIN_Y + 40;
         yOut ++;
    }   
-   return (xOut - xIn); //Returns number of points processed    
+   return (xOut - (u8*)xIn); //Returns number of points processed    
 }
 
 
@@ -31,7 +35,8 @@ void DetectBoundary(){
     u8 currBoundaryPtr = 0;
     u8 isCaptured = FALSE;
     for (row = IMG_ROWS - 1 - DIS_ROW - 1;
-    row >= IMG_ROWS - 1 - DIS_ROW - 1 - START_LINE_HEIGHT; row--){
+         row >= IMG_ROWS - 1 - DIS_ROW - 1 - START_LINE_HEIGHT;
+         row--){
         for (col = LBEGIN_SCAN; col <= LEND_SCAN; col++){
             if (img_buffer[MZ + row] [MZ + col] > WHITE_THRES
                     && img_buffer[MZ + row] [MZ + col - 1] < WHITE_THRES
@@ -60,20 +65,24 @@ void DetectBoundary(){
     u8 isMoveable            = TRUE;
     u8 stepCounter           = 0;
     u8 uncapturedStepCounter = 0;
-    u8 sectionTail[5]        = {0, 0, 0, 0, 0};
-    u8 sectionHead[5]        = {0, 0, 0, 0, 0};
+    u8 sectionTail[]         = {0, 0, 0, 0, 0};
+    u8 sectionHead[]         = {0, 0, 0, 0, 0};
     u8 sectionCounter        = 1;
-    const u8 moveDirX[4]={-1,0,1,0};
-    const u8 moveDirY[4]={0,-1,0,1};
+    s8 moveDirX[]            = {-1,0,1,0};
+    s8 moveDirY[]            = {0,-1,0,1};
     u8 nextDir;
+    
     while (isMoveable && row < IMG_ROWS - DIS_ROW -1 && stepCounter < 255){
-    u8 crit[4]={col > DIS_COL, row > 1,
-    col < IMG_COLS - DIS_COL - 1, row < IMG_ROWS - DIS_ROW};
+        u8 crit[]={col > DIS_COL,
+                  row > 1,
+                  col < IMG_COLS - DIS_COL - 1,
+                  row < IMG_ROWS - DIS_ROW
+                  };
         isMoveable = FALSE;
         for( step = 0; step <=3; step++){
-            nextDir = (lastDirection + step + 3) % 4;
-            if(img_buffer[MZ+ row+ moveDirY[MZ + nextDir]]
-                [MZ+col+moveDirX[MZ + nextDir]]> WHITE_THRES
+            nextDir = (lastDirection + step + 3) & 0x03;
+            if(img_buffer[MZ + row + 
+               moveDirY[MZ + nextDir]][MZ+col+moveDirX[MZ + nextDir]]> WHITE_THRES
                 && crit[MZ+nextDir]
                 ){
                 isMoveable       = TRUE;
@@ -136,36 +145,36 @@ void DetectBoundary(){
     }
     switch (sectionCounter){
     case 5: {
-      boundaryDetector.LSectionHead = sectionHead[1];
-      boundaryDetector.LSectionTail = sectionTail[2];  
-      boundaryDetector.RSectionHead = sectionHead[3];  
-      boundaryDetector.RSectionTail = sectionTail[4];  
+      boundaryDetector.LSectionHead = sectionHead[0];
+      boundaryDetector.LSectionTail = sectionTail[1];  
+      boundaryDetector.RSectionHead = sectionHead[2];  
+      boundaryDetector.RSectionTail = sectionTail[3];  
       break;
     }
     case 4: {
-      boundaryDetector.LSectionHead = sectionHead[1];
-      boundaryDetector.LSectionTail = sectionTail[1];  
-      boundaryDetector.RSectionHead = sectionHead[2];  
-      boundaryDetector.RSectionTail = sectionTail[2];  
+      boundaryDetector.LSectionHead = sectionHead[0];
+      boundaryDetector.LSectionTail = sectionTail[0];  
+      boundaryDetector.RSectionHead = sectionHead[1];  
+      boundaryDetector.RSectionTail = sectionTail[1];  
       break;
     }
     case 3: {
-      boundaryDetector.LSectionHead = sectionHead[1];
-      boundaryDetector.LSectionTail = sectionTail[1];  
-      boundaryDetector.RSectionHead = sectionHead[2];  
-      boundaryDetector.RSectionTail = sectionTail[2];  
+      boundaryDetector.LSectionHead = sectionHead[0];
+      boundaryDetector.LSectionTail = sectionTail[0];  
+      boundaryDetector.RSectionHead = sectionHead[1];  
+      boundaryDetector.RSectionTail = sectionTail[1];  
       break;
     }
     case 2: {
-      if (  boundaryDetector.boundaryY[MZ + sectionHead[1]]  
-          < boundaryDetector.boundaryY[MZ + sectionTail[1]] ){
+      if (  boundaryDetector.boundaryY[MZ + sectionHead[0]]  
+          < boundaryDetector.boundaryY[MZ + sectionTail[0]] ){
             boundaryDetector.LSectionHead = 0;
             boundaryDetector.LSectionTail = 0;  
-            boundaryDetector.RSectionHead = sectionHead[1];  
-            boundaryDetector.RSectionTail = sectionTail[1]; 
+            boundaryDetector.RSectionHead = sectionHead[0];  
+            boundaryDetector.RSectionTail = sectionTail[0]; 
           }else{
-            boundaryDetector.LSectionHead = sectionHead[1];
-            boundaryDetector.LSectionTail = sectionTail[1];  
+            boundaryDetector.LSectionHead = sectionHead[0];
+            boundaryDetector.LSectionTail = sectionTail[0];  
             boundaryDetector.RSectionHead = 0;  
             boundaryDetector.RSectionTail = 0; 
           }
