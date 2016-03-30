@@ -277,7 +277,7 @@ img_buffer=uint8(img_buffer);
         denom=n*sx2-sx^2;
         alpha=(n*sxy-sx*sy)/denom;
         beta=(sx2*sy-sx*sxy)/denom;
-        SquareResidue=floor(sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx);
+        SquareResidue=floor(sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx);        
         if (SquareResidue < SRThres)
            for jj=0+1:150+1
               temp=ceil(alpha*jj+beta)+dr;
@@ -285,6 +285,8 @@ img_buffer=uint8(img_buffer);
                   out(jj,temp)=65;
               end
            end
+           disp(alpha);
+           disp(beta);
         else
             sb3=sx2+sy2;
             det=n*sx2*sy2+2*sx*sy*sxy-n*sxy*sxy-sx*sx*sy2-sy*sy*sx2;
@@ -312,6 +314,9 @@ img_buffer=uint8(img_buffer);
             x0=-C(1)/2;
             y0=-C(2)/2;  
             r=sqrt(-C(3)+x0^2+y0^2);
+                       disp(x0);
+           disp(y0);
+           disp(r^2);
             p=[0:2*pi/100:2*pi];
             if(y0>tCarPosX)
                dr=-dr;

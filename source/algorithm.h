@@ -10,7 +10,7 @@
 #define abs0(a) ((a)>0?a:0)
 #define maxabs(a,b) (abs(a)<abs(b)?b:a)
 
-#define IMG_BLACK_MID_WIDTH 1 
+#define IMG_BLACK_MID_WIDTH 1
 #define CONTRAST_THRESHOLD 8 //g_nEdgThre
 #define BLACK_THRESHOLD 50    //g_nBlacThre
 #define WHITE_THRESHOLD 60
@@ -54,13 +54,13 @@ void MotorCtrl();
 /* Formula
  * Transform: y'= y / (c1*y + c2 )
  * InverseTr: y = c2*y'/(1 - c1*y )
- * The frame of reference is at the center of the 
+ * The frame of reference is at the center of the
  * image, i.e. at (39,35)
  *   O ---------> x
  *    |
  *    |
  *    V y
-*/ 
+*/
 #define ALGC1 -104
 #define ALGC2 8170 // Scaled by 10000
 #define ORIGIN_X 39
@@ -70,7 +70,7 @@ void MotorCtrl();
 #define TRAPZOID_LOWER 70
 /* Formula
    Standard_50(y')= Upeer + (Lower- Upper)* y' / Height
-   x= PERSPECTIVE_SCALE * x' / Standard_50(y') 
+   x= PERSPECTIVE_SCALE * x' / Standard_50(y')
 */
 
 
@@ -109,5 +109,42 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 extern BoundaryDetector boundaryDetector;
 
 
+//Algorithm_Analysis
+
+/**********************************
+*      Created by Jerry Yang      *
+*      March. 27, 2016            *
+***********************************/
+
+/******* constant definitions *******/
+#define HALF_TRACK 35
+#define SELECT_STEP 1
+#define BOUNDARY_NUM_MAX 128
+#define COORDINATE_NUM_MAX 50
+#define SQUARE_ERROR_THRES 10
+/************************************/
+
+typedef struct LinearDectectorConf{
+    //========INPUTS==========
+    //boundaryX
+    //boundaryY
+    //=======OUTPUS==========
+    float alpha;
+    float beta;
+    float radius;
+}LinearDectect;
+
+
+/****** function definitions ******/
+u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX],
+            u8 boundaryY[BOUNDARY_NUM_MAX],
+      const u8 boundaryNum,
+         float *alpha,
+         float *beta,
+         float *radius
+             );
+/**********************************/
+
+extern LinearDectect linearDectect;
 
 #endif

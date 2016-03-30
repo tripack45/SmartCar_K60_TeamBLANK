@@ -145,8 +145,8 @@ void UI_Debug(){
   
   Oled_Putstr(3,0,"DBG 0"); Oled_Putnum(3,11,debugWatch[0]);
   Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
-  Oled_Putstr(5,0,"CURRDIR"); Oled_Putnum(5,11,currdir);
-  Oled_Putstr(6,0,"CURRSPD"); Oled_Putnum(6,11,currspd);
+  Oled_Putstr(5,0,"DBG 2"); Oled_Putnum(5,11,debugWatch[2]);
+  Oled_Putstr(6,0,"DBG 3"); Oled_Putnum(6,11,debugWatch[3]);
   
   Oled_Putstr(7,0,"           ");
   Oled_Putstr(7,0,(u8*)(varName[varEdit]));
