@@ -11,7 +11,6 @@
 #define HALF_TRACK 35
 #define SELECT_STEP 5
 #define BOUNDARY_NUM_MAX 128
-#define COORDINATE_NUM_MAX 50
 #define SQUARE_ERROR_THRES 10
 #define bool int
 #define TRUE 1
@@ -111,12 +110,11 @@ bool isLinear(u8 boundary[BOUNDARY_NUM_MAX][2], const u8 boundaryNum, float *alp
 	/* When the square error for linear fitting is less than SQUARE_ERROR_THRES, return TRUE, use linear fitting.*/
 	/* When the square error for linear fitting is not less than SQUARE_ERROR_THRES, return FALSE, use circle fitting.*/
 
-	int abscissa[COORDINATE_NUM_MAX], ordinate[COORDINATE_NUM_MAX];
-	int x, y; /* x and y are the current abscissa and ordinate.*/
+	u8 x, y; /* x and y are the current abscissa and ordinate.*/
 	for (i = 0; i < boundaryNum; i += SELECT_STEP)
 	{
-		abscissa[coordinateNum] = x = boundary[i][0];
-		ordinate[coordinateNum] = y = boundary[i][1];
+		x = boundary[i][0];
+		y = boundary[i][1];
 		sx += x;
 		sy += y;
 		x2 = x * x;
@@ -129,12 +127,12 @@ bool isLinear(u8 boundary[BOUNDARY_NUM_MAX][2], const u8 boundaryNum, float *alp
 		coordinateNum++;
 	}
 	denom = coordinateNum * sx2 - sx * sx;
-	*alpha = (float)(coordinateNum * sxy - sx * sy) / denom;
-	*beta = (float)(sx2 * sy - sx * sxy) / denom;
+	*alpha = (float)((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
+	*beta = (float)((s32)(sx2 * sy) - (s32)(sx * sxy)) / denom;
 	squareError = (u32)(sy2 + sx2 * (*alpha) * (*alpha) + coordinateNum * (*beta) * (*beta) + (sx * (*alpha) * (*beta) - sxy * (*alpha) - sy * (*beta)) * 2);
 	if (squareError < SQUARE_ERROR_THRES)
 	{
-		radius = 0;
+		*radius = 0;
 		return TRUE;
 	}
 	else

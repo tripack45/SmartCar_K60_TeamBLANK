@@ -120,7 +120,6 @@ extern BoundaryDetector boundaryDetector;
 #define HALF_TRACK 35
 #define SELECT_STEP 1
 #define BOUNDARY_NUM_MAX 128
-#define COORDINATE_NUM_MAX 50
 #define SQUARE_ERROR_THRES 10
 /************************************/
 
@@ -138,7 +137,7 @@ typedef struct LinearDectectorConf{
 /****** function definitions ******/
 u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX],
             u8 boundaryY[BOUNDARY_NUM_MAX],
-      const u8 boundaryNum,
+            u8 boundaryNum,
          float *alpha,
          float *beta,
          float *radius

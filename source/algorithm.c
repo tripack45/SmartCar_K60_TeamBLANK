@@ -24,8 +24,13 @@ void AlgorithmMain(){
         length=InversePerspectiveTransform(boundaryX, boundaryY, RLength);
    }
    ITM_EVENT8_WITH_PC(2,0x01);
-   isLinear=IsLinear(boundaryX, boundaryY, length, &(linearDectect.alpha),
+   if (length>5){
+   isLinear=IsLinear(boundaryY, boundaryX , length, &(linearDectect.alpha),
                      &(linearDectect.beta), &(linearDectect.radius));
+   }
+   else{
+     isLinear=2;
+   }
    ITM_EVENT8_WITH_PC(2,0x05);
    s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
@@ -33,9 +38,10 @@ void AlgorithmMain(){
         ty += boundaryY[i];
    }
    debugWatch[0]=isLinear;
-   debugWatch[1]=linearDectect.alpha;
-   debugWatch[2]=linearDectect.beta;
-   debugWatch[3]=linearDectect.radius;
+   debugWatch[1]=(s32)linearDectect.alpha;
+   debugWatch[2]=(s32)linearDectect.beta;         
+   debugWatch[3]=(s32)linearDectect.radius;
+
 }
 
 

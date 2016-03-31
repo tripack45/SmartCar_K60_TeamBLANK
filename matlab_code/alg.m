@@ -245,13 +245,12 @@ img_buffer=uint8(img_buffer);
         input=rResult;
         dr=-35;
     end
-
-    if (length(input)>10)
+   
+    if (length(input)>5)
         x=input(1:5:length(input),1);
         y=input(1:5:length(input),2);
         n=size(x,1);
         SRThres=10;
-        lineflag=0;
         x2=0;
         y2=0;
         sx2=0;
@@ -277,6 +276,7 @@ img_buffer=uint8(img_buffer);
         denom=n*sx2-sx^2;
         alpha=(n*sxy-sx*sy)/denom;
         beta=(sx2*sy-sx*sxy)/denom;
+      %  fprintf('%d\t%d\t%d\n',n,sx2,sx);
         SquareResidue=floor(sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx);        
         if (SquareResidue < SRThres)
            for jj=0+1:150+1
@@ -285,8 +285,7 @@ img_buffer=uint8(img_buffer);
                   out(jj,temp)=65;
               end
            end
-           disp(alpha);
-           disp(beta);
+          fprintf('%g\t%g\n',alpha,beta);
         else
             sb3=sx2+sy2;
             det=n*sx2*sy2+2*sx*sy*sxy-n*sxy*sxy-sx*sx*sy2-sy*sy*sx2;
@@ -313,10 +312,9 @@ img_buffer=uint8(img_buffer);
 %          C=A\B;
             x0=-C(1)/2;
             y0=-C(2)/2;  
-            r=sqrt(-C(3)+x0^2+y0^2);
-                       disp(x0);
-           disp(y0);
-           disp(r^2);
+            r=-C(3)+x0^2+y0^2;
+          % r=sqrt(t);          
+            fprintf('%g\t%g\t%g\n',x0,y0,r);
             p=[0:2*pi/100:2*pi];
             if(y0>tCarPosX)
                dr=-dr;

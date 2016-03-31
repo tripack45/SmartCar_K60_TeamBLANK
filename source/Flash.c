@@ -20,7 +20,7 @@ U16 data_initial[DATA_NUM]={
   95,	        //balance dt
   1635,	        //acc offset
   40,           //P speed
-  10,           //D speed
+  0,           //debugPtr
   10,           //Spped PD_I
   10,           //Speed Sensitivity 
   30,           //Spped PD_P

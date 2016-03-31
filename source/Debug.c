@@ -88,7 +88,7 @@ const char* varName[]=
                "6  NONE",             //Flash[6]
                "7  NONE",             //Flash[7]
                "8  NONE",             //Flash[8]
-               "9  NONE",             //Flash[9]
+               "9  DBGPTR",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
                "11 EXP_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]

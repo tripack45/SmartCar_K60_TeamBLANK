@@ -34,7 +34,7 @@ extern U16 flashData[DATA_NUM];
 #define balance_dt                  (flashData[ 6])
 #define accZ_offset                 (flashData[ 7])
 #define P_speed                     (flashData[ 8])
-#define D_speed                     (flashData[ 9])
+#define DBG_PTR                     (flashData[ 9])
 #define F_SPDPID_I                  (flashData[10])
 #define F_SPDEXP_SEN                (flashData[11])
 #define F_SPDPID_P                  (flashData[12])
