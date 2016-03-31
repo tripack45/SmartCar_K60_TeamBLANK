@@ -167,13 +167,22 @@ void PORTC_IRQHandler(){
 void DMA0_IRQHandler(){
   //if(e_debug_num==1)
   //{e_debug_num=2;
-
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
-  img_row++; 
-  
-  
-  //}
+  u8 errorFlag=0;
+  if(img_row>1){ 
+    for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
+      if(loading_buffer[img_row][i]<10u){
+        errorFlag=1;
+        break;
+      }
+    }       
+    if(errorFlag)
+      for(int i=1;i<IMG_COLS;i++)
+        loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
+  }
+    img_row++; 
+ //}
 }
 
 

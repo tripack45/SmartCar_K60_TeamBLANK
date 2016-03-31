@@ -95,3 +95,4 @@ settings/framework2016.wsdt
 *.asv
 *.tmp
 *.dep
+.vscode/
