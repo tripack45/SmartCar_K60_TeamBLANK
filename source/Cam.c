@@ -130,15 +130,15 @@ void PORTC_IRQHandler(){
     if(   (img_row < IMG_ROWS) 
        && (cam_row % IMG_STEP == 0)
        && (cam_row > 12) 
-      ){
-      //ITM_EVENT32(1, img_row);
-      for(int i=1;i<170;i++)asm("NOP");
-      //ITM_EVENT8_WITH_PC(4,24);
-      DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
-      DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
-      ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
-      DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
-    }
+         ){
+           //ITM_EVENT32(1, img_row);
+           for(int i=1;i<170;i++)asm("NOP");
+           //ITM_EVENT8_WITH_PC(4,24);
+           DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
+           DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
+           ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
+           DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
+         }
     cam_row++;
   }
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
@@ -167,10 +167,20 @@ void DMA0_IRQHandler(){
   //{e_debug_num=2;
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
-  img_row++; 
-  
-  
-  //}
+  u8 errorFlag=0;
+  if(img_row>1){ 
+    for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
+      if(loading_buffer[img_row][i]<10u){
+        errorFlag=1;
+        break;
+      }
+    }       
+    if(errorFlag)
+      for(int i=1;i<IMG_COLS;i++)
+        loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
+  }
+    img_row++; 
+ //}
 }
 
 
