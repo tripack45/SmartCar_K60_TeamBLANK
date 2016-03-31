@@ -132,17 +132,7 @@ void PORTC_IRQHandler(){
        && (cam_row > 12) 
          ){
            //ITM_EVENT32(1, img_row);
-           u8 errorFlag=0;
-           if(img_row>1){ 
-             for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
-               if(loading_buffer[img_row-1][i]<10u){
-                 errorFlag=1;
-               }
-             }       
-           }
            for(int i=1;i<170;i++)asm("NOP");
-           if(errorFlag==0)
-             img_row++;          
            //ITM_EVENT8_WITH_PC(4,24);
            DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
            DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
@@ -177,6 +167,19 @@ void DMA0_IRQHandler(){
   //{e_debug_num=2;
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
+  u8 errorFlag=0;
+  if(img_row>1){ 
+    for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
+      if(loading_buffer[img_row][i]<10u){
+        errorFlag=1;
+        break;
+      }
+    }       
+    if(errorFlag)
+      for(int i=1;i<IMG_COLS;i++)
+        loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
+  }
+    img_row++; 
  //}
 }
 
