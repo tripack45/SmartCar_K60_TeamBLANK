@@ -86,9 +86,10 @@ void PIT0_IRQHandler(){
   
   if(!isDebugging){
   Servo_Output(currdir);
-  MotorL_Output( Speed_PID(power_generator.doubleSpeedSen*currspd/2) );
+  MotorL_Output(Speed_PID(currspd));
+  //MotorL_Output( Speed_PID(power_generator.doubleSpeedSen*currspd/2) );
   }else{
-    Servo_Output(0);
+    Servo_Output(currdir);
     MotorL_Output(0);
   }
   
