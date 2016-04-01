@@ -2,7 +2,7 @@
 
 #define GET_INT16_FROM_UINT8(x,y) ((int16)(uint16)((uint16)(x<<8)+(uint16)(y)))
 
-int16* varAddr=(void*)&currspd;
+int16* varAddr=(void*)&currdir;
 u8 isDebugging=0;
 
 

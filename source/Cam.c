@@ -146,7 +146,7 @@ void PORTC_IRQHandler(){
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
     
     PORTC->ISFR |= PORT_ISFR_ISF(1 << 9);
-    e_debug_num= cam_row;
+    //e_debug_num= cam_row;
     cam_row = img_row = 0;
 
     //update the loading frame counter
@@ -157,9 +157,9 @@ void PORTC_IRQHandler(){
     SET_LOCK(LFLOCK_BASE,last_frame_indicator);
     current_frame_indicator=GET_FREE_LOCK();
     loading_buffer=(void*)buffer_ptr[current_frame_indicator];
-    static u32 t=0;
-    debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
-    t-=debug_num;
+    //static u32 t=0;
+    //debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
+    //t-=debug_num;
     //ITM_EVENT32(1, loading_frame);
   }
 }

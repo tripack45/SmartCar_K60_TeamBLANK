@@ -127,6 +127,50 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   for(int i=1;i<10000000;i++)asm("NOP");
   //}
   }*/
+  
+  
+  //PID_TESTER
+#define GET_CLOCK_100US() (PIT2_VAL() / (g_bus_clock/1000))
+#define TARGET_HIGH 25
+#define TARGET_LOW 12
+#define TACHO_MA5() ((tachoMA[0]+tachoMA[1]+tachoMA[2]+tachoMA[3]+tachoMA[4])/5)
+  u16 tachoMA[5]={0}; //Moving Average
+  u8 MAPtr=0;
+  
+  //currdir=-75;  
+  currspd=25;
+  for(int i=0;i<100000;i++)asm("NOP");
+  
+  s16 startTickHigh=GET_CLOCK_100US();
+  currspd=TARGET_HIGH;
+  while(TACHO_MA5()<TARGET_HIGH-3){
+    for(int i=0;i<10000;i++)asm("NOP");
+    tachoMA[MAPtr]=tacho0;
+    MAPtr++;
+    MAPtr%=4;
+  }
+  s16 highTick=GET_CLOCK_100US();
+  debug_num=startTickHigh-highTick;
+  
+  for(int i=0;i<3000000;i++)asm("NOP");
+  
+  s16 startTickLow=GET_CLOCK_100US();
+  currspd=TARGET_LOW;
+  while(TACHO_MA5()>TARGET_LOW+3){
+    for(int i=0;i<10000;i++)asm("NOP");
+    tachoMA[MAPtr]=tacho0;
+    MAPtr++;
+    MAPtr%=4;
+  }
+  s16 lowTick=GET_CLOCK_100US();
+  e_debug_num=startTickLow-lowTick;
+  for(int i=0;i<3000000;i++)asm("NOP");
+  
+  currspd=0;
+  for(;;);
+//======================================
+  
+
   while(1)
   {
     // Don't use oled or sensors' functions here !!!
