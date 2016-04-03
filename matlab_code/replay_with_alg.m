@@ -3,9 +3,9 @@ imgrow=67;
 imgcol=77;
 algrow=150;
 algcol=150;
-source=frame;
+source=imglog;
 fps=50;
-start=900;
+start=1;
 
 %% Set up the figures
 InitializeFigures;
@@ -27,8 +27,9 @@ for i=start:size(source,3)
     end
     
     %Apply Algorithms.
-    [out algdir algspd]=alg(img);
-    
+
+        [out algdir algspd]=alg(img);
+
     %Recall Logging Data
     dir=dirlog(i);
     spd=spdlog(i);
