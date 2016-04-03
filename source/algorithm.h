@@ -1,6 +1,7 @@
 #ifndef ALGORITHM_H
 #define ALGORITHM_H
 
+void extern AlgorithmMain();
 
 #define insert(a,b,c) if ((a)<(b)) a=b;else if ((a)>(c)) a=c;
 #define judge_in(a,b,c) (((b)<=(a)&&(a)<=(c))?1:0)
@@ -10,13 +11,7 @@
 #define abs0(a) ((a)>0?a:0)
 #define maxabs(a,b) (abs(a)<abs(b)?b:a)
 
-#define IMG_BLACK_MID_WIDTH 1
-#define CONTRAST_THRESHOLD 8 //g_nEdgThre
-#define BLACK_THRESHOLD 50    //g_nBlacThre
-#define WHITE_THRESHOLD 60
-#define ABANDON 2
 
-void extern AlgorithmMain();
 
 #define EXP_SEN               F_SPDEXP_SEN
 #define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
@@ -48,33 +43,7 @@ s16 Speed_PID(u8 Expect);
 void MotorCtrl();
 
 //Algorithm_Visual
-#define SAMPLE_RATE 5
-#define PERSPECTIVE_SCALE 70
-#define REAL_WORLD_SCALE 50 // 70pts==50cm
-/* Formula
- * Transform: y'= y / (c1*y + c2 )
- * InverseTr: y = c2*y'/(1 - c1*y )
- * The frame of reference is at the center of the
- * image, i.e. at (39,35)
- *   O ---------> x
- *    |
- *    |
- *    V y
-*/
-#define ALGC1 -104
-#define ALGC2 8170 // Scaled by 10000
-#define ORIGIN_X 39
-#define ORIGIN_Y 35
-#define TRAPZOID_HEIGHT 51
-#define TRAPZOID_UPPER 38
-#define TRAPZOID_LOWER 70
-/* Formula
-   Standard_50(y')= Upeer + (Lower- Upper)* y' / Height
-   x= PERSPECTIVE_SCALE * x' / Standard_50(y')
-*/
-
-
-
+//===============BOUNDARY DETECTION=======================
 #define TRUE              1
 #define FALSE             0
 #define DIS_ROW           4
@@ -103,10 +72,40 @@ typedef struct BoundaryDectectorConf{
 }BoundaryDetector;
 
 void DetectBoundary();
+
 u8 GuideLoc(u8 pointrow,u8 pointcol);
-u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 
 extern BoundaryDetector boundaryDetector;
+
+//==============END OF BOUNDARY DETECTION================
+
+//===============INVERSE TRANSFORM=================
+#define SAMPLE_RATE 5
+#define PERSPECTIVE_SCALE 70
+#define REAL_WORLD_SCALE 50 // 70pts==50cm
+/* Formula
+ * Transform: y'= y / (c1*y + c2 )
+ * InverseTr: y = c2*y'/(1 - c1*y )
+ * The frame of reference is at the center of the
+ * image, i.e. at (39,35)
+ *   O ---------> x
+ *    |
+ *    |
+ *    V y
+*/
+#define ALGC1 -104
+#define ALGC2 8170 // Scaled by 10000
+#define ORIGIN_X 39
+#define ORIGIN_Y 35
+#define TRAPZOID_HEIGHT 51
+#define TRAPZOID_UPPER 38
+#define TRAPZOID_LOWER 70
+/* Formula
+   Standard_50(y')= Upeer + (Lower- Upper)* y' / Height
+   x= PERSPECTIVE_SCALE * x' / Standard_50(y')
+*/
+u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
+//===============END OF INVERSE TRANSFORM=================
 
 
 //Algorithm_Analysis
@@ -145,5 +144,37 @@ u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX],
 /**********************************/
 
 extern LinearDectect linearDectect;
+
+//============Crossroad Detection=========
+
+#define CROSSROAD_STRAIGHT_THRES  81
+#define CROSSROAD_SHARPTURN_THRES 25
+
+u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
+
+//==========End of Crossroad Detection===
+
+//==============Controller=============
+#define CONTROL_STATE_STRAIGHT 0x01
+#define CONTROL_STATE_TURN     0x02
+#define CONTROL_STATE_CROSS    0x03
+#define CONTROL_STATE_STR2TRN  0x04
+
+typedef struct{
+  u8 state;
+  u8 unknownFlag;
+  float lineAlpha;
+  float lineBeta;
+  float circleX;
+  float circleY;
+  float circleRadius;
+}CurrentControlState;
+
+extern CurrentControlState currentState;
+
+void ControllerUpdate();
+void ControllerControl();
+
+//==========EMD OF CONTROLLER============
 
 #endif

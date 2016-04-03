@@ -23,7 +23,6 @@ void AlgorithmMain(){
         boundaryY=boundaryDetector.boundaryY + boundaryDetector.RSectionHead;
         length=InversePerspectiveTransform(boundaryX, boundaryY, RLength);
    }
-   ITM_EVENT8_WITH_PC(2,0x01);
    if (length>5){
    isLinear=IsLinear(boundaryY, boundaryX , length, &(linearDectect.alpha),
                      &(linearDectect.beta), &(linearDectect.radius));
@@ -31,7 +30,6 @@ void AlgorithmMain(){
    else{
      isLinear=2;
    }
-   ITM_EVENT8_WITH_PC(2,0x05);
    s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
         tx += boundaryX[i];

@@ -4,7 +4,12 @@ LinearDectect linearDectect;
 //The returned bool value determines the type of the boundary.
 //For a line, alpha is the slope, beta is the interception, radius = 0.
 //For a circle, alpha and beta are the abscissa and the ordinate of the center, radius is the radius of the circle.
-u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX], u8 boundaryY[BOUNDARY_NUM_MAX], u8 boundaryNum, float *alpha, float *beta, float *radius)
+u8 IsLinear(u8* boundaryX,
+            u8* boundaryY,
+            u8 boundaryNum,
+            float *alpha,
+            float *beta,
+            float *radius)
 {
 		/* Loop variable.*/
 	u8 i = 0; 
@@ -95,26 +100,62 @@ u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX], u8 boundaryY[BOUNDARY_NUM_MAX], u8 b
 	squareError = (u32)(sy2 + sx2 * (*alpha) * (*alpha) + coordinateNum * (*beta) * (*beta) + (sx * (*alpha) * (*beta) - sxy * (*alpha) - sy * (*beta)) * 2);
 	if (squareError < SQUARE_ERROR_THRES)
 	{
-		*radius = 0;
-		return TRUE;
+          *radius = 0;
+          return TRUE;
 	}
 	else
 	{
-		b3 = sx2 + sy2;
-		det = coordinateNum * sx2 * sy2 + 2 * sx * sy * sxy - coordinateNum * sxy * sxy - sx * sx * sy2 - sy * sy * sx2;
-		ia1 = coordinateNum * sy2 - sy * sy;
-		ia2 = sx * sy - coordinateNum * sxy;
-		ia3 = sxy * sy - sx * sy2;
-		ia4 = ia2;
-		ia5 = coordinateNum * sx2 - sx * sx;
-		ia6 = sxy * sx - sy * sx2;
-		ia7 = ia3;
-		ia8 = ia6;
-		ia9 = sx2 * sy2 - sxy * sxy;
-		*alpha = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
-		*beta = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
-		*radius = (float)((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det + (*alpha) * (*alpha) + (*beta) * (*beta);
-//		*radius = (float)sqrt(*radius);
-		return FALSE;
+          b3 = sx2 + sy2;
+          det = coordinateNum * sx2 * sy2 + 2 * sx * sy * sxy - coordinateNum * sxy * sxy - sx * sx * sy2 - sy * sy * sx2;
+          ia1 = coordinateNum * sy2 - sy * sy;
+          ia2 = sx * sy - coordinateNum * sxy;
+          ia3 = sxy * sy - sx * sy2;
+          ia4 = ia2;
+          ia5 = coordinateNum * sx2 - sx * sx;
+          ia6 = sxy * sx - sy * sx2;
+          ia7 = ia3;
+          ia8 = ia6;
+          ia9 = sx2 * sy2 - sxy * sxy;
+          *alpha = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
+          *beta = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
+          *radius = (float)((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det + (*alpha) * (*alpha) + (*beta) * (*beta);
+          //		*radius = (float)sqrt(*radius);
+          return FALSE;
 	}
 }
+
+u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
+  if (size<6) return 0;
+  s16 ipSqr=0;
+  s16 dSqr=1;
+  for (int i=0;i<size-6;i++){
+    s8 v0x=boundaryX[MZ+ i + 1] - boundaryX[MZ + i + 0];
+    s8 v0y=boundaryY[MZ+ i + 1] - boundaryY[MZ + i + 0];
+    s8 v1x=boundaryX[MZ+ i + 2] - boundaryX[MZ + i + 1];
+    s8 v1y=boundaryY[MZ+ i + 2] - boundaryY[MZ + i + 1];
+    s8 v3x=boundaryX[MZ+ i + 4] - boundaryX[MZ + i + 3];
+    s8 v3y=boundaryY[MZ+ i + 4] - boundaryY[MZ + i + 3];
+    s8 v4x=boundaryX[MZ+ i + 5] - boundaryX[MZ + i + 4];
+    s8 v4y=boundaryY[MZ+ i + 5] - boundaryY[MZ + i + 4];
+    
+    ipSqr=v0x*v1x+v0y*v1y; ipSqr*=ipSqr;
+    dSqr =(v0x*v0x+v0y*v0y)*(v1x*v1x+v1y*v1y);
+    s16 angle01=100*ipSqr/dSqr;
+    
+    ipSqr=v1x*v3x+v1y*v3y; ipSqr*=ipSqr;
+    dSqr =(v1x*v1x+v1y*v1y)*(v3x*v3x+v3y*v3y);    
+    s16 angle13=100*ipSqr/dSqr;
+     
+    ipSqr=v3x*v4x+v3y*v4y; ipSqr*=ipSqr;
+    dSqr =(v3x*v3x+v3y*v3y)*(v4x*v4x+v4y*v4y);   
+    s16 angle34=100*ipSqr/dSqr;
+    
+    if(angle01 > CROSSROAD_STRAIGHT_THRES
+    && angle13 < CROSSROAD_SHARPTURN_THRES 
+    && angle34 > CROSSROAD_STRAIGHT_THRES)
+      return 1;
+
+  }
+  return 0;
+}
+
