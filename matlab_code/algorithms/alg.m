@@ -24,15 +24,17 @@ end
 
 %% Analyzing Algorithms
 currentState=struct( 'state',      0 ...
-                    ,'unknownFlag',0 ...
+                    ,'isUnknown'  ,0 ...
                     ,'lineAlpha'  ,0 ...
                     ,'lineBeta'   ,0 ...
                     ,'circleX'    ,0 ...
                     ,'circleY'    ,0 ...
-                   ,'circleRadius',0);
+                   ,'circleRadius',0 ...
+                    ,'carPosX'    ,tCarPosX ...
+                    ,'carPosY'    ,tCarPosY);
 
 if(length(LBoundary)>length(RBoundary))
-    input=LBoundary(1:5:end,:);
+    input=LBoundary(1:5:end,:);S
 else
     input=RBoundary(1:5:end,:);
 end
@@ -59,11 +61,24 @@ if(size(input,1)>5)
     isCrossroad = IsCrossroad(input(:,2),input(:,1),size(input,1));
 end
 
+if(isCrossroad)
+   currentState.state=3;
+end
+
 %% Control
 
-spd=0;
-dir=0;
 
+persistent internalState;
+if(isempty(internalState))
+    clear('internalState')
+end
+if(~exist('internalState','var'))
+    internalState=struct('state',0 ...
+                         ,'lastFrameState',0 ...
+                         ,'stateCounter',0);
+end
+internalState=ControllerUpdate(internalState,currentState);
+[spd,dir]=ControllerControl(internalState,currentState);
     
 %% Output to graph
 
@@ -98,7 +113,7 @@ end
 
 if(currentState.state==2)
     % Draw the correponding circle
-    p=0 : 2*pi/100 : 2*pi;
+    p=0 : 2*pi/300 : 2*pi;
     px=currentState.circleRadius.*cos(p)+x0;
     py=currentState.circleRadius.*sin(p)+y0;
     
@@ -134,7 +149,7 @@ if(isCrossroad)
 end
 
 %draw currdir currspd
-out=SpdDirDrawer(currdir,currspd, out);
+out=SpdDirDrawer(dir,spd, out);
 graph=out;
 
 
@@ -144,39 +159,75 @@ end
 
 
 function out=SpdDirDrawer(currdir ,currspd, out)
-if 80+currdir/10<=0
-    currdir=-790;
-end
-if currdir>0
-    for (i=80:80+currdir/10)
-        for(j=105:115)
-          out(j,i)=45;
+try
+    if 80+currdir/10<=0
+        currdir=-790;
+    end
+    if currdir>0
+        for (i=80:80+currdir/10)
+            for(j=105:115)
+                out(j,i)=45;
+            end
+        end
+    else
+        for (i=80:-1:80+currdir/10)
+            for(j=105:115)
+                out(j,i)=45;
+            end
         end
     end
-else
-    for (i=80:-1:80+currdir/10)
-        for(j=105:115)
-          out(j,i)=45;
+    
+    if currspd>0
+        for (i=80:80+currspd*2)
+            for(j=115:125)
+                out(j,i)=50;
+            end
+        end
+    else
+        for (i=80:-1:80+currspd*2)
+            for(j=115:125)
+                out(j,i)=50;
+            end
         end
     end
+catch
+end
 end
 
-if currspd>0
-    for (i=80:80+currspd*2)
-        for(j=115:125)
-          out(j,i)=50;
-        end
+function internalState=ControllerUpdate(internalState,currentState)
+if(~currentState.isUnknown)
+    if(internalState.state==0)
+        %First time running
+        internalState.state=currentState.state;
+        internalState.stateCounter=internalState.stateCounter+1;
+        internalState.lastFrameState=internalState.stateCounter;
+        return;
     end
-else
-    for (i=80:-1:80+currspd*2)
-        for(j=115:125)
-          out(j,i)=50;
-        end
-    end
+    %instantSwithing
+    internalState.state=currentState.state;
+    internalState.stateCounter=internalState.stateCounter+1;
+    internalState.lastFrameState=internalState.stateCounter;
+end
 end
 
+function [spd,dir]=ControllerControl(internalState,currentState)
+CONTROL_STATE_STRAIGHT =1;
+CONTROL_STATE_TURN     =2;
+CONTROL_STATE_CROSS    =3;
+CONTROL_STATE_STR2TRN  =4;
+switch internalState.state
+    case CONTROL_STATE_STRAIGHT 
+        [spd,dir]=LinearStateHandler(currentState);
+    case CONTROL_STATE_TURN
+        spd=10;dir=0;
+    case CONTROL_STATE_CROSS    
+        spd=10;dir=0;
+    case CONTROL_STATE_STR2TRN
+        spd=10;dir=0;
+    otherwise
+        spd=10; dir=0;
+        disp('UNKNOW STATE');
 end
-
-
+end
 
 
