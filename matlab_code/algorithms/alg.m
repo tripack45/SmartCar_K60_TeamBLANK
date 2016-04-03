@@ -52,6 +52,8 @@ if(size(input,1)>5)
     currentState.circleRadius   = radius;
 end
 
+[currdir currspd]=LinearStateHandler(currentState);
+
 %% Control
 spd=0;
 dir=0;
@@ -113,9 +115,17 @@ if(currentState.state==2)
         end
     end
 end
+
+
+
 graph=out;
 
+
+
 end
+
+
+
 
 
 
