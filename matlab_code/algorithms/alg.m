@@ -8,6 +8,7 @@ img_buffer=uint8(img_buffer);
 beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
 
 %% Visual Algorithms
+
 [LBoundary,RBoundary]=BoundaryDetector(img_buffer);
 
 if(length(LBoundary)>5)
@@ -217,7 +218,7 @@ CONTROL_STATE_CROSS    =3;
 CONTROL_STATE_STR2TRN  =4;
 switch internalState.state
     case CONTROL_STATE_STRAIGHT 
-        [spd,dir]=LinearStateHandler(currentState);
+        [dir,spd]=LinearStateHandler(currentState);
     case CONTROL_STATE_TURN
         spd=10;dir=0;
     case CONTROL_STATE_CROSS    
