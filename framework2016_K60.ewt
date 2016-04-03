@@ -260,7 +260,7 @@
       <name>$PROJ_DIR$\source\Algorithm.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\source\algorithm.h</name>
+      <name>$PROJ_DIR$\source\Algorithm.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\source\Algorithm_Analysis.c</name>
