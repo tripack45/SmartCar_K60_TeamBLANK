@@ -6,78 +6,101 @@ IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 img_buffer=uint8(img_buffer);
 beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
+currentState=struct( ...
+    'state'       ,0 ...
+    ,'isUnknown'  ,0 ...
+    ,'lineAlpha'  ,0 ...
+    ,'lineBeta'   ,0 ...
+    ,'circleX'    ,0 ...
+    ,'circleY'    ,0 ...
+    ,'circleRadius',0 ...
+    ,'carPosX'    ,0 ...
+    ,'carPosY'    ,0);
 
-%% Visual Algorithms
-
-[LBoundary,RBoundary]=BoundaryDetector(img_buffer);
-
-if(length(LBoundary)>5)
-    [LBoundary(:,2),LBoundary(:,1)] = ...
-        InversePerspectiveTransform(double(LBoundary(:,2)),...
-                                    double(LBoundary(:,1)));
-end
-if(length(RBoundary)>5)
-    [RBoundary(:,2),RBoundary(:,1)] = ...
-        InversePerspectiveTransform(double(RBoundary(:,2)),...
-                                    double(RBoundary(:,1)));
-end
-[tCarPosX,tCarPosY]=InversePerspectiveTransform(30,65);
-
-%% Analyzing Algorithms
-currentState=struct( 'state',      0 ...
-                    ,'isUnknown'  ,0 ...
-                    ,'lineAlpha'  ,0 ...
-                    ,'lineBeta'   ,0 ...
-                    ,'circleX'    ,0 ...
-                    ,'circleY'    ,0 ...
-                   ,'circleRadius',0 ...
-                    ,'carPosX'    ,tCarPosX ...
-                    ,'carPosY'    ,tCarPosY);
-
-if(length(LBoundary)>length(RBoundary))
-    input=LBoundary(1:5:end,:);
-else
-    input=RBoundary(1:5:end,:);
-end
-input=double(input);
-
-
-if(size(input,1)>5)
-    [isLinear,alpha,beta,x0,y0,radius]=analyzer(input);
+try
+    %% Visual Algorithms
     
-    if(isLinear)
-        currentState.state=1;
-    else
-        currentState.state=2;
+    [LBoundary,RBoundary]=BoundaryDetector(img_buffer);
+    
+    [tCarPosX,tCarPosY]=InversePerspectiveTransform(30,65);
+    currentState.carPosX=tCarPosX;
+    currentState.carPosY=tCarPosY;
+
+    if(length(LBoundary)>5)
+        [LBoundary(:,2),LBoundary(:,1)] = ...
+            InversePerspectiveTransform(double(LBoundary(:,2)),...
+            double(LBoundary(:,1)));
     end
+    if (length(RBoundary)>5)
+        [RBoundary(:,2),RBoundary(:,1)] = ...
+            InversePerspectiveTransform(double(RBoundary(:,2)),...
+        double(RBoundary(:,1)));
+    end
+    
+    if(length(LBoundary)<=5 && length(RBoundary)<=5)
+        %Not enough points for analyzing
+        currentState.isUnknown=1;
+        throw(MException('ANALYZER:UnknownState','No available points'));
+    end
+    
+    
+    %% Analyzing Algorithms
+    
+    if(length(LBoundary)>length(RBoundary))
+        input=LBoundary(1:5:end,:);
+    else
+        input=RBoundary(1:5:end,:);
+    end
+    input=double(input);
+    
+    if(size(input,1)<=5)
+        %Not enough points for analyzing
+        currentState.isUnknown=1;
+        throw(MException('ANALYZER:UnknownState','Unable to fit'));
+    end
+    
+    [isLinear,alpha,beta,x0,y0,radius]=analyzer(input);
+
     currentState.lineAlpha      = alpha;
     currentState.lineBeta       = beta;
     currentState.circleX        = x0;
     currentState.circleY        = y0;
     currentState.circleRadius   = radius;
-end
-
-isCrossroad=0;
-if(size(input,1)>5)
+    
     isCrossroad = IsCrossroad(input(:,2),input(:,1),size(input,1));
-end
-
-if(isCrossroad)
-   currentState.state=3;
+    
+    if(isCrossroad)
+        currentState.state=3;
+    elseif(isLinear)
+        currentState.state=1;
+    else
+        currentState.state=2;
+    end
+    
+    currentState.isUnknown=0;
+    
+catch ME
+    switch ME.identifier
+        case 'ANALYZER:UnknownState'
+            disp(ME.message);
+        otherwise
+            rethrow(ME);
+    end
 end
 
 %% Control
-
-
 persistent internalState;
+
 if(isempty(internalState))
-    clear('internalState')
+    internalState=struct( ...
+        'state',0 ...
+        ,'candidateState',0 ...
+        ,'candidateStateCounter',0   ...
+        ,'crossCounter',0   ...
+        );
 end
-if(~exist('internalState','var'))
-    internalState=struct('state',0 ...
-                         ,'lastFrameState',0 ...
-                         ,'stateCounter',0);
-end
+
+
 internalState=ControllerUpdate(internalState,currentState);
 [spd,dir]=ControllerControl(internalState,currentState);
     
@@ -98,8 +121,10 @@ for ii=-1:1
     end
 end
 
-for i=1:size(input,1)
-    out(input(i,1),input(i,2))=44;
+if(~currentState.isUnknown)
+    for i=1:size(input,1)
+        out(input(i,1),input(i,2))=44;
+    end
 end
 
 % Draw A line
@@ -141,7 +166,7 @@ if(currentState.state==2)
 end
 
 
-if(isCrossroad)
+if(currentState.state==3)
     for ii=-1:1
         for jj=-1:1
             out(2+jj,2+ii)=9;
@@ -196,19 +221,60 @@ end
 end
 
 function internalState=ControllerUpdate(internalState,currentState)
+
+CONSISTENCY_AWARD=10;
+INCONSISTENCY_PUNISHMENT=30;
+PROMOTION_REQUIREMENT=30;
+MAXIMUM_SCORE=50;
+CROSSROAD_INERTIA=10;
+
 if(~currentState.isUnknown)
+    
     if(internalState.state==0)
         %First time running
         internalState.state=currentState.state;
-        internalState.stateCounter=internalState.stateCounter+1;
-        internalState.lastFrameState=internalState.stateCounter;
+        internalState.candidateState=currentState.state;
+        internalState.candidateStateCounter=CONSISTENCY_AWARD;
         return;
     end
-    %instantSwithing
-    internalState.state=currentState.state;
-    internalState.stateCounter=internalState.stateCounter+1;
-    internalState.lastFrameState=internalState.stateCounter;
+    
+    if(internalState.state==3)
+        % if the established situation is crossroad;
+        % maintain the state for a period of time
+        if(internalState.crossCounter>0)
+            internalState.crossCounter=internalState.crossCounter-1;
+            %waiting is not over yet
+            return;
+        end
+    end
+    
+    counter=internalState.candidateStateCounter;
+    if(currentState.state==internalState.candidateState)
+        % The new state agress with candidate state
+        % Grant 10 points if it agrees
+        counter=counter + CONSISTENCY_AWARD;
+    else
+        % 30 pts punishment if it disagress
+        counter=counter - INCONSISTENCY_PUNISHMENT;
+        if(counter<0)
+            % Change Candidate if the points reaches negative
+            internalState.candidateState=currentState.state;
+            counter=CONSISTENCY_AWARD;
+        end
+    end
+    counter=min(counter,MAXIMUM_SCORE); %Cannot Exceeds 80pts
+    if(counter>30)
+        % 40pts to make the candidate official
+        if(internalState.state~=internalState.candidateState)
+            internalState.state=internalState.candidateState;
+            if(internalState.state==3)
+                internalState.crossCounter=CROSSROAD_INERTIA;
+            end
+        end
+    end
+    internalState.candidateStateCounter=counter;
 end
+disp(internalState.candidateStateCounter);
 end
 
 function [spd,dir]=ControllerControl(internalState,currentState)
@@ -219,9 +285,12 @@ CONTROL_STATE_STR2TRN  =4;
 switch internalState.state
     case CONTROL_STATE_STRAIGHT 
         [dir,spd]=LinearStateHandler(currentState);
+        disp('Straight');
     case CONTROL_STATE_TURN
+        disp('Turn');
         spd=10;dir=0;
-    case CONTROL_STATE_CROSS    
+    case CONTROL_STATE_CROSS
+        disp('Cross');
         spd=10;dir=0;
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
