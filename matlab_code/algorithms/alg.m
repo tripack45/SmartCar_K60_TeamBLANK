@@ -5,7 +5,8 @@ imgcol=size(img_buffer,2);
 IMG_ROWS=imgrow;
 IMG_COLS=imgcol;
 img_buffer=uint8(img_buffer);
- 
+beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
+
 %% Visual Algorithms
 [LBoundary,RBoundary]=BoundaryDetector(img_buffer);
 
@@ -35,10 +36,11 @@ if(length(LBoundary)>length(RBoundary))
 else
     input=RBoundary(1:5:end,:);
 end
+input=double(input);
 
 
 if(size(input,1)>5)
-    [isLinear,alpha,beta,x0,y0,radius]=analyzer(double(input));
+    [isLinear,alpha,beta,x0,y0,radius]=analyzer(input);
     
     if(isLinear)
         currentState.state=1;
@@ -52,6 +54,10 @@ if(size(input,1)>5)
     currentState.circleRadius   = radius;
 end
 
+isCrossroad=0;
+if(size(input,1)>5)
+    isCrossroad = IsCrossroad(input(:,2),input(:,1),size(input,1));
+end
 %% Control
 spd=0;
 dir=0;
@@ -72,6 +78,10 @@ for ii=-1:1
     for jj=-1:1
         out(tCarPosY+jj,tCarPosX+ii)=9;
     end
+end
+
+for i=1:size(input,1)
+    out(input(i,1),input(i,2))=44;
 end
 
 % Draw A line
@@ -104,12 +114,18 @@ if(currentState.state==2)
     % Draw the center of the circle
     for ii=-1:1
         for jj=-1:1
-            if(exist('x0')&&exist('y0'))
-                if(x0+jj>0   && y0+ii>0 ...
-                        && x0+jj<150 && y0+ii<150)
-                    out(ceil(x0)+jj,ceil(y0)+ii)=9;
-                end
+            if(x0+jj>0   && y0+ii>0 ...
+                    && x0+jj<150 && y0+ii<150)
+                out(ceil(x0)+jj,ceil(y0)+ii)=9;
             end
+        end
+    end
+end
+
+if(isCrossroad)
+    for ii=-1:1
+        for jj=-1:1
+            out(2+jj,2+ii)=9;
         end
     end
 end
