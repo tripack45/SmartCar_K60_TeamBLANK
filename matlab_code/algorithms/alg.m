@@ -58,7 +58,9 @@ isCrossroad=0;
 if(size(input,1)>5)
     isCrossroad = IsCrossroad(input(:,2),input(:,1),size(input,1));
 end
+
 %% Control
+
 spd=0;
 dir=0;
 
@@ -122,6 +124,7 @@ if(currentState.state==2)
     end
 end
 
+
 if(isCrossroad)
     for ii=-1:1
         for jj=-1:1
@@ -129,10 +132,50 @@ if(isCrossroad)
         end
     end
 end
+
+%draw currdir currspd
+out=SpdDirDrawer(currdir,currspd, out);
 graph=out;
+
+
 
 end
 
+
+
+function out=SpdDirDrawer(currdir ,currspd, out)
+if 80+currdir/10<=0
+    currdir=-790;
+end
+if currdir>0
+    for (i=80:80+currdir/10)
+        for(j=105:115)
+          out(j,i)=45;
+        end
+    end
+else
+    for (i=80:-1:80+currdir/10)
+        for(j=105:115)
+          out(j,i)=45;
+        end
+    end
+end
+
+if currspd>0
+    for (i=80:80+currspd*2)
+        for(j=115:125)
+          out(j,i)=50;
+        end
+    end
+else
+    for (i=80:-1:80+currspd*2)
+        for(j=115:125)
+          out(j,i)=50;
+        end
+    end
+end
+
+end
 
 
 
