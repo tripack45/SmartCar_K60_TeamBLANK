@@ -34,7 +34,7 @@ currentState=struct( 'state',      0 ...
                     ,'carPosY'    ,tCarPosY);
 
 if(length(LBoundary)>length(RBoundary))
-    input=LBoundary(1:5:end,:);S
+    input=LBoundary(1:5:end,:);
 else
     input=RBoundary(1:5:end,:);
 end
