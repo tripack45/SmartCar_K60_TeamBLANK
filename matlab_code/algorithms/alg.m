@@ -8,6 +8,7 @@ img_buffer=uint8(img_buffer);
 beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
 currentState=struct( ...
     'state'       ,0 ...
+    ,'img_buffer' ,img_buffer ...
     ,'isUnknown'  ,0 ...
     ,'lineAlpha'  ,0 ...
     ,'lineBeta'   ,0 ...
@@ -274,7 +275,6 @@ if(~currentState.isUnknown)
     end
     internalState.candidateStateCounter=counter;
 end
-disp(internalState.candidateStateCounter);
 end
 
 function [spd,dir]=ControllerControl(internalState,currentState)
@@ -291,7 +291,8 @@ switch internalState.state
         spd=10;dir=0;
     case CONTROL_STATE_CROSS
         disp('Cross');
-        spd=10;dir=0;
+        [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
+        spd=10;dir=0
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
     otherwise
