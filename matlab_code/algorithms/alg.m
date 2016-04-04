@@ -8,6 +8,12 @@ img_buffer=uint8(img_buffer);
 beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
 currentState=struct( ...
     'state'       ,0 ...
+    ,'LBoundaryX'  ,[] ...
+    ,'LBoundaryY'  ,[] ...
+    ,'LBoundarySize',0 ...
+    ,'RBoundaryX'  ,[] ...
+    ,'RBoundaryY'  ,[] ...
+    ,'RBoundarySize',0 ...
     ,'img_buffer' ,img_buffer ...
     ,'isUnknown'  ,0 ...
     ,'lineAlpha'  ,0 ...
@@ -22,26 +28,44 @@ try
     %% Visual Algorithms
     
     [LBoundary,RBoundary]=BoundaryDetector(img_buffer);
+    if(isempty(LBoundary))
+        currentState.LBoundaryX=[];
+        currentState.LBoundaryY=[];
+        currentState.LBoundarySize=0;
+    else
+        currentState.LBoundaryX=LBoundary(:,2);
+        currentState.LBoundaryY=LBoundary(:,1);
+        currentState.LBoundarySize=size(LBoundary,1);
+    end
+    if(isempty(RBoundary))
+        currentState.RBoundaryX=[];
+        currentState.RBoundaryY=[];
+        currentState.RBoundarySize=0;
+    else
+        currentState.RBoundaryX=RBoundary(:,2);
+        currentState.RBoundaryY=RBoundary(:,1);
+        currentState.RBoundarySize=size(RBoundary,1);
+    end
     
     [tCarPosX,tCarPosY]=InversePerspectiveTransform(30,65);
     currentState.carPosX=tCarPosX;
     currentState.carPosY=tCarPosY;
 
-    if(length(LBoundary)<=5 && length(RBoundary)<=5)
+    if(currentState.LBoundarySize<=5 && currentState.RBoundarySize<=5)
         %Not enough points for analyzing
         throw(MException('ANALYZER:UnknownState','No available points'));
     end
     
-    if(length(LBoundary)>5)
-        [LBoundary(:,2),LBoundary(:,1)] = ...
-            InversePerspectiveTransform(double(LBoundary(:,2)),...
-            double(LBoundary(:,1)));
+    if(currentState.LBoundarySize>5)
+        [currentState.LBoundaryX,currentState.LBoundaryY] = ...
+            InversePerspectiveTransform(double(currentState.LBoundaryX),...
+                                        double(currentState.LBoundaryY));
     end
     
-    if (length(RBoundary)>5)
-        [RBoundary(:,2),RBoundary(:,1)] = ...
-            InversePerspectiveTransform(double(RBoundary(:,2)),...
-        double(RBoundary(:,1)));
+    if(currentState.RBoundarySize>5)
+        [currentState.RBoundaryX,currentState.RBoundaryY] = ...
+            InversePerspectiveTransform(double(currentState.RBoundaryX),...
+                                        double(currentState.RBoundaryY));
     end
     
 
@@ -49,10 +73,10 @@ try
     
     %% Analyzing Algorithms
     
-    if(length(LBoundary)>length(RBoundary))
-        input=LBoundary(1:5:end,:);
+    if(currentState.LBoundarySize>currentState.RBoundarySize)
+        input=[currentState.LBoundaryY(1:5:end),currentState.LBoundaryX(1:5:end)];
     else
-        input=RBoundary(1:5:end,:);
+        input=[currentState.RBoundaryY(1:5:end),currentState.RBoundaryX(1:5:end)];
     end
     input=double(input);
     
@@ -112,7 +136,7 @@ internalState=ControllerUpdate(internalState,currentState);
 %Draw Boundary
 out=zeros(150,150)+57;
 for row=1:size(LBoundary,1);
-    out(LBoundary(row,1),LBoundary(row,2))=50;%9/44/50/55/65
+    out(LBoundary(row,1),currentState.LBoundary(row,2))=50;%9/44/50/55/65
 end
 for row=1:size(RBoundary,1);
     out(RBoundary(row,1),RBoundary(row,2))=55;%50/55/65
