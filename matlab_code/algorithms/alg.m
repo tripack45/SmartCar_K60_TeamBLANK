@@ -27,7 +27,7 @@ currentState=struct( ...
 try
     %% Visual Algorithms
     
-    [LBoundary,RBoundary]=BoundaryDetector(img_buffer);
+    [LBoundary,RBoundary]=BoundaryDetector(currentState);
     if(isempty(LBoundary))
         currentState.LBoundaryX=[];
         currentState.LBoundaryY=[];
@@ -130,16 +130,17 @@ end
 
 internalState=ControllerUpdate(internalState,currentState);
 [spd,dir]=ControllerControl(internalState,currentState);
+
     
 %% Output to graph
 
 %Draw Boundary
 out=zeros(150,150)+57;
-for row=1:size(LBoundary,1);
-    out(LBoundary(row,1),currentState.LBoundary(row,2))=50;%9/44/50/55/65
+for row=1:size(currentState.LBoundaryY);
+    out(currentState.LBoundaryY(row),currentState.LBoundaryX(row))=50;%9/44/50/55/65
 end
-for row=1:size(RBoundary,1);
-    out(RBoundary(row,1),RBoundary(row,2))=55;%50/55/65
+for row=1:size(currentState.RBoundaryY);
+    out(currentState.RBoundaryY(row),currentState.RBoundaryX(row))=55;%50/55/65
 end
 
 for ii=-1:1
@@ -317,7 +318,7 @@ switch internalState.state
         spd=10;dir=0;
     case CONTROL_STATE_CROSS
         disp('Cross');
-        [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
+        [dir,spd]=CrossRoadStateHandler(currentState.img_buffer);
         spd=10;dir=0
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
