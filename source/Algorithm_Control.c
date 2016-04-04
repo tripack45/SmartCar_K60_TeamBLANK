@@ -37,7 +37,7 @@ void ControllerUpdate(){
     }else{
       // 30 pts punishment if it disagress
       counter -= INCONSISTENCY_PUNISHMENT;
-      if(counter<0){
+      if(counter < 0){
         // Change Candidate if the points reaches negative
         internalState.candidateState=currentState.state;
         counter=CONSISTENCY_AWARD;
@@ -73,6 +73,94 @@ void ControllerControl(){
     break;
   }
   return;
+}
+
+void LinearStateHandler(){
+  if ( abs((s16)(currentState.lineAlpha * currentState.carPosY 
+                 + currentState.lineBeta) - currentState.carPosX )  
+      < DANGERZONE )
+  {
+        currdir = - ((s16)(currentState.lineBeta) - currentState.carPosX)
+          * DIR_SENSITIVITY;
+        currspd = FASTSPEED;
+      }else{
+        currdir = - ((s16)(currentState.lineAlpha * currentState.carPosY + 
+                           currentState.lineBeta) - currentState.carPosX) 
+          * DIR_SENSITIVITY;
+        currspd = LOWSPEED;
+      }
+}
+
+void CrossRoadStateHandler(){
+
+u8 boundaryPTR;
+u8 LBoundarycol[INVERSE_IMG_ROWS] = {0};        
+u8 RBoundarycol[INVERSE_IMG_ROWS] = {0};
+
+//DetectBoundary
+for (boundaryPTR = 0; boundaryPTR < currentState.LBoundarySize; boundaryPTR++ ){
+  if (!LBoundarycol[MZ + currentState.LBoundaryY[MZ + boundaryPTR]]){
+    LBoundarycol[MZ + currentState.LBoundaryY[MZ + boundaryPTR]] =
+      currentState.LBoundaryX[MZ + boundaryPTR];
+  }
+}
+for (boundaryPTR = 0; boundaryPTR < currentState.RBoundarySize; boundaryPTR++ ){
+  if (!RBoundarycol[MZ + currentState.RBoundaryY[MZ + boundaryPTR]]){
+        RBoundarycol[MZ + currentState.RBoundaryY[MZ + boundaryPTR]] =
+            currentState.RBoundaryX[MZ + boundaryPTR];
+  }
+}
+
+
+
+//Dir and Speed Control
+
+
+u8 row;
+s16 s16temp;
+s16 g_nDirPos = currentState.carPosX * 2;
+s16 nShift    = 0;        
+s16 nDenom    = 0;
+
+for (row = INVERSE_IMG_ROWS - DIS_ROW; row > 0; row-- ){
+  if (LBoundarycol[MZ + row]&& RBoundarycol[MZ + row]){
+        g_nDirPos = (s16) ( (LBoundarycol[MZ + row] + RBoundarycol[MZ + row]) );
+        break;
+  }else if (LBoundarycol[MZ + row]){
+        g_nDirPos = (s16) ( 2*LBoundarycol[MZ + row] + TRACK_WIDTH );
+        break;
+  }else if (RBoundarycol[MZ + row]){
+        g_nDirPos = (s16) ( 2*RBoundarycol[MZ + row] - TRACK_WIDTH );
+        break;
+  }
+}
+s16temp = g_nDirPos;
+for (row=row; row>0; row-- ){
+  if (LBoundarycol[MZ + row]&& RBoundarycol[MZ + row]){
+        s16temp = (s16) ( insert_in(LBoundarycol[MZ + row] + RBoundarycol[MZ + row],
+            s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
+        nShift = nShift + (s16temp -  currentState.carPosX * 2);
+        nDenom = nDenom + 1;
+  }else if (LBoundarycol[MZ + row]){
+        s16temp = (s16) ( insert_in(LBoundarycol[MZ + row]*2 + TRACK_WIDTH,
+            s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
+        nShift = nShift + (s16temp- currentState.carPosX * 2);
+        nDenom = nDenom + 1;
+  }else if (RBoundarycol[MZ + row]){
+        s16temp = (s16) ( insert_in(RBoundarycol[MZ + row]*2 - TRACK_WIDTH,
+            s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
+        nShift = nShift + (s16temp- currentState.carPosX * 2);
+        nDenom = nDenom + 1;
+  }
+    
+}
+if (nDenom != 0) {
+    g_nDirPos = nShift/nDenom;
+}else{
+    g_nDirPos = g_nDirPos - currentState.carPosX * 2;
+}
+currdir = g_nDirPos * DIR_SENSITIVITY_OLD;
+//currspd = 10;
 }
 
 

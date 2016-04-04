@@ -1,13 +1,14 @@
 function [currdir currspd]=CrossRoadStateHandlerBeta(currentState)
 %constants
-TRACKWIDTH      = 70;
-boundaryPTR     = uint8(0);
-IMG_ROWS        = 150;
-IMG_COLS        = 150;
-LBoundarycol    = uint8(zeros(IMG_ROWS,1));
-RBoundarycol    = uint8(zeros(IMG_ROWS,1));
-MZ              = 1;
-DIS_ROW         = uint8(5);
+TRACKWIDTH          = 70;
+INVERSE_IMG_ROWS    = 150;
+MZ                  = 1;
+DIS_ROW             = 5;
+
+boundaryPTR         = uint8(0);
+LBoundarycol        = uint8(zeros(INVERSE_IMG_ROWS,1));
+RBoundarycol        = uint8(zeros(INVERSE_IMG_ROWS,1));
+
 
 
 
@@ -33,11 +34,11 @@ DIRSENSITIVITY      = 10;
 EXCEPT_RANGE        = 3;
 
 row                 = uint8(0);
-g_nDirPos           = int16(IMG_COLS);
+g_nDirPos           = int16(currentState.carPosX * 2);
 nShift              = int16(0);
 nDenom              = int16(0);
 s16temp             = int16(0);
-for (row=IMG_ROWS-DIS_ROW:-1:1)
+for (row=INVERSE_IMG_ROWS-DIS_ROW:-1:1)
     if (LBoundarycol(MZ + row)&& RBoundarycol(MZ +row))
         g_nDirPos = int16( (LBoundarycol(MZ + row)+RBoundarycol(MZ + row)) );
         break;
@@ -54,17 +55,17 @@ for (row=row:-1:1)
     if (LBoundarycol(MZ + row)&& RBoundarycol(MZ + row))
         s16temp = int16( insert_in(LBoundarycol(MZ + row)+RBoundarycol(MZ + row),...
             s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-        nShift = nShift + (s16temp-IMG_COLS);
+        nShift = nShift + (s16temp-currentState.carPosX * 2);
         nDenom = nDenom + 1;
     elseif (LBoundarycol(MZ + row))
         s16temp = int16( insert_in(LBoundarycol(MZ + row)*2+TRACKWIDTH,...
             s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-        nShift = nShift + (s16temp-IMG_COLS);
+        nShift = nShift + (s16temp-currentState.carPosX * 2);
         nDenom = nDenom + 1;
     elseif (RBoundarycol(MZ + row))
         s16temp = int16( insert_in(RBoundarycol(MZ + row)*2-TRACKWIDTH,...
             s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-        nShift = nShift + (s16temp-IMG_COLS);
+        nShift = nShift + (s16temp-currentState.carPosX * 2);
         nDenom = nDenom + 1;
     end
     
@@ -72,7 +73,7 @@ end
 if (nDenom~=0) 
     g_nDirPos=nShift/nDenom;
 else
-    g_nDirPos=g_nDirPos-IMG_COLS;
+    g_nDirPos=g_nDirPos-currentState.carPosX * 2;
 end
 currdir = g_nDirPos * DIRSENSITIVITY;
 currspd = 10;
