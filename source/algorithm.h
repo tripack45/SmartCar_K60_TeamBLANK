@@ -172,6 +172,12 @@ typedef struct{
   u8 isUnknown;
   u8 carPosX;
   u8 carPosY;
+  u8 LBoundaryX[BOUNDARY_LENGTH]; 
+  u8 LBoundaryY[BOUNDARY_LENGTH]; 
+  u8 LBoundarySize;
+  u8 RBoundaryX[BOUNDARY_LENGTH]; 
+  u8 RBoundaryY[BOUNDARY_LENGTH]; 
+  u8 RBoundarySize;
   float lineAlpha;
   float lineBeta;
   float circleX;
@@ -191,10 +197,21 @@ void ControllerControl();
 #define DANGERZONE      20
 #define FASTSPEED       30
 #define LOWSPEED        13
-#define DIRSENSITIVITY  10
+#define DIR_SENSITIVITY  10
 
 void LinearStateHandler();
 
 //========EMD OF LinearStateHandler=======
+
+//========CrossRoadStateHandler===========
+
+#define TRACK_WIDTH          70
+#define INVERSE_IMG_ROWS     150
+#define DIR_SENSITIVITY_OLD  10
+#define EXCEPT_RANGE         3
+
+void CrossRoadStateHandler();
+
+//=======EMD OF CrossRoadStateHandler======
 
 #endif
