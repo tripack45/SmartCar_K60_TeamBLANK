@@ -186,4 +186,15 @@ void ControllerControl();
 
 //==========EMD OF CONTROLLER============
 
+//==========LinearStateHandler===========
+
+#define DANGERZONE      20
+#define FASTSPEED       30
+#define LOWSPEED        13
+#define DIRSENSITIVITY  10
+
+void LinearStateHandler();
+
+//========EMD OF LinearStateHandler=======
+
 #endif

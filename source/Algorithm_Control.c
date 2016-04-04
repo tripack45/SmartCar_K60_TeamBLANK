@@ -75,6 +75,22 @@ void ControllerControl(){
   return;
 }
 
+void LinearStateHandler(){
+  if ( abs((s16)(currentState.lineAlpha * currentState.carPosY 
+                 + currentState.lineBeta) - currentState.carPosX )  
+      < DANGERZONE )
+  {
+        currdir = - ((s16)(currentState.lineBeta) - currentState.carPosX)
+          * DIRSENSITIVITY;
+        currspd = FASTSPEED;
+      }else{
+        currdir = - ((s16)(currentState.lineAlpha * currentState.carPosY + 
+                           currentState.lineBeta) - currentState.carPosX) 
+          * DIRSENSITIVITY;
+        currspd = LOWSPEED;
+      }
+}
+
 
 void MotorCtrl(void){
   //need ifSpeedUp
