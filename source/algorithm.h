@@ -170,6 +170,8 @@ typedef struct{
   u8 *img_buffer;
   u8 state;
   u8 isUnknown;
+  u8 carPosX;
+  u8 carPosY;
   float lineAlpha;
   float lineBeta;
   float circleX;

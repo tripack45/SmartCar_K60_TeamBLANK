@@ -4,6 +4,11 @@
 
 void AlgorithmMain(){
   
+   currentState.img_buffer=(void*)img_buffer;
+   
+   currentState.carPosX=60;
+   currentState.carPosY=79;
+   
    DetectBoundary();
 
    u8 LLength = boundaryDetector.LSectionTail
@@ -13,7 +18,11 @@ void AlgorithmMain(){
    u8* boundaryX = NULL;
    u8* boundaryY = NULL;
    u8  length =0;
-   u8  isLinear;
+   u8  isLinear,isCrossroad;
+   
+   if(LLength <= 5 && RLength <= 5)
+     goto unknown; //Not enough points for transfering
+   
    if (LLength > RLength){
         boundaryX=boundaryDetector.boundaryX + boundaryDetector.LSectionHead;
         boundaryY=boundaryDetector.boundaryY + boundaryDetector.LSectionHead;
@@ -23,15 +32,30 @@ void AlgorithmMain(){
         boundaryY=boundaryDetector.boundaryY + boundaryDetector.RSectionHead;
         length=InversePerspectiveTransform(boundaryX, boundaryY, RLength);
    }
-   if (length>5){
-   isLinear=IsLinear(boundaryY, boundaryX , length, &(linearDectect.alpha),
-                     &(linearDectect.beta), &(linearDectect.radius));
-   }
-   else{
-     isLinear=2;
-   }
    
+   if(length<=5)
+     goto unknown; //Not enough points for analyzation
    
+   isLinear=IsLinear(boundaryY,
+                     boundaryX,
+                     length,
+                     &(linearDectect.alpha),
+                     &(linearDectect.beta),
+                     &(linearDectect.radius));
+    
+   isCrossroad=IsCrossroad(boundaryX,boundaryY,length);
+   
+   if(isCrossroad)
+     currentState.state=CONTROL_STATE_CROSS;
+   else if(isLinear)
+     currentState.state=CONTROL_STATE_STRAIGHT;
+   else
+     currentState.state=CONTROL_STATE_TURN;
+   
+   currentState.isUnknown=0;
+   
+control:
+  
    ControllerUpdate();
    ControllerControl();
    
@@ -44,7 +68,14 @@ void AlgorithmMain(){
    debugWatch[1]=(s32)linearDectect.alpha;
    debugWatch[2]=(s32)linearDectect.beta;         
    debugWatch[3]=(s32)linearDectect.radius;
-
+   return;
+  
+/* this parts acts as exception handler
+ * THIS CANNOT BE IN NORMAL ROUTHINE!
+ */
+unknown:
+   currentState.isUnknown=1;
+   goto control;
 }
 
 
