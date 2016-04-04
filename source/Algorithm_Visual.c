@@ -29,7 +29,7 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size){
 
 
 void DetectBoundary(){
-    u8 endPoint[8];
+    //u8 endPoint[8];
     u8 row;
     u8 col;
     u8 currBoundaryPtr = 0;
@@ -127,16 +127,16 @@ void DetectBoundary(){
             }else{
                 sectionTail[MZ + sectionCounter - 1] =
                     currBoundaryPtr - 1;
-                endPoint[MZ + 2 * (sectionCounter - 1)] =
-                    GuideLoc(boundaryDetector.boundaryY
-                             [MZ + sectionTail[MZ + sectionCounter - 1]],
-                             boundaryDetector.boundaryX
-                             [MZ + sectionTail[MZ + sectionCounter - 1]]);
-                endPoint[MZ + 2 * (sectionCounter - 1)+1] =
-                    GuideLoc(boundaryDetector.boundaryY
-                             [MZ + sectionHead[MZ + sectionCounter - 1]],
-                             boundaryDetector.boundaryX
-                             [MZ + sectionHead[MZ + sectionCounter - 1]]);
+                //endPoint[MZ + 2 * (sectionCounter - 1)] =
+                //    GuideLoc(boundaryDetector.boundaryY
+                //             [MZ + sectionTail[MZ + sectionCounter - 1]],
+                //             boundaryDetector.boundaryX
+                 //            [MZ + sectionTail[MZ + sectionCounter - 1]]);
+                //endPoint[MZ + 2 * (sectionCounter - 1)+1] =
+                //    GuideLoc(boundaryDetector.boundaryY
+                //             [MZ + sectionHead[MZ + sectionCounter - 1]],
+                //             boundaryDetector.boundaryX
+                //             [MZ + sectionHead[MZ + sectionCounter - 1]]);
                 sectionCounter ++;
                 sectionHead[MZ + sectionCounter - 1] = currBoundaryPtr;
             }
@@ -145,46 +145,70 @@ void DetectBoundary(){
     }
     switch (sectionCounter){
     case 5: {
-      boundaryDetector.LSectionHead = sectionHead[0];
-      boundaryDetector.LSectionTail = sectionTail[1];  
-      boundaryDetector.RSectionHead = sectionHead[2];  
-      boundaryDetector.RSectionTail = sectionTail[3];  
+      currentState.LBoundaryX    = boundaryDetector.boundaryX + sectionHead[0];
+      currentState.LBoundaryY    = boundaryDetector.boundaryY + sectionHead[0];
+      currentState.LBoundarySize = sectionTail[1] - sectionHead[0] +1 ;
+      currentState.RBoundaryX    = boundaryDetector.boundaryX + sectionHead[2];
+      currentState.RBoundaryY    = boundaryDetector.boundaryY + sectionHead[2];
+      currentState.RBoundarySize = sectionTail[3] - sectionHead[2] +1 ;
+      //boundaryDetector.LSectionHead = sectionHead[0];
+      //boundaryDetector.LSectionTail = sectionTail[1];  
+      //boundaryDetector.RSectionHead = sectionHead[2];  
+      //boundaryDetector.RSectionTail = sectionTail[3];  
       break;
     }
     case 4: {
-      boundaryDetector.LSectionHead = sectionHead[0];
-      boundaryDetector.LSectionTail = sectionTail[0];  
-      boundaryDetector.RSectionHead = sectionHead[1];  
-      boundaryDetector.RSectionTail = sectionTail[1];  
+      currentState.LBoundaryX    = boundaryDetector.boundaryX + sectionHead[0];
+      currentState.LBoundaryY    = boundaryDetector.boundaryY + sectionHead[0];
+      currentState.LBoundarySize = sectionTail[0] - sectionHead[0] +1 ;
+      currentState.RBoundaryX    = boundaryDetector.boundaryX + sectionHead[1];
+      currentState.RBoundaryY    = boundaryDetector.boundaryY + sectionHead[1];
+      currentState.RBoundarySize = sectionTail[1] - sectionHead[1] +1 ;
+      //boundaryDetector.LSectionHead = sectionHead[0];
+      //boundaryDetector.LSectionTail = sectionTail[0];  
+      //boundaryDetector.RSectionHead = sectionHead[1];  
+      //boundaryDetector.RSectionTail = sectionTail[1];  
       break;
     }
     case 3: {
-      boundaryDetector.LSectionHead = sectionHead[0];
-      boundaryDetector.LSectionTail = sectionTail[0];  
-      boundaryDetector.RSectionHead = sectionHead[1];  
-      boundaryDetector.RSectionTail = sectionTail[1];  
+      currentState.LBoundaryX    = boundaryDetector.boundaryX + sectionHead[0];
+      currentState.LBoundaryY    = boundaryDetector.boundaryY + sectionHead[0];
+      currentState.LBoundarySize = sectionTail[0] - sectionHead[0] +1 ;
+      currentState.RBoundaryX    = boundaryDetector.boundaryX + sectionHead[1];
+      currentState.RBoundaryY    = boundaryDetector.boundaryY + sectionHead[1];
+      currentState.RBoundarySize = sectionTail[1] - sectionHead[1] +1 ;
+      //boundaryDetector.LSectionHead = sectionHead[0];
+      //boundaryDetector.LSectionTail = sectionTail[0];  
+      //boundaryDetector.RSectionHead = sectionHead[1];  
+      //boundaryDetector.RSectionTail = sectionTail[1];  
       break;
     }
     case 2: {
       if (  boundaryDetector.boundaryY[MZ + sectionHead[0]]  
           < boundaryDetector.boundaryY[MZ + sectionTail[0]] ){
-            boundaryDetector.LSectionHead = 0;
-            boundaryDetector.LSectionTail = 0;  
-            boundaryDetector.RSectionHead = sectionHead[0];  
-            boundaryDetector.RSectionTail = sectionTail[0]; 
+            currentState.LBoundarySize = 0 ;
+            currentState.RBoundaryX    = boundaryDetector.boundaryX + sectionHead[0];
+            currentState.RBoundaryY    = boundaryDetector.boundaryY + sectionHead[0];
+            currentState.RBoundarySize = sectionTail[0] - sectionHead[0] +1 ;
+            //boundaryDetector.LSectionHead = 0;
+            //boundaryDetector.LSectionTail = 0;  
+            //boundaryDetector.RSectionHead = sectionHead[0];  
+            //boundaryDetector.RSectionTail = sectionTail[0]; 
           }else{
-            boundaryDetector.LSectionHead = sectionHead[0];
-            boundaryDetector.LSectionTail = sectionTail[0];  
-            boundaryDetector.RSectionHead = 0;  
-            boundaryDetector.RSectionTail = 0; 
+            currentState.LBoundaryX    = boundaryDetector.boundaryX + sectionHead[0];
+            currentState.LBoundaryY    = boundaryDetector.boundaryY + sectionHead[0];
+            currentState.LBoundarySize = sectionTail[0] - sectionHead[0] +1 ;
+            currentState.RBoundarySize = 0 ;
+            //boundaryDetector.LSectionHead = sectionHead[0];
+            //boundaryDetector.LSectionTail = sectionTail[0];  
+            //boundaryDetector.RSectionHead = 0;  
+            //boundaryDetector.RSectionTail = 0; 
           }
       break;
     }
     default :{
-      boundaryDetector.LSectionHead = sectionHead[1];
-      boundaryDetector.LSectionTail = sectionTail[1];  
-      boundaryDetector.RSectionHead = sectionHead[2];  
-      boundaryDetector.RSectionTail = sectionTail[2];
+      currentState.LBoundarySize = 0 ;
+      currentState.RBoundarySize = 0 ;
     }
     }
     

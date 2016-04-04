@@ -172,11 +172,11 @@ typedef struct{
   u8 isUnknown;
   u8 carPosX;
   u8 carPosY;
-  u8 LBoundaryX[BOUNDARY_LENGTH]; 
-  u8 LBoundaryY[BOUNDARY_LENGTH]; 
+  u8 *LBoundaryX; 
+  u8 *LBoundaryY; 
   u8 LBoundarySize;
-  u8 RBoundaryX[BOUNDARY_LENGTH]; 
-  u8 RBoundaryY[BOUNDARY_LENGTH]; 
+  u8 *RBoundaryX; 
+  u8 *RBoundaryY; 
   u8 RBoundarySize;
   float lineAlpha;
   float lineBeta;

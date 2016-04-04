@@ -37,7 +37,7 @@ void ControllerUpdate(){
     }else{
       // 30 pts punishment if it disagress
       counter -= INCONSISTENCY_PUNISHMENT;
-      if(counter<0){
+      if(counter < 0){
         // Change Candidate if the points reaches negative
         internalState.candidateState=currentState.state;
         counter=CONSISTENCY_AWARD;
@@ -94,8 +94,8 @@ void LinearStateHandler(){
 void CrossRoadStateHandler(){
 
 u8 boundaryPTR;
-u8 LBoundarycol[INVERSE_IMG_ROWS] = 0;        
-u8 RBoundarycol[INVERSE_IMG_ROWS] = 0;
+u8 LBoundarycol[INVERSE_IMG_ROWS] = {0};        
+u8 RBoundarycol[INVERSE_IMG_ROWS] = {0};
 
 //DetectBoundary
 for (boundaryPTR = 0; boundaryPTR < currentState.LBoundarySize; boundaryPTR++ ){
