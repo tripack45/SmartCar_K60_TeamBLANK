@@ -30,6 +30,11 @@ void AlgorithmMain(){
    else{
      isLinear=2;
    }
+   
+   
+   ControllerUpdate();
+   ControllerControl();
+   
    s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
         tx += boundaryX[i];

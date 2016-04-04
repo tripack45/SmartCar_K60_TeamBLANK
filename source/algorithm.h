@@ -160,9 +160,16 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
 #define CONTROL_STATE_CROSS    0x03
 #define CONTROL_STATE_STR2TRN  0x04
 
+#define CONSISTENCY_AWARD               10
+#define INCONSISTENCY_PUNISHMENT        30
+#define PROMOTION_REQUIREMENT           30
+#define MAXIMUM_SCORE                   50
+#define CROSSROAD_INERTIA               10
+
 typedef struct{
+  u8 *img_buffer;
   u8 state;
-  u8 unknownFlag;
+  u8 isUnknown;
   float lineAlpha;
   float lineBeta;
   float circleX;
