@@ -8,19 +8,21 @@ img_buffer=uint8(img_buffer);
 beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
 currentState=struct( ...
     'state'       ,0 ...
+    ,'img_buffer' ,img_buffer ...
     ,'LBoundaryX'  ,[] ...
     ,'LBoundaryY'  ,[] ...
     ,'LBoundarySize',0 ...
     ,'RBoundaryX'  ,[] ...
     ,'RBoundaryY'  ,[] ...
     ,'RBoundarySize',0 ...
-    ,'img_buffer' ,img_buffer ...
+    ,'fittedBoundary',0 ...
     ,'isUnknown'  ,0 ...
     ,'lineAlpha'  ,0 ...
     ,'lineBeta'   ,0 ...
     ,'circleX'    ,0 ...
     ,'circleY'    ,0 ...
     ,'circleRadius',0 ...
+    ,'isInnerCircle',0 ...
     ,'carPosX'    ,0 ...
     ,'carPosY'    ,0);
 
@@ -75,8 +77,10 @@ try
     
     if(currentState.LBoundarySize>currentState.RBoundarySize)
         input=[currentState.LBoundaryY(1:5:end),currentState.LBoundaryX(1:5:end)];
+        currentState.fittedBoundary=1;
     else
         input=[currentState.RBoundaryY(1:5:end),currentState.RBoundaryX(1:5:end)];
+        currentState.fittedBouandary=2;
     end
     input=double(input);
     
@@ -99,8 +103,25 @@ try
         currentState.state=3;
     elseif(isLinear)
         currentState.state=1;
+        if(currentState.fittedBoundary==1)
+            currentState.lineBeta=currentState.lineBeta+35;
+        elseif(currentState.state==2)
+            currentState.lineBeta=currentState.lineBeta-35;
+        end
     else
         currentState.state=2;
+        d=sqrt((currentState.carPosX-currentState.circleY)^2 ...
+               +(currentState.carPosY-currentState.circleX)^2);
+        if(d>currentState.circleRadius)
+            currentState.circleRadius=currentState.circleRadius+35;
+            currentState.isInnerCircle=1;
+        else
+            currentState.circleRadius=currentState.circleRadius-35;
+            currentState.isInnerCircle=0;
+        end
+        if(d<25||currentState.circleRadius<25)
+            throw(MException('ANALYZER:UnknownState','False fit result'));
+        end
     end
     
     currentState.isUnknown=0;
@@ -318,7 +339,7 @@ switch internalState.state
         spd=10;dir=0;
     case CONTROL_STATE_CROSS
         disp('Cross');
-        [dir,spd]=CrossRoadStateHandler(currentState.img_buffer);
+        [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
         spd=10;dir=0
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
