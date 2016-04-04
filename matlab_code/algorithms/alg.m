@@ -27,22 +27,24 @@ try
     currentState.carPosX=tCarPosX;
     currentState.carPosY=tCarPosY;
 
+    if(length(LBoundary)<=5 && length(RBoundary)<=5)
+        %Not enough points for analyzing
+        throw(MException('ANALYZER:UnknownState','No available points'));
+    end
+    
     if(length(LBoundary)>5)
         [LBoundary(:,2),LBoundary(:,1)] = ...
             InversePerspectiveTransform(double(LBoundary(:,2)),...
             double(LBoundary(:,1)));
     end
+    
     if (length(RBoundary)>5)
         [RBoundary(:,2),RBoundary(:,1)] = ...
             InversePerspectiveTransform(double(RBoundary(:,2)),...
         double(RBoundary(:,1)));
     end
     
-    if(length(LBoundary)<=5 && length(RBoundary)<=5)
-        %Not enough points for analyzing
-        currentState.isUnknown=1;
-        throw(MException('ANALYZER:UnknownState','No available points'));
-    end
+
     
     
     %% Analyzing Algorithms
@@ -56,7 +58,6 @@ try
     
     if(size(input,1)<=5)
         %Not enough points for analyzing
-        currentState.isUnknown=1;
         throw(MException('ANALYZER:UnknownState','Unable to fit'));
     end
     
@@ -83,6 +84,7 @@ try
 catch ME
     switch ME.identifier
         case 'ANALYZER:UnknownState'
+            currentState.isUnknown=1;
             disp(ME.message);
         otherwise
             rethrow(ME);

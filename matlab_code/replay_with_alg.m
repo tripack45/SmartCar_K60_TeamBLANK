@@ -3,9 +3,9 @@ imgrow=67;
 imgcol=77;
 algrow=150;
 algcol=150;
-source=imglog;
+source=frame;
 fps=50;
-start=900;
+start=1800;
 
 %% Set up the figures
 InitializeFigures;
