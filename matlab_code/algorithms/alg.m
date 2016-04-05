@@ -76,6 +76,12 @@ try
     
     currentState = analyzer(currentState);
     
+    if (currentState.lineMSE>currentState.circleMSE)
+        fprintf('Circle\t');
+    else
+        fprintf('Line  \t');
+    end
+    fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)
@@ -106,7 +112,7 @@ catch ME
     switch ME.identifier
         case 'ANALYZER:UnknownState'
             currentState.isUnknown=1;
-            disp(ME.message);
+%             disp(ME.message);
         otherwise
             rethrow(ME);
     end
@@ -156,7 +162,7 @@ if(currentState.state==1)
     end
 end
 
-if(currentState.state==2)
+% if(currentState.state==2)
     % Draw the correponding circle
     p=0 : 2*pi/300 : 2*pi;
     px=currentState.circleRadius.*cos(p)+currentState.circleY;
@@ -182,7 +188,7 @@ if(currentState.state==2)
             end
         end
     end
-end
+% end
 
 
 if(currentState.state==3)
@@ -303,19 +309,19 @@ CONTROL_STATE_STR2TRN  =4;
 switch internalState.state
     case CONTROL_STATE_STRAIGHT 
         [dir,spd]=LinearStateHandler(currentState);
-        disp('Straight');
+%         disp('Straight');
     case CONTROL_STATE_TURN
-        disp('Turn');
+%         disp('Turn');
         spd=10;dir=0;
     case CONTROL_STATE_CROSS
-        disp('Cross');
+%         disp('Cross');
         [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
         spd=10;dir=0;
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
     otherwise
         spd=10; dir=0;
-        disp('UNKNOW STATE');
+%         disp('UNKNOW STATE');
 end
 end
 

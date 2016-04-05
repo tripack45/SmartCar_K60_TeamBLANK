@@ -60,6 +60,12 @@ function [currentState] = analyzer(currentState)
    y0=-C(2)/2; currentState.circleX=y0;
    r=-C(3)+x0^2+y0^2;
    r=sqrt(r);  currentState.circleRadius=r;
-   
+   geometrySquare=0;
+   algebraSquare=0;
+   for i=1:n
+       geometrySquare=geometrySquare+(sqrt((x(i)-x0)^2+(y(i)-y0)^2)-r)^2;
+       algebraSquare=algebraSquare+abs(x(i)^2+y(i)^2+C(1)*x(i)+C(2)*y(i)+C(3));
+   end
+   currentState.circleMSE=geometrySquare/n;
 end
 
