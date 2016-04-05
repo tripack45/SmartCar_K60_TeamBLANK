@@ -40,6 +40,7 @@ void Servo_Output(s16 x){
 }
 
 void MotorL_Output(s16 x){
+  x=(x<0)?0:x;
   x=-x;
   if(x>MOTOR_MAX) x=MOTOR_MAX;
   if(x<-MOTOR_MAX) x=-MOTOR_MAX;

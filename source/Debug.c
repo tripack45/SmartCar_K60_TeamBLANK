@@ -2,7 +2,7 @@
 
 #define GET_INT16_FROM_UINT8(x,y) ((int16)(uint16)((uint16)(x<<8)+(uint16)(y)))
 
-int16* varAddr=(void*)&currdir;
+int16* varAddr=(void*)&currspd;
 u8 isDebugging=0;
 
 
@@ -97,7 +97,7 @@ const char* varName[]=
 
 void DebugKeyPress1(){
   if(isEditing){
-    if(varEdit==14){//User Variable
+    if(varEdit==14){// Variable
       ExecuteDebugCommand(CMDVARPLUS,NULL);
       return;
     }

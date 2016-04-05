@@ -130,6 +130,7 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   
   
   //PID_TESTER
+/*
 #define GET_CLOCK_100US() (PIT2_VAL() / (g_bus_clock/1000))
 #define TARGET_HIGH 25
 #define TARGET_LOW 12
@@ -169,7 +170,7 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   currspd=0;
   for(;;);
 //======================================
-  
+  */
 
   while(1)
   {
