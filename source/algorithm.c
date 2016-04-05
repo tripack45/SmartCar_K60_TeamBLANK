@@ -2,48 +2,35 @@
 
 #include "includes.h"
 
+#define R(x) (currentState.x)
 void AlgorithmMain(){
   
    currentState.img_buffer=(void*)img_buffer;
    
+   DetectBoundary();
+   
    currentState.carPosX=60;
    currentState.carPosY=79;
-   
-   DetectBoundary();
-
-   u8 LLength = boundaryDetector.LSectionTail
-                - boundaryDetector.LSectionHead + 1;
-   u8 RLength = boundaryDetector.RSectionTail
-                - boundaryDetector.RSectionHead + 1;
-   u8* boundaryX = NULL;
-   u8* boundaryY = NULL;
-   u8  length =0;
    u8  isLinear,isCrossroad;
    
-   if(LLength <= 5 && RLength <= 5)
+   if(R(LBoundarySize) <= 5 && R(RBoundarySize) <= 5)
      goto unknown; //Not enough points for transfering
    
-   if (LLength > RLength){
-        boundaryX=boundaryDetector.boundaryX + boundaryDetector.LSectionHead;
-        boundaryY=boundaryDetector.boundaryY + boundaryDetector.LSectionHead;
-        length=InversePerspectiveTransform(boundaryX, boundaryY, LLength);
-   } else {
-        boundaryX=boundaryDetector.boundaryX + boundaryDetector.RSectionHead;
-        boundaryY=boundaryDetector.boundaryY + boundaryDetector.RSectionHead;
-        length=InversePerspectiveTransform(boundaryX, boundaryY, RLength);
-   }
+   if(currentState.LBoundarySize>0)
+      InversePerspectiveTransform(
+         R(LBoundaryX), R(LBoundaryY), R(LBoundarySize));
+   if(currentState.RBoundarySize>0)
+      InversePerspectiveTransform(
+         R(RBoundaryX), R(RBoundaryY), R(RBoundarySize));
    
-   if(length<=5)
-     goto unknown; //Not enough points for analyzation
+   if( R(LBoundarySize)>R(RBoundarySize) )
+      isCrossroad=IsCrossroad(R(LBoundaryX),R(LBoundaryY),R(LBoundarySize));
+   else
+      isCrossroad=IsCrossroad(R(RBoundaryX),R(RBoundaryY),R(RBoundarySize));
    
-   isLinear=IsLinear(boundaryY,
-                     boundaryX,
-                     length,
-                     &(linearDectect.alpha),
-                     &(linearDectect.beta),
-                     &(linearDectect.radius));
+   CurveFitting(&currentState);
     
-   isCrossroad=IsCrossroad(boundaryX,boundaryY,length);
+   //isCrossroad=IsCrossroad(boundaryX,boundaryY,length);
    
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
@@ -58,7 +45,7 @@ control:
   
    ControllerUpdate();
    ControllerControl();
-   
+   /*
    s16 tx=0;s16 ty=0;
    for(u8 i = 0;i < length; i++){
         tx += boundaryX[i];
@@ -68,6 +55,7 @@ control:
    debugWatch[1]=(s32)linearDectect.alpha;
    debugWatch[2]=(s32)linearDectect.beta;         
    debugWatch[3]=(s32)linearDectect.radius;
+   */
    return;
   
 /* this parts acts as exception handler

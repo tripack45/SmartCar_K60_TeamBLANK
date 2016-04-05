@@ -58,22 +58,21 @@ try
         throw(MException('ANALYZER:UnknownState','No available points'));
     end
     
-    if(currentState.LBoundarySize>5)
-        [currentState.LBoundaryX,currentState.LBoundaryY] = ...
-            InversePerspectiveTransform(double(currentState.LBoundaryX),...
-                                        double(currentState.LBoundaryY));
+    if(currentState.LBoundarySize>0)
+    [currentState.LBoundaryX,currentState.LBoundaryY] = ...
+       InversePerspectiveTransform(double(currentState.LBoundaryX),...
+                                   double(currentState.LBoundaryY));
     end
-    
-    if(currentState.RBoundarySize>5)
+    if(currentState.RBoundarySize>0)
         [currentState.RBoundaryX,currentState.RBoundaryY] = ...
             InversePerspectiveTransform(double(currentState.RBoundaryX),...
                                         double(currentState.RBoundaryY));
     end
     
-
-    
-    
     %% Analyzing Algorithms
+    
+    isCrossroad = IsCrossroad(currentState);
+    
     
     if(currentState.LBoundarySize>currentState.RBoundarySize)
         input=[currentState.LBoundaryY(1:5:end),currentState.LBoundaryX(1:5:end)];
@@ -96,8 +95,6 @@ try
     currentState.circleX        = x0;
     currentState.circleY        = y0;
     currentState.circleRadius   = radius;
-    
-    isCrossroad = IsCrossroad(input(:,2),input(:,1),size(input,1));
     
     if(isCrossroad)
         currentState.state=3;

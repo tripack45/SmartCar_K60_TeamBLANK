@@ -1,7 +1,16 @@
-function [isCrossroad] = IsCrossroad(boundaryX,boundaryY,size)
+function [isCrossroad] = IsCrossroad(currentState)
 MZ=1;
-if (size<6)
-    isCrossroad=0;
+if(currentState.LBoundarySize>currentState.RBoundarySize)
+    boundaryX=currentState.LBoundaryX;
+    boundaryY=currentState.LBoundaryY;
+    size=currentState.LBoundarySize;
+else
+    boundaryX=currentState.RBoundaryX;
+    boundaryY=currentState.RBoundaryY;
+    size=currentState.RBoundarySize;
+end
+isCrossroad=0;
+if(size<6)
     return;
 end
 for (i=0:size-6)
@@ -23,7 +32,6 @@ for (i=0:size-6)
     end
     %fprintf('%f %f %f\n',angle01,angle13,angle34);
 end
-isCrossroad=0;
 return;
 end
 

@@ -22,6 +22,7 @@ void extern AlgorithmMain();
 #define MOTOR_DEAD_RUN 320
 #define MOTOR_DEAD_REST 400
 #define SPEED_MAX 700
+
 typedef struct MotorPIDConf{
   //===========INPUTS============
    //USES ExpectSpeed
@@ -41,6 +42,30 @@ extern MotorPID motor_pid;
 //s16 Dir_PID(s16 position);
 s16 Speed_PID(u8 Expect);
 void MotorCtrl();
+
+
+//Public Types
+typedef struct{
+  u8 *img_buffer;
+  u8 state;
+  u8 isUnknown;
+  u8 carPosX;
+  u8 carPosY;
+  u8 *LBoundaryX; 
+  u8 *LBoundaryY; 
+  u8 LBoundarySize;
+  u8 *RBoundaryX; 
+  u8 *RBoundaryY; 
+  u8 RBoundarySize;
+  float lineAlpha;
+  float lineBeta;
+  float lineSquaredError;
+  s16 circleX;
+  s16 circleY;
+  s16 circleRadius;
+}CurrentControlState;
+//=======================
+
 
 //Algorithm_Visual
 //===============BOUNDARY DETECTION=======================
@@ -134,13 +159,7 @@ typedef struct LinearDectectorConf{
 
 
 /****** function definitions ******/
-u8 IsLinear(u8 boundaryX[BOUNDARY_NUM_MAX],
-            u8 boundaryY[BOUNDARY_NUM_MAX],
-            u8 boundaryNum,
-         float *alpha,
-         float *beta,
-         float *radius
-             );
+void CurveFitting(CurrentControlState* CState);
 /**********************************/
 
 extern LinearDectect linearDectect;
@@ -166,24 +185,7 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
 #define MAXIMUM_SCORE                   50
 #define CROSSROAD_INERTIA               10
 
-typedef struct{
-  u8 *img_buffer;
-  u8 state;
-  u8 isUnknown;
-  u8 carPosX;
-  u8 carPosY;
-  u8 *LBoundaryX; 
-  u8 *LBoundaryY; 
-  u8 LBoundarySize;
-  u8 *RBoundaryX; 
-  u8 *RBoundaryY; 
-  u8 RBoundarySize;
-  float lineAlpha;
-  float lineBeta;
-  float circleX;
-  float circleY;
-  float circleRadius;
-}CurrentControlState;
+
 
 extern CurrentControlState currentState;
 
