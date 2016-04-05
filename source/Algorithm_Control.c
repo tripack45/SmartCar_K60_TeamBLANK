@@ -5,8 +5,8 @@ CurrentControlState currentState;
 struct{
   u8 state;
   u8 candidateState;
-  u8 candidateStateCounter;
-  u8 crossCounter;
+  s16 candidateStateCounter;
+  s16 crossCounter;
 }internalState;
 
 void ControllerUpdate(){
@@ -72,6 +72,7 @@ void ControllerControl(){
   default:
     break;
   }
+  debugWatch[0]=internalState.state;
   return;
 }
 

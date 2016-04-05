@@ -4,9 +4,11 @@
 
 #define R(x) (currentState.x)
 void AlgorithmMain(){
-  
-   currentState.img_buffer=(void*)img_buffer;
    
+   currentState.img_buffer=(void*)img_buffer;
+   currentState.isUnknown=0;
+   currentState.fittedBoundary=0;
+   currentState.isInnerCircle=0;
    DetectBoundary();
    
    currentState.carPosX=60;
@@ -29,16 +31,20 @@ void AlgorithmMain(){
       isCrossroad=IsCrossroad(R(RBoundaryX),R(RBoundaryY),R(RBoundarySize));
    
    CurveFitting(&currentState);
-    
-   //isCrossroad=IsCrossroad(boundaryX,boundaryY,length);
-   
+   if(currentState.isUnknown)
+     goto unknown;
+  
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
-   else if(isLinear)
+   else if(currentState.lineMSE <= 1){
      currentState.state=CONTROL_STATE_STRAIGHT;
-   else
+     if(currentState.fittedBoundary==1)
+        currentState.lineBeta += 35;
+     else if (currentState.fittedBoundary==2)
+        currentState.lineBeta -= 35;
+   }else{
      currentState.state=CONTROL_STATE_TURN;
-   
+   }
    currentState.isUnknown=0;
    
 control:
@@ -63,7 +69,7 @@ control:
  */
 unknown:
    currentState.isUnknown=1;
-   goto control;
+   return;
 }
 
 

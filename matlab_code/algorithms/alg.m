@@ -310,7 +310,7 @@ switch internalState.state
     case CONTROL_STATE_CROSS
         disp('Cross');
         [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
-        spd=10;dir=0
+        spd=10;dir=0;
     case CONTROL_STATE_STR2TRN
         spd=10;dir=0;
     otherwise

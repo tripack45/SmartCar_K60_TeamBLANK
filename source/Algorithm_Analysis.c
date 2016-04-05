@@ -16,10 +16,16 @@ void CurveFitting(CurrentControlState *CState)
     boundaryX = CState->LBoundaryX;  
     boundaryY = CState->LBoundaryY;
     boundaryNum = CState->LBoundarySize;
+    CState->fittedBoundary=1;
   }else{
     boundaryX = CState->LBoundaryX;  
     boundaryY = CState->LBoundaryY;
     boundaryNum = CState->LBoundarySize;  
+    CState->fittedBoundary=2;
+  }
+  if(boundaryNum<(1+SELECT_STEP*(5-1))){
+    CState->isUnknown=1;
+    return;
   }
   /* x^2 */
   u16 x2 = 0;
@@ -102,11 +108,14 @@ void CurveFitting(CurrentControlState *CState)
   CState->lineAlpha  = (float)((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
   CState->lineBeta   = (float)((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
   CState->lineMSE = 
-    (u32)(sx2 + sy2 * (CState->lineAlpha) * (CState->lineAlpha) 
-              + coordinateNum * (CState->lineBeta) * (CState->lineBeta) 
-              + (sy * (CState->lineAlpha) * (CState->lineBeta)
+    (u32)(sx2 
+         + sy2 * (CState->lineAlpha) * (CState->lineAlpha) 
+         + coordinateNum * (CState->lineBeta) * (CState->lineBeta) 
+         + (sy * (CState->lineAlpha) * (CState->lineBeta)
               - sxy * (CState->lineAlpha) 
-              - sx * (CState->lineBeta)) * 2) / coordinateNum;
+              - sx * (CState->lineBeta)
+           ) * 2 
+         ) / coordinateNum;
   b3 = sx2 + sy2;
   det = coordinateNum * sx2 * sy2 + 2 * sx * sy * sxy - coordinateNum * sxy * sxy - sx * sx * sy2 - sy * sy * sx2;
   ia1 = coordinateNum * sy2 - sy * sy;
@@ -146,19 +155,21 @@ void CurveFitting(CurrentControlState *CState)
 }
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
-  if (size<6) return 0;
+#define CROSSROAD_STEP_LENGTH 5
+#define C(x) (x * CROSSROAD_STEP_LENGTH)
+  if (size<C(6)) return 0;
   s16 ipSqr=0;
   s16 dSqr=1;
-  for (int i=0;i<size-6;i++){
-    s8 v0x=boundaryX[MZ+ i + 1] - boundaryX[MZ + i + 0];
-    s8 v0y=boundaryY[MZ+ i + 1] - boundaryY[MZ + i + 0];
-    s8 v1x=boundaryX[MZ+ i + 2] - boundaryX[MZ + i + 1];
-    s8 v1y=boundaryY[MZ+ i + 2] - boundaryY[MZ + i + 1];
-    s8 v3x=boundaryX[MZ+ i + 4] - boundaryX[MZ + i + 3];
-    s8 v3y=boundaryY[MZ+ i + 4] - boundaryY[MZ + i + 3];
-    s8 v4x=boundaryX[MZ+ i + 5] - boundaryX[MZ + i + 4];
-    s8 v4y=boundaryY[MZ+ i + 5] - boundaryY[MZ + i + 4];
-    
+  for (int i=0;i<size-6;i+=CROSSROAD_STEP_LENGTH){
+    s8 v0x=boundaryX[MZ+ i + C(1)] - boundaryX[MZ + i + C(0)];
+    s8 v0y=boundaryY[MZ+ i + C(1)] - boundaryY[MZ + i + C(0)];
+    s8 v1x=boundaryX[MZ+ i + C(2)] - boundaryX[MZ + i + C(1)];
+    s8 v1y=boundaryY[MZ+ i + C(2)] - boundaryY[MZ + i + C(1)];
+    s8 v3x=boundaryX[MZ+ i + C(4)] - boundaryX[MZ + i + C(3)];
+    s8 v3y=boundaryY[MZ+ i + C(4)] - boundaryY[MZ + i + C(3)];
+    s8 v4x=boundaryX[MZ+ i + C(5)] - boundaryX[MZ + i + C(4)];
+    s8 v4y=boundaryY[MZ+ i + C(5)] - boundaryY[MZ + i + C(4)];
+#undef C    
     ipSqr=v0x*v1x+v0y*v1y; ipSqr*=ipSqr;
     dSqr =(v0x*v0x+v0y*v0y)*(v1x*v1x+v1y*v1y);
     s16 angle01=100*ipSqr/dSqr;

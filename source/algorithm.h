@@ -57,12 +57,15 @@ typedef struct{
   u8 *RBoundaryX; 
   u8 *RBoundaryY; 
   u8 RBoundarySize;
+  u8 fittedBoundary;
   float lineAlpha;
   float lineBeta;
-  float lineMSE;
+  s16 lineMSE;
   s16 circleX;
   s16 circleY;
   s16 circleRadius;
+  s32 circleMSE;
+  u8  isInnerCircle;
 }CurrentControlState;
 //=======================
 
@@ -142,7 +145,7 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 
 /******* constant definitions *******/
 #define HALF_TRACK 35
-#define SELECT_STEP 1
+#define SELECT_STEP 5
 #define BOUNDARY_NUM_MAX 128
 #define SQUARE_ERROR_THRES 10
 /************************************/

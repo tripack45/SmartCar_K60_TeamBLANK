@@ -1,14 +1,13 @@
 function [isCrossroad] = IsCrossroad(currentState)
 MZ=1;
 if(currentState.LBoundarySize>currentState.RBoundarySize)
-    boundaryX=currentState.LBoundaryX;
-    boundaryY=currentState.LBoundaryY;
-    size=currentState.LBoundarySize;
+    boundaryX=currentState.LBoundaryX(1:5:end);
+    boundaryY=currentState.LBoundaryY(1:5:end);
 else
-    boundaryX=currentState.RBoundaryX;
-    boundaryY=currentState.RBoundaryY;
-    size=currentState.RBoundarySize;
+    boundaryX=currentState.RBoundaryX(1:5:end);
+    boundaryY=currentState.RBoundaryY(1:5:end);
 end
+size=length(boundaryX);
 isCrossroad=0;
 if(size<6)
     return;
