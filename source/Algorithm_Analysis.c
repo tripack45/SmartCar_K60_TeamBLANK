@@ -14,11 +14,11 @@ void CurveFitting(CurrentControlState *CState)
   /* The total number of coordinates selected.*/
   if(CState->LBoundarySize>CState->RBoundarySize){
     boundaryX = CState->LBoundaryX;  
-    boundaryY = CState->LBoundaryX;
+    boundaryY = CState->LBoundaryY;
     boundaryNum = CState->LBoundarySize;
   }else{
     boundaryX = CState->LBoundaryX;  
-    boundaryY = CState->LBoundaryX;
+    boundaryY = CState->LBoundaryY;
     boundaryNum = CState->LBoundarySize;  
   }
   /* x^2 */
@@ -45,8 +45,6 @@ void CurveFitting(CurrentControlState *CState)
   s32 det = 0;
   /* Common denominator for slope and interception.*/
   s32 denom = 0;
-  /* Square error for linear fitting.*/
-  u32 squareError = 0;
   /* (1, 1) of inverse of matrix A.*/
   s32 ia1 = 0;
   /* (1, 2) of inverse of matrix A.*/
@@ -100,15 +98,15 @@ void CurveFitting(CurrentControlState *CState)
     b2 += (x2 + y2) * y;
     coordinateNum++;
   }
-  denom = coordinateNum * sx2 - sx * sx;
+  denom = coordinateNum * sy2 - sy * sy;
   CState->lineAlpha  = (float)((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
-  CState->lineBeta   = (float)((s32)(sx2 * sy) - (s32)(sx * sxy)) / denom;
-  CState->lineSquaredError = 
-    (u32)(sy2 + sx2 * (CState->lineAlpha) * (CState->lineAlpha) 
+  CState->lineBeta   = (float)((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
+  CState->lineMSE = 
+    (u32)(sx2 + sy2 * (CState->lineAlpha) * (CState->lineAlpha) 
               + coordinateNum * (CState->lineBeta) * (CState->lineBeta) 
-              + (sx * (CState->lineAlpha) * (CState->lineBeta)
+              + (sy * (CState->lineAlpha) * (CState->lineBeta)
               - sxy * (CState->lineAlpha) 
-              - sy * (CState->lineBeta)) * 2);
+              - sx * (CState->lineBeta)) * 2) / coordinateNum;
   b3 = sx2 + sy2;
   det = coordinateNum * sx2 * sy2 + 2 * sx * sy * sxy - coordinateNum * sxy * sxy - sx * sx * sy2 - sy * sy * sx2;
   ia1 = coordinateNum * sy2 - sy * sy;
@@ -120,11 +118,31 @@ void CurveFitting(CurrentControlState *CState)
   ia7 = ia3;
   ia8 = ia6;
   ia9 = sx2 * sy2 - sxy * sxy;
-  CState->circleY = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
-  CState->circleX = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
+  CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
+  CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
   CState->circleRadius = (float)((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
                               + (CState->lineAlpha) * (CState->lineAlpha)
                               + (CState->lineBeta)  * (CState->lineBeta);
+  //CState->circleMSE
+  /*
+  int isqrt(int x) {
+	if (x <= 0) return 0;
+	return mysqrt(x, 1, x);
+  }
+  int mysqrt(int x, int begin, int end)
+  {
+	if (end - begin == 1 || begin>end || begin == end) return begin;
+	int med = (begin + end) / 2;
+	int med2 = x / med;
+	if (med2 == med) return med;
+	else if (med2<med) return mysqrt(x, begin, med);
+	else return mysqrt(x, med, end);
+	return med;
+  }
+ */ 
+  
+  
+  
 }
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){

@@ -59,7 +59,7 @@ typedef struct{
   u8 RBoundarySize;
   float lineAlpha;
   float lineBeta;
-  float lineSquaredError;
+  float lineMSE;
   s16 circleX;
   s16 circleY;
   s16 circleRadius;
