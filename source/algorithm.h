@@ -195,7 +195,7 @@ extern CurrentControlState currentState;
 void ControllerUpdate();
 void ControllerControl();
 
-//==========EMD OF CONTROLLER============
+//==========END OF CONTROLLER============
 
 //==========LinearStateHandler===========
 
@@ -206,7 +206,7 @@ void ControllerControl();
 
 void LinearStateHandler();
 
-//========EMD OF LinearStateHandler=======
+//========END OF LinearStateHandler=======
 
 //========CrossRoadStateHandler===========
 
@@ -217,6 +217,17 @@ void LinearStateHandler();
 
 void CrossRoadStateHandler();
 
-//=======EMD OF CrossRoadStateHandler======
+//=======END OF CrossRoadStateHandler======
+
+//========CircleStateHandler===========
+
+#define MSE_RATIO            2
+#define OFFSET_THRES         10
+#define CURVE_RATIO          1
+#define OFFSET_RATIO         1
+
+void CircleStateHandler();
+
+//=======END OF CrossRoadStateHandler======
 
 #endif
