@@ -19,13 +19,14 @@ currentState=struct( ...
     ,'isUnknown'  ,0 ...
     ,'lineAlpha'  ,0 ...
     ,'lineBeta'   ,0 ...
+    ,'lineMSE'    ,0 ...
     ,'circleX'    ,0 ...
     ,'circleY'    ,0 ...
     ,'circleRadius',0 ...
+    ,'circleMSE'   ,0 ...
     ,'isInnerCircle',0 ...
     ,'carPosX'    ,0 ...
     ,'carPosY'    ,0);
-
 try
     %% Visual Algorithms
     
@@ -71,34 +72,13 @@ try
     
     %% Analyzing Algorithms
     
-    isCrossroad = IsCrossroad(currentState);
+    isCrossroad  = IsCrossroad(currentState);
     
-    
-    if(currentState.LBoundarySize>currentState.RBoundarySize)
-        input=[currentState.LBoundaryY(1:5:end),currentState.LBoundaryX(1:5:end)];
-        currentState.fittedBoundary=1;
-    else
-        input=[currentState.RBoundaryY(1:5:end),currentState.RBoundaryX(1:5:end)];
-        currentState.fittedBouandary=2;
-    end
-    input=double(input);
-    
-    if(size(input,1)<=5)
-        %Not enough points for analyzing
-        throw(MException('ANALYZER:UnknownState','Unable to fit'));
-    end
-    
-    [isLinear,alpha,beta,x0,y0,radius]=analyzer(input);
-
-    currentState.lineAlpha      = alpha;
-    currentState.lineBeta       = beta;
-    currentState.circleX        = x0;
-    currentState.circleY        = y0;
-    currentState.circleRadius   = radius;
+    currentState = analyzer(currentState);
     
     if(isCrossroad)
         currentState.state=3;
-    elseif(isLinear)
+    elseif(currentState.lineMSE<=1)
         currentState.state=1;
         if(currentState.fittedBoundary==1)
             currentState.lineBeta=currentState.lineBeta+35;
@@ -120,7 +100,6 @@ try
             throw(MException('ANALYZER:UnknownState','False fit result'));
         end
     end
-    
     currentState.isUnknown=0;
     
 catch ME
@@ -167,12 +146,6 @@ for ii=-1:1
     end
 end
 
-if(~currentState.isUnknown)
-    for i=1:size(input,1)
-        out(input(i,1),input(i,2))=44;
-    end
-end
-
 % Draw A line
 if(currentState.state==1)
     for jj=0+1:150+1
@@ -186,8 +159,8 @@ end
 if(currentState.state==2)
     % Draw the correponding circle
     p=0 : 2*pi/300 : 2*pi;
-    px=currentState.circleRadius.*cos(p)+x0;
-    py=currentState.circleRadius.*sin(p)+y0;
+    px=currentState.circleRadius.*cos(p)+currentState.circleY;
+    py=currentState.circleRadius.*sin(p)+currentState.circleX;
     
     % for ii=1:length(px)
     %     out(px(ii),py(ii))=44;
@@ -203,9 +176,9 @@ if(currentState.state==2)
     % Draw the center of the circle
     for ii=-1:1
         for jj=-1:1
-            if(x0+jj>0   && y0+ii>0 ...
-                    && x0+jj<150 && y0+ii<150)
-                out(ceil(x0)+jj,ceil(y0)+ii)=9;
+            if(currentState.circleY+jj>0   && currentState.circleX+ii>0 ...
+                    && currentState.circleY+jj<150 && currentState.circleX+ii<150)
+                out(ceil(currentState.circleY)+jj,ceil(currentState.circleX)+ii)=9;
             end
         end
     end

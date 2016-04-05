@@ -1,9 +1,22 @@
-function [isLinear, alpha, beta, x0,y0,r] = analyzer(input)
-   %% Calculating the corresponding circle
+function [currentState] = analyzer(currentState)
+   %% Calculating the corresponding circle   
+   
    SRThres=10;
-   n=length(input);
-   x=input(:,1);
-   y=input(:,2);
+   if(currentState.LBoundarySize>currentState.RBoundarySize)
+       currentState.fittedBoundary=1;
+       x=currentState.LBoundaryY(1:5:end);
+       y=currentState.LBoundaryX(1:5:end);
+       n=length(x);
+   else
+       currentState.fittedBoundary=2;
+       x=currentState.RBoundaryY(1:5:end);
+       y=currentState.RBoundaryX(1:5:end);
+       n=length(x);
+   end
+   if(n<5)
+       currentState.isUnknown=0;
+       return;
+   end
    
    x2=0;   y2=0;
    sx2=0;  sy2=0;  sxy=0;
@@ -19,14 +32,11 @@ function [isLinear, alpha, beta, x0,y0,r] = analyzer(input)
        sb2=sb2+(x2+y2)*y(i);
    end
    denom=n*sx2-sx^2;
-   alpha=(n*sxy-sx*sy)/denom;
-   beta=(sx2*sy-sx*sxy)/denom;
+   alpha=(n*sxy-sx*sy)/denom;  currentState.lineAlpha = alpha;
+   beta=(sx2*sy-sx*sxy)/denom; currentState.lineBeta  = beta;
    SquareResidue=floor(sy2+alpha^2*sx2+n*beta^2-2*alpha*sxy-2*beta*sy+2*alpha*beta*sx);
-   if (SquareResidue < SRThres)
-       isLinear=1;
-   else
-       isLinear=0;
-   end
+   currentState.lineMSE=SquareResidue/n;
+   
    sb3=sx2+sy2;
    det=n*sx2*sy2+2*sx*sy*sxy-n*sxy*sxy-sx*sx*sy2-sy*sy*sx2;
    sa1=n*sy2-sy*sy;
@@ -46,10 +56,10 @@ function [isLinear, alpha, beta, x0,y0,r] = analyzer(input)
    C(2)=-C(2)/det;
    C(3)=-C(3)/det;
    
-   x0=-C(1)/2;
-   y0=-C(2)/2;
+   x0=-C(1)/2; currentState.circleY=x0;
+   y0=-C(2)/2; currentState.circleX=y0;
    r=-C(3)+x0^2+y0^2;
-   r=sqrt(r);
+   r=sqrt(r);  currentState.circleRadius=r;
    
 end
 
