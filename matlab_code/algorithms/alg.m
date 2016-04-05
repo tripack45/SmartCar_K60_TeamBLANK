@@ -75,7 +75,13 @@ try
     isCrossroad  = IsCrossroad(currentState);
     
     currentState = analyzer(currentState);
-    fprintf('circleMSE=%g\n',currentState.circleMSE);
+    
+    if (currentState.lineMSE>currentState.circleMSE)
+        fprintf('Circle\t');
+    else
+        fprintf('Line  \t');
+    end
+    fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)

@@ -66,6 +66,6 @@ function [currentState] = analyzer(currentState)
        geometrySquare=geometrySquare+(sqrt((x(i)-x0)^2+(y(i)-y0)^2)-r)^2;
        algebraSquare=algebraSquare+abs(x(i)^2+y(i)^2+C(1)*x(i)+C(2)*y(i)+C(3));
    end
-   currentState.circleMSE=algebraSquare/n;
+   currentState.circleMSE=geometrySquare/n;
 end
 
