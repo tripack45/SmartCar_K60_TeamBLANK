@@ -84,7 +84,7 @@ void Cam_Algorithm(){
   //u8 header[SIG_SIZE]={0xFF,0x00,0xFF};
   //u8 tail[SIG_SIZE]={0xA0,0x00,0xA0};
   u32 img_row_used;
-  for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
+  currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
     // For every row:
     while( (img_row_used >= img_row % IMG_ROWS) 
         && (processing_frame == loading_frame)  );
@@ -108,7 +108,6 @@ void Cam_Algorithm(){
   //Post Frame Processing
   
   AlgorithmMain();
-
   
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
@@ -169,6 +168,7 @@ void DMA0_IRQHandler(){
   //{e_debug_num=2;
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
+  /*
   u8 errorFlag=0;
   if(img_row>1){ 
     for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
@@ -180,7 +180,7 @@ void DMA0_IRQHandler(){
     if(errorFlag)
       for(int i=1;i<IMG_COLS;i++)
         loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
-  }
+  }*/
     img_row++; 
  //}
 }

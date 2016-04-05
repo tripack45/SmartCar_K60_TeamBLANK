@@ -158,27 +158,30 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
 #define CROSSROAD_STEP_LENGTH 5
 #define C(x) (x * CROSSROAD_STEP_LENGTH)
   if (size<C(6)) return 0;
-  s16 ipSqr=0;
-  s16 dSqr=1;
+  s32 ipSqr=0;
+  s32 dSqr=1;
   for (int i=0;i<size-6;i+=CROSSROAD_STEP_LENGTH){
-    s8 v0x=boundaryX[MZ+ i + C(1)] - boundaryX[MZ + i + C(0)];
-    s8 v0y=boundaryY[MZ+ i + C(1)] - boundaryY[MZ + i + C(0)];
-    s8 v1x=boundaryX[MZ+ i + C(2)] - boundaryX[MZ + i + C(1)];
-    s8 v1y=boundaryY[MZ+ i + C(2)] - boundaryY[MZ + i + C(1)];
-    s8 v3x=boundaryX[MZ+ i + C(4)] - boundaryX[MZ + i + C(3)];
-    s8 v3y=boundaryY[MZ+ i + C(4)] - boundaryY[MZ + i + C(3)];
-    s8 v4x=boundaryX[MZ+ i + C(5)] - boundaryX[MZ + i + C(4)];
-    s8 v4y=boundaryY[MZ+ i + C(5)] - boundaryY[MZ + i + C(4)];
+    s16 v0x=boundaryX[MZ+ i + C(1)] - boundaryX[MZ + i + C(0)];
+    s16 v0y=boundaryY[MZ+ i + C(1)] - boundaryY[MZ + i + C(0)];
+    s16 v1x=boundaryX[MZ+ i + C(2)] - boundaryX[MZ + i + C(1)];
+    s16 v1y=boundaryY[MZ+ i + C(2)] - boundaryY[MZ + i + C(1)];
+    s16 v3x=boundaryX[MZ+ i + C(4)] - boundaryX[MZ + i + C(3)];
+    s16 v3y=boundaryY[MZ+ i + C(4)] - boundaryY[MZ + i + C(3)];
+    s16 v4x=boundaryX[MZ+ i + C(5)] - boundaryX[MZ + i + C(4)];
+    s16 v4y=boundaryY[MZ+ i + C(5)] - boundaryY[MZ + i + C(4)];
 #undef C    
-    ipSqr=v0x*v1x+v0y*v1y; ipSqr*=ipSqr;
+    ipSqr=v0x*v1x+v0y*v1y;
+    ipSqr*=ipSqr;
     dSqr =(v0x*v0x+v0y*v0y)*(v1x*v1x+v1y*v1y);
     s16 angle01=100*ipSqr/dSqr;
     
-    ipSqr=v1x*v3x+v1y*v3y; ipSqr*=ipSqr;
+    ipSqr=v1x*v3x+v1y*v3y;
+    ipSqr*=ipSqr;
     dSqr =(v1x*v1x+v1y*v1y)*(v3x*v3x+v3y*v3y);    
     s16 angle13=100*ipSqr/dSqr;
      
-    ipSqr=v3x*v4x+v3y*v4y; ipSqr*=ipSqr;
+    ipSqr=v3x*v4x+v3y*v4y;
+    ipSqr*=ipSqr;
     dSqr =(v3x*v3x+v3y*v3y)*(v4x*v4x+v4y*v4y);   
     s16 angle34=100*ipSqr/dSqr;
     
