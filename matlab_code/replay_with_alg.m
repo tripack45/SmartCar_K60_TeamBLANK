@@ -4,7 +4,7 @@ imgcol=77;
 algrow=150;
 algcol=150;
 source=frame;
-fps=10;
+fps=25;
 start=1200;
 
 %% Set up the figures
