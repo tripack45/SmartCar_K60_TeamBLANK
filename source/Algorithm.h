@@ -215,8 +215,6 @@ void LinearStateHandler();
 #define DIR_SENSITIVITY_OLD  10
 #define EXCEPT_RANGE         3
 
-void CrossRoadStateHandler();
-
 //=======END OF CrossRoadStateHandler======
 
 //========CircleStateHandler===========
