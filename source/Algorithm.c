@@ -82,4 +82,25 @@ unknown:
    return;
 }
 
+u32 isqrt(s64 x){
+	s32 begin = 0;
+	s32 end = x;
+	s32 med = 0;
+	s32 med2 = 0;
+	while (end - begin > 1){
+		med = (begin + end) / 2;
+		med2 = x / med;
+		if (med == med2){
+			return med;
+		}
+		else if (med2 < med){
+			end = med;
+		}
+		else{
+			begin = med;
+		}
+	}
+	return begin;
+}
+
 

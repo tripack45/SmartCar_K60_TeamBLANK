@@ -25,10 +25,10 @@ TRAPZOID_LOWER=70;
 numerator = PERSPECTIVE_SCALE * (xIn - ORIGIN_X) * TRAPZOID_HEIGHT;
 denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  ...
                 + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn - 3);
-xOut=floor(numerator./denominator) + ORIGIN_X+50;
+xOut=fix(numerator./denominator) + ORIGIN_X+50;
 
 numerator = PERSPECTIVE_SCALE * C2 * (yIn - ORIGIN_Y);
 denominator = REAL_WORLD_SCALE * (10000 - C1 * (yIn - ORIGIN_Y));
-yOut=floor(numerator./denominator) + ORIGIN_Y+40;
+yOut=fix(numerator./denominator) + ORIGIN_Y+40;
 
 end

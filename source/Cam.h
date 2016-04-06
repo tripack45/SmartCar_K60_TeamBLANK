@@ -14,10 +14,10 @@
 
 // ====== Global Variables ======
 
-extern int processing_frame; //Currently processing frame
-extern int loading_frame; //Currently loading frame
-extern int sending_frame; //Currently sending frame
-extern int last_processed_frame, last_sent_frame;
+extern s32 processing_frame; //Currently processing frame
+extern s32 loading_frame; //Currently loading frame
+extern s32 sending_frame; //Currently sending frame
+extern s32 last_processed_frame, last_sent_frame;
 
 extern int process_diff,load_diff,send_diff;
 

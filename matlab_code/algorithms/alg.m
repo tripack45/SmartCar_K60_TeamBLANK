@@ -76,13 +76,13 @@ try
     
     currentState = analyzer(currentState);
     
-    if (currentState.lineMSE>currentState.circleMSE)
-        fprintf('Circle\t');
-    else
-        fprintf('Line  \t');
-    end
-    fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
-    fprintf('alpha/beta: %f,%f\n',currentState.lineAlpha,currentState.lineBeta);
+%     if (currentState.lineMSE>currentState.circleMSE)
+%         fprintf('Circle\t');
+%     else
+%         fprintf('Line  \t');
+%     end
+%     fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
+%     fprintf('alpha/beta: %f,%f\n',currentState.lineAlpha,currentState.lineBeta);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)
@@ -108,11 +108,12 @@ try
         end
     end
     currentState.isUnknown=0;
-    
+    disp(currentState.state);
 catch ME
     switch ME.identifier
         case 'ANALYZER:UnknownState'
             currentState.isUnknown=1;
+            disp('unknown');
 %             disp(ME.message);
         otherwise
             rethrow(ME);

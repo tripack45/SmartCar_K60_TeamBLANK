@@ -29,7 +29,7 @@ void ControllerUpdate(){
       }
     }
     
-    u8 counter=internalState.candidateStateCounter;
+    s16 counter=internalState.candidateStateCounter;
     if(currentState.state==internalState.candidateState){
       // The new state agress with candidate state
       // Grant 10 points if it agrees
