@@ -9,7 +9,7 @@ License : MIT
 #define VALID_COLS IMG_COLS
 
 #define SIG_SIZE 3
-#define EXTRA_INFO_SIZE 6 
+#define EXTRA_INFO_SIZE 6 + 4
 
 
 // ====== Variables ======
@@ -27,10 +27,10 @@ u8* buffer_ptr[4]={ cam_buffer0+SIG_SIZE, cam_buffer1+SIG_SIZE,
                     cam_buffer2+SIG_SIZE, cam_buffer3+SIG_SIZE };
 
 // ---- Global ----
-int processing_frame; //Currently processing frame
-int loading_frame; //Currently loading frame
-int sending_frame; //Currently sending frame
-int last_processed_frame, last_sent_frame;
+s32 processing_frame; //Currently processing frame
+s32 loading_frame; //Currently loading frame
+s32 sending_frame; //Currently sending frame
+s32 last_processed_frame, last_sent_frame;
 
 int process_diff,load_diff,send_diff;
 
@@ -99,6 +99,7 @@ void Cam_Algorithm(){
       SET_LOCK(PLOCK_BASE,processing_frame_indicator);
       //Prepare the read/write pointer
       img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
+      *((s32*)((u8*)img_buffer + IMG_ROWS*IMG_COLS+6))=processing_frame;
     }
     // Line processing here
     //===========End============
@@ -106,9 +107,10 @@ void Cam_Algorithm(){
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
-  
+infinite_loop:
+  ITM_EVENT8_WITH_PC(4,24);
   AlgorithmMain();
-  
+  ITM_EVENT8_WITH_PC(4,23);
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+1]=((uint16)currspd)>>8;
@@ -116,10 +118,13 @@ void Cam_Algorithm(){
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+3]=((uint16)currdir)>>8;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
-
+  
+  //if(processing_frame==2000)goto infinite_loop;
+  
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;
+  
 }
 
 // ====== Basic Drivers ======
@@ -160,6 +165,8 @@ void PORTC_IRQHandler(){
     debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
     t-=debug_num;
     //ITM_EVENT32(1, loading_frame);
+    
+    
   }
 }
 
@@ -327,6 +334,9 @@ void cam_usb(){
       sending_buffer=buffer_ptr[t]-SIG_SIZE;
       
       sending_frame_indicator=t;
+      static s32 tag=0;
+      tag=
+        *((s32*)((u8*)sending_buffer+IMG_ROWS*IMG_COLS + SIG_SIZE+6));
       LPLD_USB_VirtualCom_Tx( sending_buffer,
                              IMG_ROWS * VALID_COLS
                                + EXTRA_INFO_SIZE 

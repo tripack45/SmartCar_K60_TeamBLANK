@@ -14,12 +14,14 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size){
         numerator = PERSPECTIVE_SCALE * (xIn[i] - ORIGIN_X) * TRAPZOID_HEIGHT;
         denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  
                 + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn[i] - 3);
-        (*xOut)=numerator/denominator + ORIGIN_X + 50;
+        (*xOut)=numerator/denominator;
+        (*xOut) += ORIGIN_X + 50;
         xOut ++;
         
         numerator = PERSPECTIVE_SCALE* ALGC2 * (yIn[i] - ORIGIN_Y);
         denominator = REAL_WORLD_SCALE * (10000 - ALGC1 * (yIn[i] - ORIGIN_Y));
-        (*yOut)=numerator/denominator + ORIGIN_Y + 40;
+        (*yOut)=numerator/denominator;
+        (*yOut)+= ORIGIN_Y + 40;
         yOut ++;
    }   
    return (xOut - (u8*)xIn); //Returns number of points processed    

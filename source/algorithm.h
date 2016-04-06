@@ -108,7 +108,7 @@ extern BoundaryDetector boundaryDetector;
 //==============END OF BOUNDARY DETECTION================
 
 //===============INVERSE TRANSFORM=================
-#define SAMPLE_RATE 5
+#define SAMPLE_RATE 1
 #define PERSPECTIVE_SCALE 70
 #define REAL_WORLD_SCALE 50 // 70pts==50cm
 /* Formula

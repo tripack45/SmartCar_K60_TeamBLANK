@@ -10,17 +10,17 @@ void CurveFitting(CurrentControlState *CState)
   u8 i = 0; 
   u8 *boundaryX,*boundaryY;
   u8 boundaryNum;
-  u8 coordinateNum;
+  u8 coordinateNum=0;
   /* The total number of coordinates selected.*/
-  if(CState->LBoundarySize>CState->RBoundarySize){
+  if((CState->LBoundarySize) > (CState->RBoundarySize)){
     boundaryX = CState->LBoundaryX;  
     boundaryY = CState->LBoundaryY;
     boundaryNum = CState->LBoundarySize;
     CState->fittedBoundary=1;
   }else{
-    boundaryX = CState->LBoundaryX;  
-    boundaryY = CState->LBoundaryY;
-    boundaryNum = CState->LBoundarySize;  
+    boundaryX = CState->RBoundaryX;  
+    boundaryY = CState->RBoundaryY;
+    boundaryNum = CState->RBoundarySize;  
     CState->fittedBoundary=2;
   }
   if(boundaryNum<(1+SELECT_STEP*(5-1))){
@@ -130,8 +130,8 @@ void CurveFitting(CurrentControlState *CState)
   CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
   CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
   CState->circleRadius = (float)((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
-                              + (CState->lineAlpha) * (CState->lineAlpha)
-                              + (CState->lineBeta)  * (CState->lineBeta);
+                              + (CState->circleX) * (CState->circleX)
+                              + (CState->circleY) * (CState->circleY);
   //CState->circleMSE
   /*
   int isqrt(int x) {
