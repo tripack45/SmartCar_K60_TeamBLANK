@@ -135,6 +135,7 @@ end
 
 internalState=ControllerUpdate(internalState,currentState);
 [spd,dir]=ControllerControl(internalState,currentState);
+[dir ,spd]=CircleStateHandler(currentState);
 
     
 %% Output to graph
