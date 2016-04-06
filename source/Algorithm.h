@@ -63,7 +63,7 @@ typedef struct{
   s16 lineMSE;
   s16 circleX;
   s16 circleY;
-  s16 circleRadius;
+  u32 circleRadius;
   s32 circleMSE;
   u8  isInnerCircle;
 }CurrentControlState;
@@ -229,5 +229,7 @@ void CrossRoadStateHandler();
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======
+
+u32 isqrt(s64 x);
 
 #endif

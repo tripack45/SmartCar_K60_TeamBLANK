@@ -129,9 +129,9 @@ void CurveFitting(CurrentControlState *CState)
   ia9 = sx2 * sy2 - sxy * sxy;
   CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
   CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
-  CState->circleRadius = (float)((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
+  CState->circleRadius = isqrt(((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
                               + (CState->circleX) * (CState->circleX)
-                              + (CState->circleY) * (CState->circleY);
+                              + (CState->circleY) * (CState->circleY));
   //CState->circleMSE
   /*
   int isqrt(int x) {
