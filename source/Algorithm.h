@@ -221,9 +221,17 @@ void LinearStateHandler();
 
 #define MSE_RATIO            2
 #define OFFSET_THRES         10
-#define CURVE_RATIO          1
-#define OFFSET_RATIO         1
-
+#define OFFSET_DIR_RATIO         10
+#define SPD_MAX            30
+#define SPD_MiN            10
+#define RADIUS_MIN           70
+#define RADIUS_MAX           300
+#define DIR_HALF             300
+#define DIR_MAX              600
+#define CURVE_DIR_RATIO      (RADIUS_MIN * DIR_HALF)
+#define CURVE_SPD_RATIO      0.05f
+#define OFFSET_SPD_RATIO     0.5f
+#define BASIC_SPD            10
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======
