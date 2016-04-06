@@ -147,6 +147,7 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 #define HALF_TRACK 35
 #define SELECT_STEP 5
 #define BOUNDARY_NUM_MAX 128
+#define SELECT_NUM_MAX 26
 #define SQUARE_ERROR_THRES 10
 /************************************/
 
@@ -232,6 +233,7 @@ void LinearStateHandler();
 #define CURVE_SPD_RATIO      0.05f
 #define OFFSET_SPD_RATIO     0.5f
 #define BASIC_SPD            10
+u32 Isqrt();
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======

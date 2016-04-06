@@ -69,6 +69,8 @@ void CurveFitting(CurrentControlState *CState)
   s32 ia8 = 0;
   /* (3, 3) of inverse of matrix A.*/
   s32 ia9 = 0;
+  /* The geometric Square Error of circle fitting. */
+  u32 geometrySquare = 0;
   /****** Here is the way for circle fitting.******/
   /* A = [sum(x.*x) sum(x.*y) sum(x);  
   sum(x.*y) sum(y.*y) sum(y);
@@ -88,11 +90,16 @@ void CurveFitting(CurrentControlState *CState)
   /* When the square error for linear fitting is less than SQUARE_ERROR_THRES, return TRUE, use linear fitting.*/
   /* When the square error for linear fitting is not less than SQUARE_ERROR_THRES, return FALSE, use circle fitting.*/
   
-  u8 x, y; /* x and y are the current abscissa and ordinate.*/
+  /* x and y are the current abscissa and ordinate.*/
+  u8 x, y;
+  /* xx contains all abscissas*/
+  u8 xx[SELECT_NUM_MAX];
+  /* yy contains all ordinates*/
+  u8 yy[SELECT_NUM_MAX];
   for (i = 0; i < boundaryNum; i += SELECT_STEP)
   {
-    x = boundaryX[i];
-    y = boundaryY[i];
+    xx(coordinateNum) = x = boundaryX[i];
+    yy(coordinateNum) = y = boundaryY[i];
     sx += x;
     sy += y;
     x2 = x * x;
@@ -130,28 +137,12 @@ void CurveFitting(CurrentControlState *CState)
   CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
   CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
   CState->circleRadius = isqrt(((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
-                              + (CState->circleX) * (CState->circleX)
-                              + (CState->circleY) * (CState->circleY));
-  //CState->circleMSE
-  /*
-  int isqrt(int x) {
-	if (x <= 0) return 0;
-	return mysqrt(x, 1, x);
+                               + (CState->circleX) * (CState->circleX)
+                                 + (CState->circleY) * (CState->circleY));
+  for (i=0;i<coordinateNum;i++){
+    geometrySquare = geometrySquare + (sqrt((xx(i) - CState->circleX)^2 + (yy(i) - CState->circleY)^2) - CState->circleRadius)^2;
   }
-  int mysqrt(int x, int begin, int end)
-  {
-	if (end - begin == 1 || begin>end || begin == end) return begin;
-	int med = (begin + end) / 2;
-	int med2 = x / med;
-	if (med2 == med) return med;
-	else if (med2<med) return mysqrt(x, begin, med);
-	else return mysqrt(x, med, end);
-	return med;
-  }
- */ 
-  
-  
-  
+  CState->circleMSE = geometrySquare / n;
 }
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){

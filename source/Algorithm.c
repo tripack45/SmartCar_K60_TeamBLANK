@@ -82,7 +82,7 @@ unknown:
    return;
 }
 
-u32 isqrt(s64 x){
+u32 Isqrt(s64 x){
 	s32 begin = 0;
 	s32 end = x;
 	s32 med = 0;
