@@ -63,7 +63,7 @@ typedef struct{
   s16 lineMSE;
   s16 circleX;
   s16 circleY;
-  u32 circleRadius;
+  s16 circleRadius;
   s32 circleMSE;
   u8  isInnerCircle;
 }CurrentControlState;
@@ -108,7 +108,7 @@ extern BoundaryDetector boundaryDetector;
 //==============END OF BOUNDARY DETECTION================
 
 //===============INVERSE TRANSFORM=================
-#define SAMPLE_RATE 1
+#define SAMPLE_RATE 5
 #define PERSPECTIVE_SCALE 70
 #define REAL_WORLD_SCALE 50 // 70pts==50cm
 /* Formula
@@ -229,7 +229,5 @@ void CrossRoadStateHandler();
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======
-
-u32 isqrt(s64 x);
 
 #endif

@@ -94,8 +94,8 @@ try
         end
     else
         currentState.state=2;
-        d=sqrt((currentState.carPosX-currentState.circleY)^2 ...
-               +(currentState.carPosY-currentState.circleX)^2);
+        d=sqrt((currentState.carPosX-currentState.circleX)^2 ...
+               +(currentState.carPosY-currentState.circleY)^2);
         if(d>currentState.circleRadius)
             currentState.circleRadius=currentState.circleRadius+35;
             currentState.isInnerCircle=1;

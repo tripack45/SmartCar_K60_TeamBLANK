@@ -14,6 +14,7 @@ void AlgorithmMain(){
    currentState.carPosX=60;
    currentState.carPosY=79;
    u8  isLinear,isCrossroad;
+   u16 distance;
    
    if(R(LBoundarySize) <= 5 && R(RBoundarySize) <= 5)
      goto unknown; //Not enough points for transfering
@@ -44,6 +45,15 @@ void AlgorithmMain(){
         currentState.lineBeta -= 35;
    }else{
      currentState.state=CONTROL_STATE_TURN;
+     distance = (u16) sqrt((currentState.carPosX - currentState.circleX)^2 
+               +(currentState.carPosY - currentState.circleY)^2);
+     if(distance > currentState.circleRadius){
+       currentState.circleRadius = currentState.circleRadius + 35;
+       currentState.isInnerCircle = 1;
+     }else{
+       currentState.circleRadius = currentState.circleRadius - 35;
+       currentState.isInnerCircle = 0;
+     }
    }
    currentState.isUnknown=0;
    
