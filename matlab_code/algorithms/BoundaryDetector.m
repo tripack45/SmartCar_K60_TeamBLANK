@@ -146,21 +146,21 @@ if (~isempty(Boundary))
             RBoundary=Boundary(MZ + sectionHead(2) : MZ + sectionTail(2),:);
         case 2
             if (Boundary(MZ + sectionHead(1), MZ + 0)<Boundary(MZ + sectionTail(1),MZ + 0))
-                RBoundary=Boundary(MZ + sectionHead(1):sectionTail(1),:);
+                RBoundary=Boundary(MZ + sectionHead(1):MZ + sectionTail(1),:);
             else
-                LBoundary=Boundary(MZ + sectionHead(1):sectionTail(1),:);
+                LBoundary=Boundary(MZ + sectionHead(1):MZ + sectionTail(1),:);
             end
     end
 end
 
 if sum(LBoundary)>0
-    LBoundary=LBoundary+1;
+    LBoundary=LBoundary;
 else
     LBoundary=[];
 end
 
 if sum(RBoundary)>0
-    RBoundary=RBoundary+1;
+    RBoundary=RBoundary;
 else
     RBoundary=[];
 end
