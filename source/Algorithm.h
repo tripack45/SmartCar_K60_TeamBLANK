@@ -224,7 +224,7 @@ void LinearStateHandler();
 #define OFFSET_THRES         10
 #define OFFSET_DIR_RATIO         10
 #define SPD_MAX            30
-#define SPD_MiN            10
+#define SPD_MIN            10
 #define RADIUS_MIN           70
 #define RADIUS_MAX           300
 #define DIR_HALF             300

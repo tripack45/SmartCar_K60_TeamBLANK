@@ -98,8 +98,8 @@ void CurveFitting(CurrentControlState *CState)
   u8 yy[SELECT_NUM_MAX];
   for (i = 0; i < boundaryNum; i += SELECT_STEP)
   {
-    xx(coordinateNum) = x = boundaryX[i];
-    yy(coordinateNum) = y = boundaryY[i];
+    xx[coordinateNum] = x = boundaryX[i];
+    yy[coordinateNum] = y = boundaryY[i];
     sx += x;
     sy += y;
     x2 = x * x;
@@ -136,13 +136,13 @@ void CurveFitting(CurrentControlState *CState)
   ia9 = sx2 * sy2 - sxy * sxy;
   CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
   CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
-  CState->circleRadius = isqrt(((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
+  CState->circleRadius = Isqrt(((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
                                + (CState->circleX) * (CState->circleX)
                                  + (CState->circleY) * (CState->circleY));
   for (i=0;i<coordinateNum;i++){
-    geometrySquare = geometrySquare + (sqrt((xx(i) - CState->circleX)^2 + (yy(i) - CState->circleY)^2) - CState->circleRadius)^2;
+    geometrySquare = geometrySquare + (Isqrt(((xx[i] - CState->circleX)^2 + (yy[i] - CState->circleY)^2) * 10000) / 100 - CState->circleRadius)^2;
   }
-  CState->circleMSE = geometrySquare / n;
+  CState->circleMSE = geometrySquare / coordinateNum;
 }
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
