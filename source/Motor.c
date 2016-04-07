@@ -16,7 +16,7 @@ License : MIT
 // --- Global ----
 S16 tacho0, tacho1;
 S16 currdir=SERVO_MAX;
-S16 currspd=30;
+S16 currspd=10;
 
 // --- Local ---
 U16 tacho1_tmp,tacho0_tmp,ftm1cnt_last;

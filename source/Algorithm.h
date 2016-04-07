@@ -17,7 +17,7 @@ void extern AlgorithmMain();
 #define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
 #define MOTOR_PID_I           F_SPDPID_I
 #define MOTOR_PID_D           F_SPDPID_D     //SPEED_KP
-#define MOTOR_PID_SENSITIVITY 7
+#define MOTOR_PID_SENSITIVITY 13
 #define TACHO_SENSITIVITY 1
 #define MOTOR_DEAD_RUN 320
 #define MOTOR_DEAD_REST 400
@@ -40,7 +40,7 @@ extern MotorPID motor_pid;
 //void DirCtrl();
 //void DetectBoundary();
 //s16 Dir_PID(s16 position);
-s16 Speed_PID(u8 Expect);
+s16 Speed_PID(s16 Expect);
 void MotorCtrl();
 
 
@@ -149,6 +149,7 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 #define BOUNDARY_NUM_MAX 128
 #define SELECT_NUM_MAX 26
 #define SQUARE_ERROR_THRES 10
+#define STRAIGHT_MSE_CRIT F_STRAIGHT_MSE_CRIT
 /************************************/
 
 typedef struct LinearDectectorConf{
@@ -201,9 +202,9 @@ void ControllerControl();
 //==========LinearStateHandler===========
 
 #define DANGERZONE      20
-#define FASTSPEED       30
-#define LOWSPEED        13
-#define DIR_SENSITIVITY  10
+#define FASTSPEED       F_LINE_HIGHSPD
+#define LOWSPEED        F_LINE_LOWSPD
+#define DIR_SENSITIVITY 6
 
 void LinearStateHandler();
 
