@@ -9,8 +9,8 @@ void CurveFitting(CurrentControlState *CState)
   /* Loop variable.*/
   u8 i = 0; 
   u8 *boundaryX,*boundaryY;
-  u8 boundaryNum;
-  u8 coordinateNum=0;
+  s16 boundaryNum;
+  s16 coordinateNum=0;
   /* The total number of coordinates selected.*/
   if((CState->LBoundarySize) > (CState->RBoundarySize)){
     boundaryX = CState->LBoundaryX;  
@@ -28,49 +28,49 @@ void CurveFitting(CurrentControlState *CState)
     return;
   }
   /* x^2 */
-  u16 x2 = 0;
+  s16 x2 = 0;
   /* y^2 */
-  u16 y2 = 0; 
+  s16 y2 = 0; 
   /* sum(x) */
-  u16 sx = 0;
+  s16 sx = 0;
   /* sum(x^2) */
-  u32 sx2 = 0;
+  s32 sx2 = 0;
   /* sum(y) */
-  u16 sy = 0;
+  s16 sy = 0;
   /* sum(y^2) */
-  u32 sy2 = 0;
+  s32 sy2 = 0;
   /* sum(x * y) */
-  u32 sxy = 0;
+  s32 sxy = 0;
   /* sum(x^3 + x * y^2) */
-  u32 b1 = 0;
+  s32 b1 = 0;
   /* sum(y^3 + y * x^2) */
-  u32 b2 = 0;
+  s32 b2 = 0;
   /* sum(x ^ 2 + y ^ 2) */
-  u32 b3 = 0; 
+  s32 b3 = 0; 
   /* Determinant of matrix A.*/
-  s32 det = 0;
+  s64 det = 0;
   /* Common denominator for slope and interception.*/
   s32 denom = 0;
   /* (1, 1) of inverse of matrix A.*/
-  s32 ia1 = 0;
+  s64 ia1 = 0;
   /* (1, 2) of inverse of matrix A.*/
-  s32 ia2 = 0;
+  s64 ia2 = 0;
   /* (1, 3) of inverse of matrix A.*/
-  s32 ia3 = 0;
+  s64 ia3 = 0;
   /* (2, 1) of inverse of matrix A.*/
-  s32 ia4 = 0;
+  s64 ia4 = 0;
   /* (2, 2) of inverse of matrix A.*/
-  s32 ia5 = 0;
+  s64 ia5 = 0;
   /* (2, 3) of inverse of matrix A.*/
-  s32 ia6 = 0;
+  s64 ia6 = 0;
   /* (3, 1) of inverse of matrix A.*/
-  s32 ia7 = 0;
+  s64 ia7 = 0;
   /* (3, 2) of inverse of matrix A.*/
-  s32 ia8 = 0;
+  s64 ia8 = 0;
   /* (3, 3) of inverse of matrix A.*/
-  s32 ia9 = 0;
+  s64 ia9 = 0;
   /* The geometric Square Error of circle fitting. */
-  u32 geometrySquare = 0;
+  s32 distanceSum = 0;
   /****** Here is the way for circle fitting.******/
   /* A = [sum(x.*x) sum(x.*y) sum(x);  
   sum(x.*y) sum(y.*y) sum(y);
@@ -92,14 +92,11 @@ void CurveFitting(CurrentControlState *CState)
   
   /* x and y are the current abscissa and ordinate.*/
   u8 x, y;
-  /* xx contains all abscissas*/
-  u8 xx[SELECT_NUM_MAX];
-  /* yy contains all ordinates*/
-  u8 yy[SELECT_NUM_MAX];
+
   for (i = 0; i < boundaryNum; i += SELECT_STEP)
   {
-    xx[coordinateNum] = x = boundaryX[i];
-    yy[coordinateNum] = y = boundaryY[i];
+    x = boundaryX[i];
+    y = boundaryY[i];
     sx += x;
     sy += y;
     x2 = x * x;
@@ -124,7 +121,11 @@ void CurveFitting(CurrentControlState *CState)
            ) * 2 
          ) / coordinateNum;
   b3 = sx2 + sy2;
-  det = coordinateNum * sx2 * sy2 + 2 * sx * sy * sxy - coordinateNum * sxy * sxy - sx * sx * sy2 - sy * sy * sx2;
+  det = coordinateNum * (s64)sx2 * (s64)sy2 
+        + 2 * sx * sy * (s64)sxy 
+        - coordinateNum * (s64)sxy * (s64)sxy 
+        - sx * sx * (s64)sy2 
+          - sy * sy * (s64)sx2;
   ia1 = coordinateNum * sy2 - sy * sy;
   ia2 = sx * sy - coordinateNum * sxy;
   ia3 = sxy * sy - sx * sy2;
@@ -133,16 +134,25 @@ void CurveFitting(CurrentControlState *CState)
   ia6 = sxy * sx - sy * sx2;
   ia7 = ia3;
   ia8 = ia6;
-  ia9 = sx2 * sy2 - sxy * sxy;
+  ia9 = (s64)sx2 * (s64)sy2 - (s64)sxy * (s64)sxy;
   CState->circleX = (float)((s64)ia1 * b1 + (s64)ia2 * b2 + (s64)ia3 * b3) / 2 / det;
   CState->circleY = (float)((s64)ia4 * b1 + (s64)ia5 * b2 + (s64)ia6 * b3) / 2 / det;
-  CState->circleRadius = Isqrt(((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
+  s64 t = ((s64)ia7 * b1 + (s64)ia8 * b2 + (s64)ia9 * b3) / det
                                + (CState->circleX) * (CState->circleX)
-                                 + (CState->circleY) * (CState->circleY));
-  for (i=0;i<coordinateNum;i++){
-    geometrySquare = geometrySquare + (Isqrt(((xx[i] - CState->circleX)^2 + (yy[i] - CState->circleY)^2) * 10000) / 100 - CState->circleRadius)^2;
+                               + (CState->circleY) * (CState->circleY);
+  CState->circleRadius = Isqrt(t);
+  
+  for (i = 0; i < boundaryNum; i += SELECT_STEP){
+    s16 diffX = (s16)(boundaryX[i]) - (CState->circleX);
+    s16 diffY = (s16)(boundaryY[i]) - (CState->circleY);
+    U32 distance = (( diffX * diffX + diffY * diffY) * 10000);
+    distanceSum += Isqrt(distance);
   }
-  CState->circleMSE = geometrySquare / coordinateNum;
+  S32 MSEX=(s32)sx2 - 2 * (CState->circleX) * (s32)sx + coordinateNum * (CState->circleX) * (CState->circleX);
+  S32 MSEY=(s32)sy2 - 2 * (CState->circleY) * (s32)sy + coordinateNum * (CState->circleY) * (CState->circleY);
+  S32 MSEnr2=coordinateNum * (CState->circleRadius) * (CState->circleRadius);     
+  CState->circleMSE = MSEX + MSEY + MSEnr2 - 2 * (CState->circleRadius) * distanceSum / 100;
+  CState->circleMSE /= coordinateNum;
 }
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){

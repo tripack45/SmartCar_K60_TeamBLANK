@@ -234,7 +234,7 @@ void LinearStateHandler();
 #define CURVE_SPD_RATIO      0.05f
 #define OFFSET_SPD_RATIO     0.5f
 #define BASIC_SPD            10
-u32 Isqrt();
+u32 Isqrt(s64 x );
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======
