@@ -34,10 +34,10 @@ void AlgorithmMain(){
    CurveFitting(&currentState);
    if(currentState.isUnknown)
      goto unknown;
-  
+   debugWatch[0]=currentState.lineMSE;
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
-   else if(currentState.lineMSE <= 1){
+   else if(currentState.lineMSE <= STRAIGHT_MSE_CRIT){
      currentState.state=CONTROL_STATE_STRAIGHT;
      if(currentState.fittedBoundary==1)
         currentState.lineBeta += 35;
