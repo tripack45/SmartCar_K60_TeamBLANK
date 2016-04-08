@@ -13,18 +13,18 @@ U16 flashData[DATA_NUM];
 U16 data_initial[DATA_NUM]={
   1,	        //data flag
   0,	        //KF_switch
-  0,	        //blance_deform
-  40,	        //balance_K
-  100,	        //balance P
-  85,	        //balance D
+  70,	        //F_RADIUS_MIN
+  300,	        //F_RADIUS_MAX
+  10,	        //F_OFFSET_THRES
+  10,	        //F_OFFSET_DIR_RATIO
   15,	        //F_LINE_LOWSPD
-  25,	        //F_LINE_HIGHSPD   
-  3,           //F_STRAIGHT_MSE_CRIT
-  0,           //debugPtr
-  10,           //Spped PD_I
+  15,	        //F_LINE_HIGHSPD   
+  4,            //F_STRAIGHT_MSE_CRIT
+  0,            //debugPtr
+  50,           //Spped PD_I
   10,           //Speed Sensitivity 
   30,           //Spped PD_P
-  100,          //Speed PD_D
+  10,           //Speed PD_D
   25,           // SAVE_VAR
   1,            // STEPLENGTH
 };

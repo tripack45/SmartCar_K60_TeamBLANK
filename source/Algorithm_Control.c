@@ -70,10 +70,9 @@ void ControllerControl(){
     LinearStateHandler();
     break;
   case CONTROL_STATE_TURN:
-    CrossroadStateHandler();
+    CircleStateHandler();
     break;
   case CONTROL_STATE_CROSS:
-    
     CrossroadStateHandler();
     break;
   case CONTROL_STATE_STR2TRN:
@@ -84,6 +83,7 @@ void ControllerControl(){
   debugWatch[0]=internalState.state;
   return;
 }
+
 void LinearStateHandler(){
   s16 tCarX=(s32)(currentState.lineAlpha * currentState.carPosY 
                  + currentState.lineBeta) / 100 - currentState.carPosX;
