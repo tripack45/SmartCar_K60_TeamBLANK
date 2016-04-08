@@ -224,15 +224,15 @@ void LinearStateHandler();
 #define MSE_RATIO            2
 #define OFFSET_THRES         F_OFFSET_THRES
 #define OFFSET_DIR_RATIO     F_OFFSET_DIR_RATIO
-#define SPD_MAX              30
-#define SPD_MIN              10
+#define SPD_MAX              20
+#define SPD_MIN              13
 #define RADIUS_MIN           F_RADIUS_MIN
 #define RADIUS_MAX           F_RADIUS_MAX
 #define DIR_HALF             300
 #define DIR_MAX              600
 #define CURVE_DIR_RATIO      (RADIUS_MIN * DIR_HALF)
-#define CURVE_SPD_RATIO      0.05f
-#define OFFSET_SPD_RATIO     0.5f
+#define CURVE_SPD_RATIO      20
+#define OFFSET_SPD_RATIO     2
 #define BASIC_SPD            10
 u32 Isqrt(s64 x );
 void CircleStateHandler();

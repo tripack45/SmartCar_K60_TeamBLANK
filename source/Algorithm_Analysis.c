@@ -111,16 +111,17 @@ void CurveFitting(CurrentControlState *CState)
   denom = coordinateNum * sy2 - sy * sy;
   CState->lineAlpha  = 100 * ((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
   CState->lineBeta   = 100 * ((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
-  CState->lineMSE = 
-    (u32)( sx2 * 100 * 100
-         + sy2 * (CState->lineAlpha) * (CState->lineAlpha) 
-         + coordinateNum * (CState->lineBeta) * (CState->lineBeta) 
-         + (sy * (CState->lineAlpha) * (CState->lineBeta)
+  
+  S64 t1=sx2 * 100 * 100;
+      t1+= sy2 * (CState->lineAlpha) * (CState->lineAlpha); 
+      t1+= coordinateNum * (CState->lineBeta) * (CState->lineBeta);
+  S64 t2=sy * (CState->lineAlpha) * (CState->lineBeta)
               - sxy * (CState->lineAlpha) * 100
-              - sx * (CState->lineBeta) * 100
-           ) * 2 
-         ) / coordinateNum;
-  CState->lineMSE /= 100 * 100;
+              - sx * (CState->lineBeta) * 100;
+  t2*=2;
+  s64 t3 = (t1+t2)/coordinateNum;
+  CState->lineMSE = t3 / (100 * 100);
+  
   b3 = sx2 + sy2;
   det = coordinateNum * (s64)sx2 * (s64)sy2 
         + 2 * sx * sy * (s64)sxy 

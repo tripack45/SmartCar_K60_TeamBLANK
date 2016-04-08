@@ -34,8 +34,13 @@ function [currentState] = analyzer(currentState)
    denom=n*sy2-sy^2;
    alpha=floor(100*(n*sxy-sx*sy)/denom);  currentState.lineAlpha = alpha;
    beta=floor(100*(sy2*sx-sy*sxy)/denom); currentState.lineBeta  = beta;
-   SquareResidue=floor(sx2*10000+alpha^2*sy2+n*beta^2-2*alpha*sxy*100-2*beta*sx*100+2*alpha*beta*sy);
-   currentState.lineMSE=floor(SquareResidue/n/10000);
+   
+   t1=sx2*10000+alpha^2*sy2+n*beta^2;
+   t2=-2*alpha*sxy*100-2*beta*sx*100+2*alpha*beta*sy;
+   SquareResidue=(t1+t2)/n;
+   SquareResidue=SquareResidue/10000;
+   
+   currentState.lineMSE=SquareResidue;
    
    sb3=sx2+sy2;
    det=n*sx2*sy2+2*sx*sy*sxy-n*sxy*sxy-sx*sx*sy2-sy*sy*sx2;

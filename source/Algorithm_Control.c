@@ -88,13 +88,13 @@ void LinearStateHandler(){
   s16 tCarX=(s32)(currentState.lineAlpha * currentState.carPosY 
                  + currentState.lineBeta) / 100 - currentState.carPosX;
   
-  ITM_EVENT16_WITH_PC(1,ABS(tCarX));
+  //ITM_EVENT16_WITH_PC(1,ABS(tCarX));
   //ITM_EVENT16_WITH_PC(2,currentState.lineBeta);
     
   s16 tDirH=((s16)(currentState.lineBeta / 100) - currentState.carPosX) * DIR_SENSITIVITY;
   s16 tDirL= tCarX * DIR_SENSITIVITY;
    
-    ITM_EVENT16_WITH_PC(2, ABS(tDirH) );
+    //ITM_EVENT16_WITH_PC(2, ABS(tDirH) );
   if (  (ABS(tCarX)) < DANGERZONE ){
     currdir = tDirH;
     currspd = FASTSPEED;
@@ -109,22 +109,24 @@ void CircleStateHandler(){
     LinearStateHandler();
     return;
   }else{
-    s32 offset;
-    s16 theta;
-    s16 speed;
+    s32 offset=0;
+    s16 theta=0;
+    s16 speed=0;
     s8 direction = 1;
     s32 diffX = currentState.carPosX - currentState.circleX;
     s32 diffY = currentState.carPosY - currentState.circleY;
     if (currentState.circleX > currentState.carPosX) direction = -1;
-    offset=Isqrt(diffX * diffX + diffY * diffY) - currentState.circleRadius;
+    offset = Isqrt(diffX * diffX + diffY * diffY) - currentState.circleRadius;
     if (offset < OFFSET_THRES && offset > -OFFSET_THRES){
-      theta = direction * CURVE_DIR_RATIO / currentState.circleRadius + OFFSET_DIR_RATIO * offset;
+      theta = direction * CURVE_DIR_RATIO / currentState.circleRadius
+                       + OFFSET_DIR_RATIO * offset;
       if (theta > DIR_MAX || theta < -DIR_MAX){
-        currdir = direction * DIR_MAX;
-        currspd = BASIC_SPD;
-        return;
+         currdir = direction * DIR_MAX;
+         currspd = BASIC_SPD;
+         return;
       }
-	  speed = floor(CURVE_SPD_RATIO * currentState.circleRadius - OFFSET_SPD_RATIO * offset + BASIC_SPD);
+      speed =  currentState.circleRadius / CURVE_SPD_RATIO 
+               - offset / OFFSET_SPD_RATIO  + BASIC_SPD;
       if (speed > SPD_MAX) speed = SPD_MAX;
       if (speed < SPD_MIN) speed = SPD_MIN;
       currdir = theta;

@@ -59,7 +59,9 @@ void AlgorithmMain(){
    currentState.isUnknown=0;
    
 control:
-  
+   ITM_EVENT16_WITH_PC(1,ABS(currentState.lineMSE));
+   ITM_EVENT32_WITH_PC(2,ABS(currentState.circleMSE));
+   
    ControllerUpdate();
    ControllerControl();
    /*
