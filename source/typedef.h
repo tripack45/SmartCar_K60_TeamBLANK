@@ -21,7 +21,7 @@ typedef long int s32;
 typedef unsigned long long int u64;
 typedef long long int s64;
 
-#define abs(x) (x>0?x:(-x))
+#define ABS(x) ( (x) > 0 ? (x) :(- (x) ))
 #define Nop asm("nop")
 
 

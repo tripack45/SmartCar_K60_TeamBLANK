@@ -58,8 +58,8 @@ typedef struct{
   u8 *RBoundaryY; 
   u8 RBoundarySize;
   u8 fittedBoundary;
-  float lineAlpha;
-  float lineBeta;
+  s32 lineAlpha;
+  s32 lineBeta;
   s16 lineMSE;
   s16 circleX;
   s16 circleY;
@@ -172,7 +172,7 @@ extern LinearDectect linearDectect;
 //============Crossroad Detection=========
 
 #define CROSSROAD_STRAIGHT_THRES  81
-#define CROSSROAD_SHARPTURN_THRES 25
+#define CROSSROAD_SHARPTURN_THRES 15
 
 u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
 
@@ -204,7 +204,7 @@ void ControllerControl();
 #define DANGERZONE      20
 #define FASTSPEED       F_LINE_HIGHSPD
 #define LOWSPEED        F_LINE_LOWSPD
-#define DIR_SENSITIVITY 6
+#define DIR_SENSITIVITY 13
 
 void LinearStateHandler();
 

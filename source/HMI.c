@@ -19,7 +19,7 @@ u16 bell_request_tick = 0;
 // ===== BELL SERVICE ====
 
 void Bell_Request(u8 tick){
-  bell_request_tick = tick;
+  if(SW4())bell_request_tick = tick;
 }
 
 void Bell_Service(){

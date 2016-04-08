@@ -143,9 +143,13 @@ void UI_Debug(){
   }
   Oled_Putnum(1,11,varEdit);
   
-  Oled_Putstr(3,0,"DBG 0"); Oled_Putnum(3,11,debugWatch[0]);
-  Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
-  Oled_Putstr(5,0,"DBG 2"); Oled_Putnum(5,11,debugWatch[2]);
+  //Oled_Putstr(3,0,"DBG 0"); Oled_Putnum(3,11,debugWatch[0]);
+  //Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
+  //Oled_Putstr(5,0,"DBG 2"); Oled_Putnum(5,11,debugWatch[2]);
+  Oled_Putstr(3,0,"state"); Oled_Putnum(3,11,currentState.state);
+  Oled_Putstr(4,0,"LMSE"); Oled_Putnum(4,11,currentState.lineMSE);
+  Oled_Putstr(5,0,"CMSE"); Oled_Putnum(5,11,currentState.circleMSE);
+  
   Oled_Putstr(6,0,"DBG 3"); Oled_Putnum(6,11,debugWatch[3]);
   
   Oled_Putstr(7,0,"           ");

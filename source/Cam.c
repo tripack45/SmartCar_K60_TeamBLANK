@@ -108,9 +108,10 @@ void Cam_Algorithm(){
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
 infinite_loop:
-  ITM_EVENT8_WITH_PC(4,24);
+  //ITM_EVENT8_WITH_PC(4,24);
   AlgorithmMain();
-  ITM_EVENT8_WITH_PC(4,23);
+  ITM_EVENT16_WITH_PC(3,ABS(currdir));
+  //ITM_EVENT8_WITH_PC(4,23);
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+1]=((uint16)currspd)>>8;
@@ -188,7 +189,7 @@ void DMA0_IRQHandler(){
       for(int i=1;i<IMG_COLS;i++)
         loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
   }*/
-    img_row++; 
+  img_row++; 
  //}
 }
 
