@@ -11,13 +11,14 @@ void AlgorithmMain(){
    currentState.isInnerCircle=0;
    DetectBoundary();
    
-   currentState.carPosX=60;
-   currentState.carPosY=79;
+   currentState.carPosX=88;
+   currentState.carPosY=101;
    u8  isLinear,isCrossroad;
    u16 distance;
    
    if(R(LBoundarySize) <= 5 && R(RBoundarySize) <= 5)
      goto unknown; //Not enough points for transfering
+   
    
    if(currentState.LBoundarySize>0)
       InversePerspectiveTransform(
@@ -34,15 +35,15 @@ void AlgorithmMain(){
    CurveFitting(&currentState);
    if(currentState.isUnknown)
      goto unknown;
-   debugWatch[0]=currentState.lineMSE;
+     
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
    else if(currentState.lineMSE <= STRAIGHT_MSE_CRIT){
      currentState.state=CONTROL_STATE_STRAIGHT;
      if(currentState.fittedBoundary==1)
-        currentState.lineBeta += 35;
+        currentState.lineBeta += 35 * 100;
      else if (currentState.fittedBoundary==2)
-        currentState.lineBeta -= 35;
+        currentState.lineBeta -= 35 * 100;
    }else{
      currentState.state=CONTROL_STATE_TURN;
      distance = (u16) sqrt((currentState.carPosX - currentState.circleX)^2 

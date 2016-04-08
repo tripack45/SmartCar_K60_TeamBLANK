@@ -109,17 +109,18 @@ void CurveFitting(CurrentControlState *CState)
     coordinateNum++;
   }
   denom = coordinateNum * sy2 - sy * sy;
-  CState->lineAlpha  = (float)((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
-  CState->lineBeta   = (float)((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
+  CState->lineAlpha  = 100 * ((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
+  CState->lineBeta   = 100 * ((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
   CState->lineMSE = 
-    (u32)(sx2 
+    (u32)( sx2 * 100 * 100
          + sy2 * (CState->lineAlpha) * (CState->lineAlpha) 
          + coordinateNum * (CState->lineBeta) * (CState->lineBeta) 
          + (sy * (CState->lineAlpha) * (CState->lineBeta)
-              - sxy * (CState->lineAlpha) 
-              - sx * (CState->lineBeta)
+              - sxy * (CState->lineAlpha) * 100
+              - sx * (CState->lineBeta) * 100
            ) * 2 
          ) / coordinateNum;
+  CState->lineMSE /= 100 * 100;
   b3 = sx2 + sy2;
   det = coordinateNum * (s64)sx2 * (s64)sy2 
         + 2 * sx * sy * (s64)sxy 
@@ -161,7 +162,7 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
   if (size<C(6)) return 0;
   s32 ipSqr=0;
   s32 dSqr=1;
-  for (int i=0;i<size-6;i+=CROSSROAD_STEP_LENGTH){
+  for (int i=0;i<size-C(5);i+=CROSSROAD_STEP_LENGTH){
     s16 v0x=boundaryX[MZ+ i + C(1)] - boundaryX[MZ + i + C(0)];
     s16 v0y=boundaryY[MZ+ i + C(1)] - boundaryY[MZ + i + C(0)];
     s16 v1x=boundaryX[MZ+ i + C(2)] - boundaryX[MZ + i + C(1)];
