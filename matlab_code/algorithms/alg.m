@@ -81,8 +81,8 @@ try
 %     else
 %         fprintf('Line  \t');
 %     end
-%     fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
-%     fprintf('alpha/beta: %f,%f\n',currentState.lineAlpha,currentState.lineBeta);
+     fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
+     fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)
@@ -108,7 +108,7 @@ try
         end
     end
     currentState.isUnknown=0;
-    disp(currentState.state);
+  %  disp(currentState.state);
 catch ME
     switch ME.identifier
         case 'ANALYZER:UnknownState'
