@@ -112,10 +112,10 @@ void CurveFitting(CurrentControlState *CState)
   CState->lineAlpha  = 100 * ((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
   CState->lineBeta   = 100 * ((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
   
-  S64 t1=sx2 * 100 * 100;
+  s64 t1=sx2 * 100 * 100;
       t1+= sy2 * (CState->lineAlpha) * (CState->lineAlpha); 
       t1+= coordinateNum * (CState->lineBeta) * (CState->lineBeta);
-  S64 t2=sy * (CState->lineAlpha) * (CState->lineBeta)
+  s64 t2=sy * (CState->lineAlpha) * (CState->lineBeta)
               - sxy * (CState->lineAlpha) * 100
               - sx * (CState->lineBeta) * 100;
   t2*=2;
@@ -147,12 +147,12 @@ void CurveFitting(CurrentControlState *CState)
   for (i = 0; i < boundaryNum; i += SELECT_STEP){
     s16 diffX = (s16)(boundaryX[i]) - (CState->circleX);
     s16 diffY = (s16)(boundaryY[i]) - (CState->circleY);
-    U32 distance = (( diffX * diffX + diffY * diffY) * 10000);
+    u32 distance = (( diffX * diffX + diffY * diffY) * 10000);
     distanceSum += Isqrt(distance);
   }
-  S32 MSEX=(s32)sx2 - 2 * (CState->circleX) * (s32)sx + coordinateNum * (CState->circleX) * (CState->circleX);
-  S32 MSEY=(s32)sy2 - 2 * (CState->circleY) * (s32)sy + coordinateNum * (CState->circleY) * (CState->circleY);
-  S32 MSEnr2=coordinateNum * (CState->circleRadius) * (CState->circleRadius);     
+  s32 MSEX=(s32)sx2 - 2 * (CState->circleX) * (s32)sx + coordinateNum * (CState->circleX) * (CState->circleX);
+  s32 MSEY=(s32)sy2 - 2 * (CState->circleY) * (s32)sy + coordinateNum * (CState->circleY) * (CState->circleY);
+  s32 MSEnr2=coordinateNum * (CState->circleRadius) * (CState->circleRadius);     
   CState->circleMSE = MSEX + MSEY + MSEnr2 - 2 * (CState->circleRadius) * distanceSum / 100;
   CState->circleMSE /= coordinateNum;
 }
