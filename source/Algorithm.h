@@ -65,7 +65,7 @@ typedef struct{
   s16 circleY;
   s16 circleRadius;
   s32 circleMSE;
-  u8  isInnerCircle;
+  s8  innerCircleFlag; //-1 == left, 1 == Right
 }CurrentControlState;
 //=======================
 

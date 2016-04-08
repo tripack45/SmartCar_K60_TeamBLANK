@@ -24,7 +24,7 @@ currentState=struct( ...
     ,'circleY'    ,0 ...
     ,'circleRadius',0 ...
     ,'circleMSE'   ,0 ...
-    ,'isInnerCircle',0 ...
+    ,'innerCircleFlag',0 ...
     ,'carPosX'    ,0 ...
     ,'carPosY'    ,0);
 try
@@ -76,12 +76,15 @@ try
     
     currentState = analyzer(currentState);
     
+    %currentState = InnerCircleDetector(currentState);
+    currentState.innerCircleFlag = sign(currentState.carPosX-currentState.circleX);
 %     if (currentState.lineMSE>currentState.circleMSE)
 %         fprintf('Circle\t');
 %     else
 %         fprintf('Line  \t');
 %     end
-     fprintf('lineMSE=%10g\t circleMSE=%10g\n',currentState.lineMSE,currentState.circleMSE);
+     fprintf('lineMSE=%10g\t circleMSE=%10g\n',...
+         currentState.lineMSE,currentState.circleMSE);
      fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
     if(isCrossroad)
         currentState.state=3;
@@ -98,10 +101,8 @@ try
                +(currentState.carPosY-currentState.circleY)^2);
         if(d>currentState.circleRadius)
             currentState.circleRadius=currentState.circleRadius+35;
-            currentState.isInnerCircle=1;
         else
             currentState.circleRadius=currentState.circleRadius-35;
-            currentState.isInnerCircle=0;
         end
         if(d<25||currentState.circleRadius<25)
             throw(MException('ANALYZER:UnknownState','False fit result'));
@@ -139,7 +140,7 @@ internalState=ControllerUpdate(internalState,currentState);
 
     
 %% Output to graph
-
+try
 %Draw Boundary
 out=zeros(150,150)+57;
 for row=1:size(currentState.LBoundaryY);
@@ -202,6 +203,15 @@ if(currentState.state==3)
     end
 end
 
+if(currentState.innerCircleFlag==-1)
+    out([70:73],[1:15])=9;
+else
+    out([70:73],[135:150])=9;
+end
+catch
+    dir=0;
+    spd=0;
+end
 %draw currdir currspd
 out=SpdDirDrawer(dir,spd, out);
 graph=out;

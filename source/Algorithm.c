@@ -8,7 +8,7 @@ void AlgorithmMain(){
    currentState.img_buffer=(void*)img_buffer;
    currentState.isUnknown=0;
    currentState.fittedBoundary=0;
-   currentState.isInnerCircle=0;
+   currentState.innerCircleFlag=0;
    DetectBoundary();
    
    currentState.carPosX=88;
@@ -33,9 +33,13 @@ void AlgorithmMain(){
       isCrossroad=IsCrossroad(R(RBoundaryX),R(RBoundaryY),R(RBoundarySize));
    
    CurveFitting(&currentState);
-   if(currentState.isUnknown)
-     goto unknown;
-     
+   if(currentState.isUnknown)goto unknown;
+    
+   if((s16)currentState.circleX<(s16)currentState.carPosX)
+     currentState.innerCircleFlag=-1;
+   else
+     currentState.innerCircleFlag=1;
+   
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
    else if(currentState.lineMSE <= STRAIGHT_MSE_CRIT){
@@ -50,10 +54,8 @@ void AlgorithmMain(){
                +(currentState.carPosY - currentState.circleY)^2);
      if(distance > currentState.circleRadius){
        currentState.circleRadius = currentState.circleRadius + 35;
-       currentState.isInnerCircle = 1;
      }else{
        currentState.circleRadius = currentState.circleRadius - 35;
-       currentState.isInnerCircle = 0;
      }
    }
    currentState.isUnknown=0;
