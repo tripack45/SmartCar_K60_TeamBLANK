@@ -23,7 +23,7 @@ void ControllerUpdate(){
       return;
     }
     
-    if(internalState.state==3){
+    if(internalState.state==CONTROL_STATE_CROSS){
       // if the established situation is crossroad;
       // maintain the state for a period of time
       if(internalState.crossCounter>0){
@@ -31,34 +31,53 @@ void ControllerUpdate(){
         //waiting is not over yet
         return;
       }
+    } 
+    
+    if(internalState.state == CONTROL_STATE_STR2TRN){
+       static char str2turnCounter=0;
+       if(currentState.lineMSE>13)
+         str2turnCounter++;
+       else 
+         str2turnCounter--;
+       if(str2turnCounter>3){
+         internalState.state = CONTROL_STATE_TURN;
+         str2turnCounter=0;
+       }
+       return;
     }
     
-    s16 counter=internalState.candidateStateCounter;
     if(currentState.state==internalState.candidateState){
       // The new state agress with candidate state
       // Grant 10 points if it agrees
-      counter+=CONSISTENCY_AWARD;
+      internalState.candidateStateCounter+=CONSISTENCY_AWARD;
+      if( internalState.candidateStateCounter > 80)
+        internalState.candidateStateCounter= 80;
+      if(internalState.candidateStateCounter>30)
+      if(internalState.state != internalState.candidateState){
+        // 40pts to make the candidate official  
+        
+        if(internalState.state == CONTROL_STATE_STRAIGHT)
+        if(internalState.candidateState == CONTROL_STATE_TURN){
+           //Straight-Turn 
+           internalState.state = CONTROL_STATE_STR2TRN;
+           return;
+        }
+        internalState.state=internalState.candidateState;
+        
+        
+        if(internalState.state == CONTROL_STATE_CROSS)
+          internalState.crossCounter=CROSSROAD_INERTIA;
+       
+      }
     }else{
       // 30 pts punishment if it disagress
-      counter -= INCONSISTENCY_PUNISHMENT;
-      if(counter < 0){
+      internalState.candidateStateCounter -= INCONSISTENCY_PUNISHMENT;
+      if(internalState.candidateStateCounter < 0){
         // Change Candidate if the points reaches negative
         internalState.candidateState=currentState.state;
-        counter=CONSISTENCY_AWARD;
+        internalState.candidateStateCounter=CONSISTENCY_AWARD;
       }
-    }
-    
-    counter=(counter<80?counter:MAXIMUM_SCORE); //Cannot Exceeds 80pts
-    if(counter>30){
-      // 40pts to make the candidate official
-      if(internalState.state != internalState.candidateState){
-        // if requires to swich state
-        internalState.state=internalState.candidateState;
-        if(internalState.state == 3)
-          internalState.crossCounter=CROSSROAD_INERTIA;
-      }
-    }
-    internalState.candidateStateCounter=counter;
+    ]
   }
   return;
 }

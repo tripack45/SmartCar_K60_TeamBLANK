@@ -83,9 +83,9 @@ try
 %     else
 %         fprintf('Line  \t');
 %     end
-     fprintf('lineMSE=%10g\t circleMSE=%10g\n',...
-         currentState.lineMSE,currentState.circleMSE);
-     fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
+%      fprintf('lineMSE=%10g\t circleMSE=%10g\n',...
+%          currentState.lineMSE,currentState.circleMSE);
+%      fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)
@@ -286,31 +286,54 @@ if(~currentState.isUnknown)
         end
     end
     
+    if(internalState.state == 4)
+         persistent str2trnCounter;
+         if(isempty(str2trnCounter))
+             str2trnCounter=0;
+         end
+         if(currentState.lineMSE>13)
+             str2trnCounter=str2trnCounter+1;
+         else
+             str2trnCounter=str2trnCounter-1;
+         end
+         if(str2trnCounter>3)
+             internalState.state=2;
+             str2trnCounter=0;
+         end
+         return;
+    end
+    
     counter=internalState.candidateStateCounter;
     if(currentState.state==internalState.candidateState)
         % The new state agress with candidate state
         % Grant 10 points if it agrees
         counter=counter + CONSISTENCY_AWARD;
-    else
-        % 30 pts punishment if it disagress
-        counter=counter - INCONSISTENCY_PUNISHMENT;
-        if(counter<0)
-            % Change Candidate if the points reaches negative
-            internalState.candidateState=currentState.state;
-            counter=CONSISTENCY_AWARD;
-        end
-    end
-    counter=min(counter,MAXIMUM_SCORE); %Cannot Exceeds 80pts
-    if(counter>30)
-        % 40pts to make the candidate official
-        if(internalState.state~=internalState.candidateState)
-            internalState.state=internalState.candidateState;
-            if(internalState.state==3)
-                internalState.crossCounter=CROSSROAD_INERTIA;
+        counter=min(counter,MAXIMUM_SCORE); %Cannot Exceeds 80pts
+        internalState.candidateStateCounter=counter;
+        if(counter>30)
+            % 40pts to make the candidate official
+            if(internalState.state~=internalState.candidateState)
+                if(internalState.state == 1)
+                    if(internalState.candidateState == 2)
+                        internalState.state = 4;
+                        return;
+                    end
+                end
+                internalState.state=internalState.candidateState;
+                if(internalState.state==3)
+                    internalState.crossCounter=CROSSROAD_INERTIA;
+                end
             end
         end
+    else
+        % 30 pts punishment if it disagress
+        internalState.crossCounter=internalState.crossCounter - INCONSISTENCY_PUNISHMENT;
+        if(internalState.crossCounter<0)
+            % Change Candidate if the points reaches negative
+            internalState.candidateState=currentState.state;
+            internalState.crossCounter=CONSISTENCY_AWARD;
+        end
     end
-    internalState.candidateStateCounter=counter;
 end
 end
 
@@ -322,15 +345,16 @@ CONTROL_STATE_STR2TRN  =4;
 switch internalState.state
     case CONTROL_STATE_STRAIGHT 
         [dir,spd]=LinearStateHandler(currentState);
-%         disp('Straight');
+        disp('Straight');
     case CONTROL_STATE_TURN
-%         disp('Turn');
+        disp('Turn');
         spd=10;dir=0;
     case CONTROL_STATE_CROSS
-%         disp('Cross');
+         disp('Cross');
         [dir,spd]=CrossroadStateHandler(currentState.img_buffer);
         spd=10;dir=0;
     case CONTROL_STATE_STR2TRN
+        disp('STR2TURN');
         spd=10;dir=0;
     otherwise
         spd=10; dir=0;
