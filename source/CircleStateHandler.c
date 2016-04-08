@@ -7,8 +7,11 @@ void CircleStateHandler(struct controlStateStruct* state){
     s16 theta;
     s16 speed;
     s8 direction = 1;
-    offset=Isqrt((state->carPosX-state->circleX)^2+(state->carPosY-state->circleY)^2)-state->circleRadius;
-    if (offset < OFFSET_THRES && offset > -OFFSET_THRES){
+	s32 diffX = currentState.carPosX - currentState.circleX;
+	s32 diffY = currentState.carPosY - currentState.circleY;
+	if (currentState.circleX > currentState.carPosX) direction = -1;
+	offset = Isqrt(diffX * diffX + diffY * diffY) - currentState.circleRadius;
+	if (offset < OFFSET_THRES && offset > -OFFSET_THRES){
       theta = direction * CURVE_DIR_RATIO / state->circleRadius + OFFSET_DIR_RATIO * offset;
       if (theta > DIR_MAX || theta < -DIR_MAX){
         currdir = direction * DIR_MAX;

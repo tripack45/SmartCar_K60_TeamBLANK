@@ -109,7 +109,10 @@ void CircleStateHandler(){
     s16 theta;
     s16 speed;
     s8 direction = 1;
-    offset=Isqrt((currentState.carPosX-currentState.circleX)^2+(currentState.carPosY-currentState.circleY)^2)-currentState.circleRadius;
+    s32 diffX = currentState.carPosX - currentState.circleX;
+    s32 diffY = currentState.carPosY - currentState.circleY;
+    if (currentState.circleX > currentState.carPosX) direction = -1;
+    offset=Isqrt(diffX * diffX + diffY * diffY) - currentState.circleRadius;
     if (offset < OFFSET_THRES && offset > -OFFSET_THRES){
       theta = direction * CURVE_DIR_RATIO / currentState.circleRadius + OFFSET_DIR_RATIO * offset;
       if (theta > DIR_MAX || theta < -DIR_MAX){
