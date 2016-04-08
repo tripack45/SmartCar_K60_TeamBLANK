@@ -105,7 +105,7 @@ while 1
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
         
-        if(frameCounter==2000);
+        if(frameCounter==1000);
             sample=img;
             return;
         end
@@ -113,7 +113,7 @@ while 1
         %Apply the algorithms
         [out algdir algspd]=alg(img);
         
-        %Logging the results
+        %Logging the results    
         imglog(:,:,end+1)=img;
         dirlog(end+1)=dir;
         spdlog(end+1)=spd;

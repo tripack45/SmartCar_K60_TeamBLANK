@@ -3,7 +3,7 @@ imgrow=67;
 imgcol=77;
 algrow=150;
 algcol=150;
-source=frame;
+%source=frame;
 i=2079;
 %1069,1075,1111,1081,1089
 %1213,1280,1293,1311,1324
@@ -19,8 +19,8 @@ last_draw_toc=0;
 last_frame_toc=0;
 
 %Load A Frame
-img=source(:,:,i);
-
+%img=source(:,:,i);
+img=sample;
 %Apply Algorithms.
 [out algdir algspd]=alg(img);
 

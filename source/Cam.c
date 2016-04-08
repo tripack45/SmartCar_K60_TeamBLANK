@@ -110,7 +110,7 @@ void Cam_Algorithm(){
 infinite_loop:
   //ITM_EVENT8_WITH_PC(4,24);
   AlgorithmMain();
-  ITM_EVENT16_WITH_PC(3,ABS(currdir));
+  //ITM_EVENT16_WITH_PC(3,ABS(currdir));
   //ITM_EVENT8_WITH_PC(4,23);
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
@@ -120,7 +120,7 @@ infinite_loop:
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
   
-  //if(processing_frame==2000)goto infinite_loop;
+  if(processing_frame==1000)goto infinite_loop;
   
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;

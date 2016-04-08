@@ -86,7 +86,7 @@ void PIT0_IRQHandler(){
   
   if(!isDebugging){
     Servo_Output(currdir);
-    MotorL_Output( Speed_PID(currspd) );
+    //MotorL_Output( Speed_PID(currspd) );
   }else{
     Servo_Output(currdir);
     MotorL_Output(0);
