@@ -145,8 +145,8 @@ void CurveFitting(CurrentControlState *CState)
   CState->circleRadius = Isqrt(t);
   
   for (i = 0; i < boundaryNum; i += SELECT_STEP){
-    s16 diffX = (s16)(boundaryX[i]) - (CState->circleX);
-    s16 diffY = (s16)(boundaryY[i]) - (CState->circleY);
+    s32 diffX = (s16)(boundaryX[i]) - (CState->circleX);
+    s32 diffY = (s16)(boundaryY[i]) - (CState->circleY);
     u32 distance = (( diffX * diffX + diffY * diffY) * 10000);
     distanceSum += Isqrt(distance);
   }
