@@ -50,8 +50,10 @@ void AlgorithmMain(){
         currentState.lineBeta -= 35 * 100;
    }else{
      currentState.state=CONTROL_STATE_TURN;
-     distance = (u16) sqrt((currentState.carPosX - currentState.circleX)^2 
-               +(currentState.carPosY - currentState.circleY)^2);
+     distance = (u16) Isqrt((s64)((s16)currentState.carPosX - currentState.circleX) 
+                            * ((s16)currentState.carPosX - currentState.circleX) 
+                              + ((s16)currentState.carPosY - currentState.circleY)
+                                * ((s16)currentState.carPosY - currentState.circleY) );
      if(distance > currentState.circleRadius){
        currentState.circleRadius = currentState.circleRadius + 35;
      }else{
