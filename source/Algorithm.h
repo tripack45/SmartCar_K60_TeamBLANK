@@ -210,6 +210,15 @@ void LinearStateHandler();
 
 //========END OF LinearStateHandler=======
 
+
+//==========Str2TrnStateHandler===========
+
+#define STR2TRN_CHANG_ZONE 10
+
+void Str2TrnStateHandler();
+
+//=======END OF Str2TrnStateHandler=======
+
 //========CrossRoadStateHandler===========
 
 #define TRACK_WIDTH          70
@@ -238,5 +247,8 @@ u32 Isqrt(s64 x );
 void CircleStateHandler();
 
 //=======END OF CrossRoadStateHandler======
+
+
+
 
 #endif

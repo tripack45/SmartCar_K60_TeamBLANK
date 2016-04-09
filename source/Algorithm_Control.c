@@ -77,7 +77,7 @@ void ControllerUpdate(){
         internalState.candidateState=currentState.state;
         internalState.candidateStateCounter=CONSISTENCY_AWARD;
       }
-    ]
+    }
   }
   return;
 }
@@ -122,6 +122,26 @@ void LinearStateHandler(){
     currspd = LOWSPEED;
   }
 }
+
+void Str2TrnStateHandler(){
+  s16 tCarX=(s32)(currentState.lineAlpha * currentState.carPosY 
+                 + currentState.lineBeta) / 100 - currentState.carPosX;
+  
+  //ITM_EVENT16_WITH_PC(1,ABS(tCarX));
+  //ITM_EVENT16_WITH_PC(2,currentState.lineBeta);
+    
+  s16 tDirH=((s16)(currentState.lineBeta / 100) - currentState.carPosX + 
+             currentState.innerCircleFlag * STR2TRN_CHANG_ZONE) * DIR_SENSITIVITY;
+  s16 tDirL= tCarX * DIR_SENSITIVITY;
+  currspd = LOWSPEED;
+    //ITM_EVENT16_WITH_PC(2, ABS(tDirH) );
+  if (  (ABS(tCarX)) < DANGERZONE ){
+    currdir = tDirH;
+  }else{
+    currdir = tDirL; 
+  }
+}
+
 
 void CircleStateHandler(){
   if (currentState.lineMSE < MSE_RATIO * currentState.circleMSE){
