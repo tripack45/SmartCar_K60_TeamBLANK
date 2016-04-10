@@ -86,15 +86,23 @@ void ControllerControl(){
   switch(internalState.state){
   case CONTROL_STATE_STRAIGHT:
     Bell_Request(5);
+    //currspd=FASTSPEED;
+    //CrossroadStateHandler();
     LinearStateHandler();
     break;
   case CONTROL_STATE_TURN:
-    CircleStateHandler();
+    currspd=LOWSPEED;
+    //CircleStateHandler();
+    CrossroadStateHandler();
     break;
   case CONTROL_STATE_CROSS:
+    currspd=FASTSPEED;
     CrossroadStateHandler();
     break;
   case CONTROL_STATE_STR2TRN:
+    //Bell_Request(5);
+    currspd=LOWSPEED;
+    CrossroadStateHandler();
     break;
   default:
     break;

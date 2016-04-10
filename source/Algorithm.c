@@ -11,7 +11,7 @@ void AlgorithmMain(){
    currentState.innerCircleFlag=0;
    DetectBoundary();
    
-   currentState.carPosX=88;
+   currentState.carPosX=85;
    currentState.carPosY=101;
    u8  isLinear,isCrossroad;
    u16 distance;

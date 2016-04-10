@@ -8,7 +8,7 @@ License : MIT
 
 
 // ===== Setting =====
-#define SERVO_MID 6830 // (g_bus_clock/64*15/10000)  Adjust it according to your mech
+#define SERVO_MID 6900 // (g_bus_clock/64*15/10000)  Adjust it according to your mech
 
 
 // ===== Variables =====

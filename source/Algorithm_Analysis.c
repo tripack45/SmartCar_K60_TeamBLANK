@@ -112,12 +112,12 @@ void CurveFitting(CurrentControlState *CState)
   CState->lineAlpha  = 100 * ((s32)(coordinateNum * sxy) - (s32)(sx * sy)) / denom;
   CState->lineBeta   = 100 * ((s32)(sy2 * sx) - (s32)(sy * sxy)) / denom;
   
-  s64 t1=sx2 * 100 * 100;
-      t1+= sy2 * (CState->lineAlpha) * (CState->lineAlpha); 
-      t1+= coordinateNum * (CState->lineBeta) * (CState->lineBeta);
-  s64 t2=sy * (CState->lineAlpha) * (CState->lineBeta)
-              - sxy * (CState->lineAlpha) * 100
-              - sx * (CState->lineBeta) * 100;
+  s64 t1=  (s64)sx2 * 100 * 100;
+      t1+= (s64)sy2 * (s64)(CState->lineAlpha) * (s64)(CState->lineAlpha); 
+      t1+= coordinateNum * (s64)(CState->lineBeta) * (s64)(CState->lineBeta);
+  s64 t2=sy * (s64)(CState->lineAlpha) * (s64)(CState->lineBeta)
+              - (s64)sxy * (s64)(CState->lineAlpha) * 100
+              - (s64)sx * (s64)(CState->lineBeta) * 100;
   t2*=2;
   s64 t3 = (t1+t2)/coordinateNum;
   CState->lineMSE = t3 / (100 * 100);
@@ -197,3 +197,6 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
   return 0;
 }
 
+
+u8 IsStartLine(u8* img_buffer[][IMG_COLS]){
+}

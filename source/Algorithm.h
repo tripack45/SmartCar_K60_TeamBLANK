@@ -204,7 +204,7 @@ void ControllerControl();
 #define DANGERZONE      20
 #define FASTSPEED       F_LINE_HIGHSPD
 #define LOWSPEED        F_LINE_LOWSPD
-#define DIR_SENSITIVITY 13
+#define DIR_SENSITIVITY 8
 
 void LinearStateHandler();
 
