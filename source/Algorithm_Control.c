@@ -115,10 +115,10 @@ void LinearStateHandler(){
    
     //ITM_EVENT16_WITH_PC(2, ABS(tDirH) );
   if (  (ABS(tCarX)) < DANGERZONE ){
-    currdir = tDirH;
+    currdir = Dir_PID( tDirH, LINEAR_PID_P, LINEAR_PID_D);
     currspd = FASTSPEED;
   }else{
-    currdir = tDirL; 
+    currdir = Dir_PID( tDirL, LINEAR_PID_P, LINEAR_PID_D); 
     currspd = LOWSPEED;
   }
 }
@@ -270,4 +270,13 @@ s16 Speed_PID(s16 Expect){
     return MOTOR_DEAD_RUN + 100 * Power / SPEED_MAX * MOTOR_PID_SENSITIVITY;
   else 
     return MOTOR_DEAD_REST + 100 * Power / SPEED_MAX*MOTOR_PID_SENSITIVITY;
+}
+
+s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D){
+  s16 outputDir;
+  static s16 lastDirection = 0;
+  outputDir = ( (s32) dir_P * position 
+               + (s32) dir_D * (position - lastDirection ))/100;
+  lastDirection = position;
+  return outputDir;
 }

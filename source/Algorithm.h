@@ -205,6 +205,9 @@ void ControllerControl();
 #define FASTSPEED       F_LINE_HIGHSPD
 #define LOWSPEED        F_LINE_LOWSPD
 #define DIR_SENSITIVITY 13
+#define LINEAR_PID_P    100 
+#define LINEAR_PID_D    10
+
 
 void LinearStateHandler();
 
@@ -246,9 +249,13 @@ void Str2TrnStateHandler();
 u32 Isqrt(s64 x );
 void CircleStateHandler();
 
-//=======END OF CrossRoadStateHandler======
+//=======END OF CircleStateHandler======
 
+//=============Dir_PID==================
 
+s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
+
+//=========END OF Dir_PID==================
 
 
 #endif
