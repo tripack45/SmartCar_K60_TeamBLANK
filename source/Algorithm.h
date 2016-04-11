@@ -1,7 +1,9 @@
 #ifndef ALGORITHM_H
 #define ALGORITHM_H
 
-void extern AlgorithmMain();
+void AlgorithmMain();
+
+u8 IsStartLine(u8 img_buffer[][IMG_COLS]);
 
 #define insert(a,b,c) if ((a)<(b)) a=b;else if ((a)>(c)) a=c;
 #define judge_in(a,b,c) (((b)<=(a)&&(a)<=(c))?1:0)
@@ -48,6 +50,7 @@ void MotorCtrl();
 typedef struct{
   u8 *img_buffer;
   u8 state;
+  u8 isStartLine;
   u8 isUnknown;
   u8 carPosX;
   u8 carPosY;
@@ -60,7 +63,7 @@ typedef struct{
   u8 fittedBoundary;
   s32 lineAlpha;
   s32 lineBeta;
-  s16 lineMSE;
+  s32 lineMSE;
   s16 circleX;
   s16 circleY;
   s16 circleRadius;

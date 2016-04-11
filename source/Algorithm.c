@@ -9,6 +9,7 @@ void AlgorithmMain(){
    currentState.isUnknown=0;
    currentState.fittedBoundary=0;
    currentState.innerCircleFlag=0;
+   currentState.isStartLine=0;
    DetectBoundary();
    
    currentState.carPosX=85;
@@ -16,10 +17,26 @@ void AlgorithmMain(){
    u8  isLinear,isCrossroad;
    u16 distance;
    
+   static u8 startLineCounter=0;
+   static u8 startLineFlag=0;
+   if(startLineCounter==0)
+      currentState.isStartLine=IsStartLine((void*)currentState.img_buffer);
+      if(currentState.isStartLine){
+        startLineCounter=100;
+        startLineFlag++;
+      }
+   else{
+      startLineCounter--;
+   }
+   if(startLineFlag>1){
+     currspd=0;
+     for(;;)
+   }
+      
+   
    if(R(LBoundarySize) <= 5 && R(RBoundarySize) <= 5)
      goto unknown; //Not enough points for transfering
-   
-   
+
    if(currentState.LBoundarySize>0)
       InversePerspectiveTransform(
          R(LBoundaryX), R(LBoundaryY), R(LBoundarySize));

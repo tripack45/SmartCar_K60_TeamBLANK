@@ -7,6 +7,7 @@ struct{
   u8 candidateState;
   s16 candidateStateCounter;
   s16 crossCounter;
+  u8 startLineCount;
 }internalState;
 
 void CrossroadStateHandler();
