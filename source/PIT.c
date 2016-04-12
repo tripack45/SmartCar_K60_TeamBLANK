@@ -86,10 +86,10 @@ void PIT0_IRQHandler(){
   
   if(!isDebugging){
     Servo_Output(currdir);
-    MotorL_Output( Speed_PID(currspd) );
+    if(SW2())MotorL_Output( Speed_PID(currspd) );
   }else{
     Servo_Output(currdir);
-    MotorL_Output(0);
+    if(SW2())MotorL_Output(0);
   }
   
 #if (CAR_TYPE==0)   // Magnet and Balance

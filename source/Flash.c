@@ -12,7 +12,7 @@ U16 flashData[DATA_NUM];
 
 U16 data_initial[DATA_NUM]={
   1,	        //data flag
-  0,	        //KF_switch
+  90,	        //F_DIRPID_P
   70,	        //F_RADIUS_MIN
   300,	        //F_RADIUS_MAX
   10,	        //F_OFFSET_THRES
@@ -20,7 +20,7 @@ U16 data_initial[DATA_NUM]={
   15,	        //F_LINE_LOWSPD
   15,	        //F_LINE_HIGHSPD   
   4,            //F_STRAIGHT_MSE_CRIT
-  0,            //debugPtr
+  20,            //F_DIRPID_D
   50,           //Spped PD_I
   10,           //Speed Sensitivity 
   30,           //Spped PD_P

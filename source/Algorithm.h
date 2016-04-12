@@ -7,7 +7,7 @@ u8 IsStartLine(u8 img_buffer[][IMG_COLS]);
 
 #define insert(a,b,c) if ((a)<(b)) a=b;else if ((a)>(c)) a=c;
 #define judge_in(a,b,c) (((b)<=(a)&&(a)<=(c))?1:0)
-#define insert_in(a,b,c) ((a)<(b)?(b):(a)>(c)?c:a)
+#define insert_in(a,b,c) ((a)<(b)?(b):(a)>(c)?(c):(a))
 #define maxab(a,b) ((a)<(b)?b:a)
 #define minab(a,b) ((a)>(b)?b:a)
 #define abs0(a) ((a)>0?a:0)
@@ -78,7 +78,7 @@ typedef struct{
 #define TRUE              1
 #define FALSE             0
 #define DIS_ROW           4
-#define DIS_COL           3
+#define DIS_COL           5
 #define MZ                0
 #define LBEGIN_SCAN       DIS_COL
 #define LEND_SCAN         IMG_COLS / 2
@@ -208,7 +208,7 @@ void ControllerControl();
 #define FASTSPEED       F_LINE_HIGHSPD
 #define LOWSPEED        F_LINE_LOWSPD
 #define DIR_SENSITIVITY 8
-#define LINEAR_PID_P    100 
+#define LINEAR_PID_P    50
 #define LINEAR_PID_D    10
 
 void LinearStateHandler();
@@ -228,8 +228,10 @@ void Str2TrnStateHandler();
 
 #define TRACK_WIDTH          70
 #define INVERSE_IMG_ROWS     150
-#define DIR_SENSITIVITY_OLD  10
+#define DIR_SENSITIVITY_OLD  20
 #define EXCEPT_RANGE         3
+#define GOP_PID_P            F_DIRPID_P
+#define GOP_PID_D            F_DIRPID_D
 
 //=======END OF CrossRoadStateHandler======
 

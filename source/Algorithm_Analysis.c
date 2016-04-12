@@ -201,19 +201,19 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size){
 u8 IsStartLine(u8 img_buffer[][IMG_COLS]){
   u8 count=0;
   u8 x1=0; u8 y1=0;
-  for(int row=20;row<50;row+=3)
-    for(int col=10;col<70;col+=5)
+  for(int row=20;row<60;row+=3)
+    for(int col=10;col<70;col+=3)
       if(   img_buffer[row][col]<WHITE_THRES
-         && img_buffer[row][col-5]>WHITE_THRES
-         && img_buffer[row][col+5]>WHITE_THRES
-         && img_buffer[row-5][col]>WHITE_THRES
-         && img_buffer[row+5][col]>WHITE_THRES){
+         && img_buffer[row][col-12]>WHITE_THRES
+         && img_buffer[row][col+12]>WHITE_THRES
+         && img_buffer[row-4][col]>WHITE_THRES
+         && img_buffer[row+4][col]>WHITE_THRES){
             if(count==0){
                count++;
                x1=col;y1=row;
             }else{
-                int d=ABS(y1-row)+ABS(x1-col);
-                if(d>8) return 1;
+                int d=ABS(x1-col);
+                if(d>15) return 1;
             }
       }
   return 0;

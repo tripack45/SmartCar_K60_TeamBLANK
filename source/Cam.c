@@ -174,6 +174,7 @@ void PORTC_IRQHandler(){
 void DMA0_IRQHandler(){
   //if(e_debug_num==1)
   //{e_debug_num=2;
+
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
   /*

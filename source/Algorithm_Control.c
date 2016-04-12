@@ -36,11 +36,10 @@ void ControllerUpdate(){
     
     if(internalState.state == CONTROL_STATE_STR2TRN){
        static char str2turnCounter=0;
+       str2turnCounter++;
        if(currentState.lineMSE>13)
          str2turnCounter++;
-       else 
-         str2turnCounter--;
-       if(str2turnCounter>3){
+       if(str2turnCounter>20){
          internalState.state = CONTROL_STATE_TURN;
          str2turnCounter=0;
        }
@@ -65,10 +64,8 @@ void ControllerUpdate(){
         }
         internalState.state=internalState.candidateState;
         
-        
         if(internalState.state == CONTROL_STATE_CROSS)
           internalState.crossCounter=CROSSROAD_INERTIA;
-       
       }
     }else{
       // 30 pts punishment if it disagress
@@ -86,23 +83,27 @@ void ControllerUpdate(){
 void ControllerControl(){
   switch(internalState.state){
   case CONTROL_STATE_STRAIGHT:
-    Bell_Request(5);
+    //Bell_Request(5);
     //currspd=FASTSPEED;
     //CrossroadStateHandler();
     LinearStateHandler();
     break;
   case CONTROL_STATE_TURN:
+    //Bell_Request(5);
     currspd=LOWSPEED;
     //CircleStateHandler();
     CrossroadStateHandler();
     break;
   case CONTROL_STATE_CROSS:
-    currspd=FASTSPEED;
+    //Bell_Request(5);
+    currspd=LOWSPEED;
     CrossroadStateHandler();
     break;
   case CONTROL_STATE_STR2TRN:
-    //Bell_Request(5);
-    currspd=LOWSPEED;
+    Bell_Request(5);
+    if(tacho0>LOWSPEED-5){
+      currspd=5;
+    }
     CrossroadStateHandler();
     break;
   default:
@@ -163,7 +164,7 @@ void CircleStateHandler(){
     s8 direction = 1;
     s32 diffX = currentState.carPosX - currentState.circleX;
     s32 diffY = currentState.carPosY - currentState.circleY;
-    if (currentState.circleX > currentState.carPosX) direction = -1;
+    direction = currentState.innerCircleFlag;
     offset = Isqrt(diffX * diffX + diffY * diffY) - currentState.circleRadius;
     if (offset < OFFSET_THRES && offset > -OFFSET_THRES){
       theta = direction * CURVE_DIR_RATIO / currentState.circleRadius
@@ -194,7 +195,6 @@ void CircleStateHandler(){
 }
 
 void CrossroadStateHandler(){
-  
   u8 boundaryPTR;
   u8 LBoundarycol[INVERSE_IMG_ROWS] = {0};        
   u8 RBoundarycol[INVERSE_IMG_ROWS] = {0};
@@ -218,9 +218,12 @@ void CrossroadStateHandler(){
   u8 row;
   s16 s16temp;
   s16 g_nDirPos = currentState.carPosX * 2;
-  s16 nShift    = 0;        
-  s16 nDenom    = 0;
-  
+  s32 nShift    = 0;        
+  s32 nDenom    = 0;
+//#define TF(x) ( ( ((x)+20)>50 )?50:((x)+20))
+#define TF(x) 1;
+  s16 weight;
+
   for (row = INVERSE_IMG_ROWS - DIS_ROW; row > 0; row-- ){
     if (LBoundarycol[MZ + row]&& RBoundarycol[MZ + row]){
       g_nDirPos = (s16) ( (LBoundarycol[MZ + row] + RBoundarycol[MZ + row]) );
@@ -236,28 +239,32 @@ void CrossroadStateHandler(){
   s16temp = g_nDirPos;
   for (row=row; row>0; row-- ){
     if (LBoundarycol[MZ + row]&& RBoundarycol[MZ + row]){
-      s16temp = (s16) ( insert_in(LBoundarycol[MZ + row] + RBoundarycol[MZ + row],
-                                  s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-      nShift = nShift + (s16temp -  currentState.carPosX * 2);
-      nDenom = nDenom + 1;
+      weight =TF(currentState.carPosY - row);
+      s16temp = (s16)LBoundarycol[MZ + row] + RBoundarycol[MZ + row];
+       nShift = nShift + (s16temp -  (s16)currentState.carPosX * 2) 
+                * weight ;
+      nDenom = nDenom + weight;
     }else if (LBoundarycol[MZ + row]){
-      s16temp = (s16) ( insert_in(LBoundarycol[MZ + row]*2 + TRACK_WIDTH,
-                                  s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-      nShift = nShift + (s16temp- currentState.carPosX * 2);
-      nDenom = nDenom + 1;
+      weight =TF(currentState.carPosY - row);
+      s16temp = (s16) LBoundarycol[MZ + row]*2 + TRACK_WIDTH;
+      nShift = nShift +  (s16temp- (s16)currentState.carPosX * 2)
+              *  weight;
+      nDenom = nDenom +  weight;
     }else if (RBoundarycol[MZ + row]){
-      s16temp = (s16) ( insert_in(RBoundarycol[MZ + row]*2 - TRACK_WIDTH,
-                                  s16temp - EXCEPT_RANGE, s16temp + EXCEPT_RANGE) );
-      nShift = nShift + (s16temp- currentState.carPosX * 2);
-      nDenom = nDenom + 1;
+      weight =TF(currentState.carPosY - row);
+      s16temp = (s16) RBoundarycol[MZ + row]*2 - TRACK_WIDTH;
+      nShift = nShift +  (s16temp - (s16)currentState.carPosX * 2)
+            *  weight;
+      nDenom = nDenom +  weight;
     }
+    ITM_EVENT32_WITH_PC(1,nDenom);
   }
   if (nDenom != 0) {
-    g_nDirPos = nShift/nDenom;
+    currdir = Dir_PID( (s16)(nShift/nDenom) * DIR_SENSITIVITY_OLD , GOP_PID_P, GOP_PID_D);
   }else{
-    g_nDirPos = g_nDirPos - currentState.carPosX * 2;
+    currdir = Dir_PID( (g_nDirPos - (s16) currentState.carPosX * 2) * DIR_SENSITIVITY_OLD,
+                        GOP_PID_P, GOP_PID_D);
   }
-  currdir = g_nDirPos * DIR_SENSITIVITY_OLD;
   //currspd = 10;
 }
 

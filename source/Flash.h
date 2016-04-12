@@ -26,7 +26,7 @@ extern U16 flashData[DATA_NUM];
 #define data_flag                   (flashData[ 0])
 
   // define aliases for your datas ( Here's mine for example)
-#define NONE1                       (flashData[ 1])
+#define F_DIRPID_P                  (flashData[ 1])
 #define F_RADIUS_MIN                (flashData[ 2])
 #define F_RADIUS_MAX                (flashData[ 3])
 #define F_OFFSET_THRES              (flashData[ 4])
@@ -34,7 +34,7 @@ extern U16 flashData[DATA_NUM];
 #define F_LINE_LOWSPD               (flashData[ 6])
 #define F_LINE_HIGHSPD              (flashData[ 7])
 #define F_STRAIGHT_MSE_CRIT         (flashData[ 8])
-#define DBG_PTR                     (flashData[ 9])
+#define F_DIRPID_D                  (flashData[ 9])
 #define F_SPDPID_I                  (flashData[10])
 #define F_SPDEXP_SEN                (flashData[11])
 #define F_SPDPID_P                  (flashData[12])

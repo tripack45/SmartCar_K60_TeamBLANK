@@ -80,7 +80,7 @@ void SaveVariable(){
 
 const char* varName[]=
               {"0  RESERVE",           //Flash[0]
-               "1  NONE",             //Flash[1]
+               "1  DirPIDP",             //Flash[1]
                "2  CRADMIN",             //Flash[2]
                "3  CRADMAX",             //Flash[3]
                "4  COFFTHR",             //Flash[4]
@@ -88,7 +88,7 @@ const char* varName[]=
                "6  LLSpd",             //Flash[6]
                "7  LHSpd",             //Flash[7]
                "8  LineMSE",             //Flash[8]
-               "9  DBGPTR",           //Flash[9]
+               "9  DirPIDD",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
                "11 EXP_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]

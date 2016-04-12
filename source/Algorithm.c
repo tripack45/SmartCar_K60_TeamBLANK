@@ -19,20 +19,25 @@ void AlgorithmMain(){
    
    static u8 startLineCounter=0;
    static u8 startLineFlag=0;
-   if(startLineCounter==0)
-      currentState.isStartLine=IsStartLine((void*)currentState.img_buffer);
+   currentState.isStartLine=IsStartLine((void*)currentState.img_buffer);
+   if(startLineCounter==0){
       if(currentState.isStartLine){
+        Bell_Request(20);
         startLineCounter=100;
         startLineFlag++;
       }
-   else{
+   }else{
       startLineCounter--;
    }
-   if(startLineFlag>1){
+   if(startLineFlag>2){
      currspd=0;
-     for(;;)
+     for(;;);
    }
-      
+   
+   if(currentState.isStartLine){
+     //Bell_Request(5);
+     goto unknown;   
+   }
    
    if(R(LBoundarySize) <= 5 && R(RBoundarySize) <= 5)
      goto unknown; //Not enough points for transfering
@@ -82,8 +87,8 @@ void AlgorithmMain(){
    currentState.isUnknown=0;
    
 control:
-   ITM_EVENT16_WITH_PC(1,ABS(currentState.lineMSE));
-   ITM_EVENT32_WITH_PC(2,ABS(currentState.circleMSE));
+   //ITM_EVENT16_WITH_PC(1,ABS(currentState.lineMSE));
+   //ITM_EVENT32_WITH_PC(2,ABS(currentState.circleMSE));
    
    ControllerUpdate();
    ControllerControl();
