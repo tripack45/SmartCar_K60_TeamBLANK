@@ -262,4 +262,20 @@ s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
 //=========END OF Dir_PID==================
 
 
+
+//=========SteeringAid==================
+
+
+#define AID_SENSITIVITY 30
+void SteeringAid ();
+    //========INPUTS==========
+    //currentState.lineAlpha
+    //=======OUTPUS==========
+    //currdir
+
+//=========END OF SteeringAid============
+
+
+
+
 #endif

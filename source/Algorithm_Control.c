@@ -93,6 +93,7 @@ void ControllerControl(){
     currspd=LOWSPEED;
     //CircleStateHandler();
     CrossroadStateHandler();
+    SteeringAid ();
     break;
   case CONTROL_STATE_CROSS:
     //Bell_Request(5);
@@ -295,4 +296,14 @@ s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D){
                + (s32) dir_D * (position - lastDirection ))/100;
   lastDirection = position;
   return outputDir;
+}
+
+void SteeringAid (){
+  s16 dirDiff = currentState.lineAlpha 
+              * currentState.lineAlpha 
+              * currentState.lineAlpha 
+              * AID_SENSITIVITY
+              / 100 / 100 / 100;
+  currdir += dirDiff;
+                
 }
