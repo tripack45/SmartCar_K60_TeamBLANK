@@ -78,14 +78,14 @@ try
     
     %currentState = InnerCircleDetector(currentState);
     currentState.innerCircleFlag = sign(currentState.carPosX-currentState.circleX);
-%     if (currentState.lineMSE>currentState.circleMSE)
-%         fprintf('Circle\t');
-%     else
-%         fprintf('Line  \t');
-%     end
-%      fprintf('lineMSE=%10g\t circleMSE=%10g\n',...
-%          currentState.lineMSE,currentState.circleMSE);
-%      fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
+    if (currentState.lineMSE>currentState.circleMSE)
+        fprintf('Circle\t');
+    else
+        fprintf('Line  \t');
+    end
+     fprintf('lineMSE=%10g\t circleMSE=%10g\n',...
+         currentState.lineMSE,currentState.circleMSE);
+     fprintf('alpha=%10g\t beta=%g\n',currentState.lineAlpha/100,currentState.lineBeta/100);
     if(isCrossroad)
         currentState.state=3;
     elseif(currentState.lineMSE<=1)

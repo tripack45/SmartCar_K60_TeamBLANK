@@ -4,8 +4,8 @@ imgcol=77;
 algrow=150;
 algcol=150;
 source=imglog;
-fps=25;
-start=100;
+fps=10;
+start=600;
 
 %% Set up the figures
 InitializeFigures;
