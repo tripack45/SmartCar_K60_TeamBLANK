@@ -206,9 +206,8 @@ s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D){
 }
 
 void SteeringAid(){
-  s32 delta = currentState.lineAlpha<60 ? 0 : currentState.lineAlpha;
-  delta = delta * ABS(delta);
-  delta = delta * AID_SENSITIVITY / 10000;
+  s32 delta = ABS(currentState.lineAlpha) < 60 ? 0 : currentState.lineAlpha; 
+  delta = delta * AID_SENSITIVITY / 100;
   /*
   s16 dirDiff = currentState.lineAlpha 
               * currentState.lineAlpha 
@@ -216,7 +215,7 @@ void SteeringAid(){
               * AID_SENSITIVITY
               / 100 / 100 / 100;
   */
-  currdir += (s16)delta;
+  currdir -= (s16)delta;
   currspd -= ABS(delta) * BRAKE_SENSITIVITY / AID_SENSITIVITY / 10;
                 
 }

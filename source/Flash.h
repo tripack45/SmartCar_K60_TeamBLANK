@@ -36,7 +36,7 @@ extern U16 flashData[DATA_NUM];
 #define F_AID_SENSITIVITY           (flashData[ 8])
 #define F_DIRPID_D                  (flashData[ 9])
 #define F_SPDPID_I                  (flashData[10])
-#define F_SPDEXP_SEN                (flashData[11])
+#define F_BRAKE_SENSITIVITY         (flashData[11])
 #define F_SPDPID_P                  (flashData[12])
 #define F_SPDPID_D                  (flashData[13])
 #define SAVE_VAR                    (flashData[14])

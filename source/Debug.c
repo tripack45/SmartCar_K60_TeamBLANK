@@ -90,7 +90,7 @@ const char* varName[]=
                "8  AIDSEN",             //Flash[8]
                "9  DirPIDD",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
-               "11 EXP_SEN",          //Flash[11]
+               "11 BRK_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]
                "13 SpdPd_D",          //Flash[13]
                "14 USRVAR",           //Flash[14] 

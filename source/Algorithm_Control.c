@@ -95,14 +95,15 @@ void ControllerControl(){
     SteeringAid ();
     break;
   case CONTROL_STATE_CROSS:
-    Bell_Request(5);
-    currspd=LOWSPEED;
+    //Bell_Request(5);
+    currspd=LOWSPEED+3;
     CrossroadStateHandler();
     break;
   case CONTROL_STATE_STR2TRN:
-    Bell_Request(5);
+    //Bell_Request(5);
     if(tacho0>LOWSPEED+3){
-      currspd=0;
+      currspd= LOWSPEED - 25;
+      currspd= (currspd < 0) ? 0 : currspd;
     }
     CrossroadStateHandler();
     break;

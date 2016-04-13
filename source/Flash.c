@@ -21,9 +21,9 @@ U16 data_initial[DATA_NUM]={
   15,	        //F_LINE_HIGHSPD   
   30,            //F_AID_SENSITIVITY
   20,            //F_DIRPID_D
-  50,           //Spped PD_I
-  10,           //Speed Sensitivity 
-  30,           //Spped PD_P
+  50,           //Speed PD_I
+  10,           //Brake Sensitivity 
+  30,           //Speed PD_P
   10,           //Speed PD_D
   25,           // SAVE_VAR
   1,            // STEPLENGTH

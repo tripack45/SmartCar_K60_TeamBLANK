@@ -15,7 +15,7 @@ u8 IsStartLine(u8 img_buffer[][IMG_COLS]);
 
 
 
-#define EXP_SEN               F_SPDEXP_SEN
+#define EXP_SEN               10
 #define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
 #define MOTOR_PID_I           F_SPDPID_I
 #define MOTOR_PID_D           F_SPDPID_D     //SPEED_KP
@@ -172,7 +172,7 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
 #define INCONSISTENCY_PUNISHMENT        30
 #define PROMOTION_REQUIREMENT           30
 #define MAXIMUM_SCORE                   50
-#define CROSSROAD_INERTIA               7
+#define CROSSROAD_INERTIA               4
 
 
 
@@ -250,7 +250,7 @@ s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
 
 
 #define AID_SENSITIVITY F_AID_SENSITIVITY
-#define BRAKE_SENSITIVITY 15
+#define BRAKE_SENSITIVITY F_BRAKE_SENSITIVITY
 void SteeringAid ();
     //========INPUTS==========
     //currentState.lineAlpha
