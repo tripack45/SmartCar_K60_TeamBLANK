@@ -25,26 +25,7 @@ u8 IsStartLine(u8 img_buffer[][IMG_COLS]);
 #define MOTOR_DEAD_REST 400
 #define SPEED_MAX 700
 
-typedef struct MotorPIDConf{
-  //===========INPUTS============
-   //USES ExpectSpeed
-  s16 LastError; //st_nLastError
-  //===========OUTPUTS===========
-  //Returns Variable currspd
-  u8 NOTHING;
-} MotorPID;
-
-//extern BoundaryDetector_Old boundary_detector_Old;
-//extern GuideGenerator guide_generator;
-//extern DirectionPID dir_pid;
-extern MotorPID motor_pid;
-
-//void DirCtrl();
-//void DetectBoundary();
-//s16 Dir_PID(s16 position);
 s16 Speed_PID(s16 Expect);
-void MotorCtrl();
-
 
 //Public Types
 typedef struct{
@@ -152,7 +133,7 @@ u8 InversePerspectiveTransform(s8* xIn,s8* yIn, u8 size);
 #define BOUNDARY_NUM_MAX 128
 #define SELECT_NUM_MAX 26
 #define SQUARE_ERROR_THRES 10
-#define STRAIGHT_MSE_CRIT F_STRAIGHT_MSE_CRIT
+#define STRAIGHT_MSE_CRIT 3
 /************************************/
 
 typedef struct LinearDectectorConf{
@@ -191,7 +172,7 @@ u8 IsCrossroad(u8* boundaryX,u8* boundaryY, u8 size);
 #define INCONSISTENCY_PUNISHMENT        30
 #define PROMOTION_REQUIREMENT           30
 #define MAXIMUM_SCORE                   50
-#define CROSSROAD_INERTIA               10
+#define CROSSROAD_INERTIA               7
 
 
 
@@ -210,6 +191,7 @@ void ControllerControl();
 #define DIR_SENSITIVITY 8
 #define LINEAR_PID_P    50
 #define LINEAR_PID_D    10
+#define ALPHA_BOUND     10
 
 void LinearStateHandler();
 
@@ -232,6 +214,7 @@ void Str2TrnStateHandler();
 #define EXCEPT_RANGE         3
 #define GOP_PID_P            F_DIRPID_P
 #define GOP_PID_D            F_DIRPID_D
+void CrossroadStateHandler();
 
 //=======END OF CrossRoadStateHandler======
 
@@ -266,7 +249,8 @@ s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
 //=========SteeringAid==================
 
 
-#define AID_SENSITIVITY 30
+#define AID_SENSITIVITY F_AID_SENSITIVITY
+#define BRAKE_SENSITIVITY 15
 void SteeringAid ();
     //========INPUTS==========
     //currentState.lineAlpha

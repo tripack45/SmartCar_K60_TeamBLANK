@@ -19,7 +19,7 @@ U16 data_initial[DATA_NUM]={
   10,	        //F_OFFSET_DIR_RATIO
   15,	        //F_LINE_LOWSPD
   15,	        //F_LINE_HIGHSPD   
-  4,            //F_STRAIGHT_MSE_CRIT
+  30,            //F_AID_SENSITIVITY
   20,            //F_DIRPID_D
   50,           //Spped PD_I
   10,           //Speed Sensitivity 

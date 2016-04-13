@@ -30,6 +30,7 @@ void AlgorithmMain(){
       startLineCounter--;
    }
    if(startLineFlag>2){
+     delayMs(100);
      currspd=0;
      for(;;);
    }
@@ -132,6 +133,21 @@ u32 Isqrt(s64 x){
 		}
 	}
 	return begin;
+}
+
+void delayMs(int t){
+  U32 start = PIT2_VAL();
+  U32 interval = t * (g_bus_clock / 1000);
+  U32 end = start - interval;
+  while(PIT2_VAL() > end){
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+    asm("NOP"); asm("NOP");
+  }
 }
 
 

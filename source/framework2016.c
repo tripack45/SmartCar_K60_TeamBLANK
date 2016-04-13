@@ -71,6 +71,8 @@ void main (void)
   Oled_Putstr(7,1,"Press Key1 to go on");
   while (Key1());while (!Key1());
   Oled_Clear();
+  Oled_Putstr(2,0,"Waiting");
+  delayMs(2000);
 /* 
 UART_SetMode(UART_MODE_DMA_MANNUAL);
   

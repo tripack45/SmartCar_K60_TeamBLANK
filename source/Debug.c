@@ -87,7 +87,7 @@ const char* varName[]=
                "5  COFFDIR",             //Flash[5]
                "6  LLSpd",             //Flash[6]
                "7  LHSpd",             //Flash[7]
-               "8  LineMSE",             //Flash[8]
+               "8  AIDSEN",             //Flash[8]
                "9  DirPIDD",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
                "11 EXP_SEN",          //Flash[11]

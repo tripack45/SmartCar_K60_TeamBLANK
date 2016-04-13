@@ -33,7 +33,7 @@ extern U16 flashData[DATA_NUM];
 #define F_OFFSET_DIR_RATIO          (flashData[ 5])
 #define F_LINE_LOWSPD               (flashData[ 6])
 #define F_LINE_HIGHSPD              (flashData[ 7])
-#define F_STRAIGHT_MSE_CRIT         (flashData[ 8])
+#define F_AID_SENSITIVITY           (flashData[ 8])
 #define F_DIRPID_D                  (flashData[ 9])
 #define F_SPDPID_I                  (flashData[10])
 #define F_SPDEXP_SEN                (flashData[11])

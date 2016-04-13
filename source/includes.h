@@ -28,4 +28,6 @@
 #include "Algorithm.h"
 #include "Debug.h"
 
+void delayMs(int);
+
 #include <arm_itm.h>
