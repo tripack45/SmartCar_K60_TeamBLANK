@@ -162,48 +162,7 @@ void CrossroadStateHandler(){
   //currspd = 10;
 }
 
-s16 Speed_PID(s16 expect){
-  static u8 launchFlag=0;
-  static s16 sumError=0;
-  static s16 lastError=0;
-  s16 speed=tacho0;
-  s16 error=expect-speed;
-  s16 output=0;
-  
-  if(error>15)launchFlag=1;
-  
-  if(launchFlag){
-    if(error<5)launchFlag=0;
-    return SPEED_MAX;
-  }
-  
-  s16 delta = error-lastError;
-  s16 base = expect * EXP_SEN;
-  s16 termP = error * MOTOR_PID_P;
-  s16 termI = sumError * MOTOR_PID_I / 100;
-  s16 termD = delta * MOTOR_PID_D;
- 
-  output =  base + termP + termI + termD;
 
-  lastError=error;
-  sumError+=error;
-  
-  if (tacho0)
-    output = MOTOR_DEAD_RUN + 100 * output / SPEED_MAX * MOTOR_PID_SENSITIVITY;
-  else
-    output = MOTOR_DEAD_REST + 100 * output / SPEED_MAX * MOTOR_PID_SENSITIVITY;
-  
-  return output;
-}
-
-s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D){
-  s16 outputDir;
-  static s16 lastDirection = 0;
-  outputDir = ( (s32) dir_P * position 
-               + (s32) dir_D * (position - lastDirection ))/100;
-  lastDirection = position;
-  return outputDir;
-}
 
 void SteeringAid(){
   s32 delta = ABS(currentState.lineAlpha) < 60 ? 0 : currentState.lineAlpha; 
@@ -218,4 +177,9 @@ void SteeringAid(){
   currdir -= (s16)delta;
   currspd -= ABS(delta) * BRAKE_SENSITIVITY / AID_SENSITIVITY / 10;
                 
+}
+
+void DMCHandler(CurrentControlState *CState){
+   s16 deveation = CState->radialDis - CState->circleRadius;
+   
 }

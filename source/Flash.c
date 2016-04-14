@@ -13,10 +13,10 @@ U16 flashData[DATA_NUM];
 U16 data_initial[DATA_NUM]={
   1,	        //data flag
   90,	        //F_DIRPID_P
-  70,	        //F_RADIUS_MIN
-  300,	        //F_RADIUS_MAX
-  10,	        //F_OFFSET_THRES
-  10,	        //F_OFFSET_DIR_RATIO
+  70,	        //NONE
+  300,	        //NONE
+  10,	        //NONE
+  10,	        //NONE
   15,	        //F_LINE_LOWSPD
   15,	        //F_LINE_HIGHSPD   
   30,            //F_AID_SENSITIVITY

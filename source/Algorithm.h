@@ -14,19 +14,6 @@ u8 IsStartLine(u8 img_buffer[][IMG_COLS]);
 #define maxabs(a,b) (abs(a)<abs(b)?b:a)
 
 
-
-#define EXP_SEN               10
-#define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
-#define MOTOR_PID_I           F_SPDPID_I
-#define MOTOR_PID_D           F_SPDPID_D     //SPEED_KP
-#define MOTOR_PID_SENSITIVITY 13
-#define TACHO_SENSITIVITY 1
-#define MOTOR_DEAD_RUN 320
-#define MOTOR_DEAD_REST 400
-#define SPEED_MAX 700
-
-s16 Speed_PID(s16 Expect);
-
 //Public Types
 typedef struct{
   u8 *img_buffer;
@@ -35,6 +22,7 @@ typedef struct{
   u8 isUnknown;
   u8 carPosX;
   u8 carPosY;
+  s16 radialDis;
   u8 *LBoundaryX; 
   u8 *LBoundaryY; 
   u8 LBoundarySize;
@@ -192,7 +180,6 @@ void ControllerControl();
 #define LINEAR_PID_P    50
 #define LINEAR_PID_D    10
 #define ALPHA_BOUND     10
-
 void LinearStateHandler();
 
 //========END OF LinearStateHandler=======
@@ -201,7 +188,6 @@ void LinearStateHandler();
 //==========Str2TrnStateHandler===========
 
 #define STR2TRN_CHANG_ZONE 10
-
 void Str2TrnStateHandler();
 
 //=======END OF Str2TrnStateHandler=======
@@ -238,13 +224,6 @@ void CircleStateHandler();
 
 //=======END OF CircleStateHandler======
 
-//=============Dir_PID==================
-
-s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
-
-//=========END OF Dir_PID==================
-
-
 
 //=========SteeringAid==================
 
@@ -260,6 +239,28 @@ void SteeringAid ();
 //=========END OF SteeringAid============
 
 
+//============Utility Functions=========
 
 
+s16 Dir_PID(s16 position, u16 dir_P, u16 dir_D);
+
+#define EXP_SEN               10
+#define MOTOR_PID_P           F_SPDPID_P     //SPEED_KI
+#define MOTOR_PID_I           F_SPDPID_I
+#define MOTOR_PID_D           F_SPDPID_D     //SPEED_KP
+#define MOTOR_PID_SENSITIVITY 13
+#define TACHO_SENSITIVITY 1
+#define MOTOR_DEAD_RUN 320
+#define MOTOR_DEAD_REST 400
+#define SPEED_MAX 700
+s16 Speed_PID(s16 Expect);
+
+s32 MALineAlpha(s32 input);
+s32 MALineBeta(s32 input);
+s16 MACircleX(s16 input);
+s16 MACircleY(s16 input);
+s16 MACircleRadius(s16 input);
+//=========Moving Average========
+
+//======================================
 #endif

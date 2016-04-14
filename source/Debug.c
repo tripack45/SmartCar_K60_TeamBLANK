@@ -81,10 +81,10 @@ void SaveVariable(){
 const char* varName[]=
               {"0  RESERVE",           //Flash[0]
                "1  DirPIDP",             //Flash[1]
-               "2  CRADMIN",             //Flash[2]
-               "3  CRADMAX",             //Flash[3]
-               "4  COFFTHR",             //Flash[4]
-               "5  COFFDIR",             //Flash[5]
+               "2  NONE",             //Flash[2]
+               "3  NONE",             //Flash[3]
+               "4  NONE",             //Flash[4]
+               "5  NONE",             //Flash[5]
                "6  LLSpd",             //Flash[6]
                "7  LHSpd",             //Flash[7]
                "8  AIDSEN",             //Flash[8]
@@ -147,10 +147,9 @@ void UI_Debug(){
   //Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
   //Oled_Putstr(5,0,"DBG 2"); Oled_Putnum(5,11,debugWatch[2]);
   Oled_Putstr(3,0,"state"); Oled_Putnum(3,11,currentState.state);
-  Oled_Putstr(4,0,"LMSE"); Oled_Putnum(4,11,currentState.lineMSE);
-  Oled_Putstr(5,0,"CMSE"); Oled_Putnum(5,11,currentState.circleMSE);
-  
-  Oled_Putstr(6,0,"DBG 3"); Oled_Putnum(6,11,debugWatch[3]);
+  Oled_Putstr(4,0,"X"); Oled_Putnum(4,11,currentState.circleX);
+  Oled_Putstr(5,0,"Y"); Oled_Putnum(5,11,currentState.circleY);
+  Oled_Putstr(6,0,"R"); Oled_Putnum(6,11,currentState.circleRadius);
   
   Oled_Putstr(7,0,"           ");
   Oled_Putstr(7,0,(u8*)(varName[varEdit]));

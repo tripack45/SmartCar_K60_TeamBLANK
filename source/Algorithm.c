@@ -63,23 +63,32 @@ void AlgorithmMain(){
    else
      currentState.innerCircleFlag=1;
    
+   if(currentState.fittedBoundary==1)
+        currentState.lineBeta += 35 * 100;
+   else if (currentState.fittedBoundary==2)
+        currentState.lineBeta -= 35 * 100;
+       
+   
+   currentState.lineAlpha       =MALineAlpha    (currentState.lineAlpha);
+   currentState.lineBeta        =MALineBeta     (currentState.lineBeta);
+   currentState.circleX         =MACircleX      (currentState.circleX);
+   currentState.circleY         =MACircleY      (currentState.circleY);
+   currentState.circleRadius    =MACircleRadius (currentState.circleRadius);
+
+      
    if(isCrossroad)
      currentState.state=CONTROL_STATE_CROSS;
    else if(currentState.lineMSE <= STRAIGHT_MSE_CRIT){
      currentState.state=CONTROL_STATE_STRAIGHT;
-     if(currentState.fittedBoundary==1)
-        currentState.lineBeta += 35 * 100;
-     else if (currentState.fittedBoundary==2)
-        currentState.lineBeta -= 35 * 100;
    }else{
      currentState.state=CONTROL_STATE_TURN;
-    
+   
     s32 diffX = (currentState.carPosX) - (currentState.circleX);
     s32 diffY = (currentState.carPosY) - (currentState.circleY);
     u32 distance = ( diffX * diffX + diffY * diffY);
-    distance = Isqrt(distance);
+    currentState.radialDis = (s32)Isqrt(distance);
      
-    if(distance > currentState.circleRadius){
+    if(currentState.radialDis > currentState.circleRadius){
        currentState.circleRadius = currentState.circleRadius + 35;
      }else{
        currentState.circleRadius = currentState.circleRadius - 35;

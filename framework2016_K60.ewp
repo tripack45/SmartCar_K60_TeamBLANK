@@ -2877,6 +2877,9 @@
       <name>$PROJ_DIR$\source\Algorithm_Handler.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\source\Algorithm_Utils.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\source\Algorithm_Visual.c</name>
     </file>
     <file>
