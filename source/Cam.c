@@ -9,7 +9,7 @@ License : MIT
 #define VALID_COLS IMG_COLS
 
 #define SIG_SIZE 3
-#define EXTRA_INFO_SIZE 6 
+#define EXTRA_INFO_SIZE 6 + 4
 
 
 // ====== Variables ======
@@ -27,10 +27,10 @@ u8* buffer_ptr[4]={ cam_buffer0+SIG_SIZE, cam_buffer1+SIG_SIZE,
                     cam_buffer2+SIG_SIZE, cam_buffer3+SIG_SIZE };
 
 // ---- Global ----
-int processing_frame; //Currently processing frame
-int loading_frame; //Currently loading frame
-int sending_frame; //Currently sending frame
-int last_processed_frame, last_sent_frame;
+s32 processing_frame; //Currently processing frame
+s32 loading_frame; //Currently loading frame
+s32 sending_frame; //Currently sending frame
+s32 last_processed_frame, last_sent_frame;
 
 int process_diff,load_diff,send_diff;
 
@@ -84,7 +84,7 @@ void Cam_Algorithm(){
   //u8 header[SIG_SIZE]={0xFF,0x00,0xFF};
   //u8 tail[SIG_SIZE]={0xA0,0x00,0xA0};
   u32 img_row_used;
-  for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
+  currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
     // For every row:
     while( (img_row_used >= img_row % IMG_ROWS) 
         && (processing_frame == loading_frame)  );
@@ -99,6 +99,7 @@ void Cam_Algorithm(){
       SET_LOCK(PLOCK_BASE,processing_frame_indicator);
       //Prepare the read/write pointer
       img_buffer=(void*)(buffer_ptr[processing_frame_indicator]);
+      *((s32*)((u8*)img_buffer + IMG_ROWS*IMG_COLS+6))=processing_frame;
     }
     // Line processing here
     //===========End============
@@ -106,7 +107,11 @@ void Cam_Algorithm(){
   //HERE WE SUCESSFULLY LOADED ONE FRAME:
   //Due to locking this will always be a consistent frame:
   //Post Frame Processing
-  
+infinite_loop:
+  //ITM_EVENT8_WITH_PC(4,24);
+  AlgorithmMain();
+  //ITM_EVENT16_WITH_PC(3,ABS(currdir));
+  //ITM_EVENT8_WITH_PC(4,23);
   //Writing Current Extra Infomation into the buffer
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS]=((uint16)currspd)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+1]=((uint16)currspd)>>8;
@@ -114,11 +119,13 @@ void Cam_Algorithm(){
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+3]=((uint16)currdir)>>8;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+4]=((uint16)tacho0)&0xff;
   ((u8*)img_buffer)[IMG_ROWS*IMG_COLS+5]=((uint16)tacho0)>>8;
-  DetectBoundary();
-  DirCtrl(); 
+  
+  //if(processing_frame==1000)goto infinite_loop;
+  
   CLEAR_LOCK(PLOCK_BASE); //Release the processing lock
   process_diff=processing_frame - last_processed_frame;
   last_processed_frame=processing_frame;
+  
 }
 
 // ====== Basic Drivers ======
@@ -130,15 +137,15 @@ void PORTC_IRQHandler(){
     if(   (img_row < IMG_ROWS) 
        && (cam_row % IMG_STEP == 0)
        && (cam_row > 12) 
-         ){
-           //ITM_EVENT32(1, img_row);
-           for(int i=1;i<170;i++)asm("NOP");
-           //ITM_EVENT8_WITH_PC(4,24);
-           DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
-           DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
-           ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
-           DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
-         }
+      ){
+      //ITM_EVENT32(1, img_row);
+      for(int i=1;i<170;i++)asm("NOP");
+      //ITM_EVENT8_WITH_PC(4,24);
+      DMA0->TCD[0].DADDR = (u32)&loading_buffer[img_row][0];
+      DMA0->ERQ |= DMA_ERQ_ERQ0_MASK; //Enable DMA0
+      ADC0->SC1[0] |= ADC_SC1_ADCH(4); //Restart ADC
+      DMA0->TCD[0].CSR |= DMA_CSR_START_MASK; //Start
+    }
     cam_row++;
   }
   else if(PORTC->ISFR&PORT_ISFR_ISF(1 << 9)){   //VS
@@ -159,14 +166,18 @@ void PORTC_IRQHandler(){
     debug_num=-PIT2_VAL() /(g_bus_clock/10000)+t;
     t-=debug_num;
     //ITM_EVENT32(1, loading_frame);
+    
+    
   }
 }
 
 void DMA0_IRQHandler(){
   //if(e_debug_num==1)
   //{e_debug_num=2;
+
   DMA0->CINT &= ~DMA_CINT_CINT(7);
   //ITM_EVENT32(1, 0);
+  /*
   u8 errorFlag=0;
   if(img_row>1){ 
     for(int i=IMG_COLS-1;i>IMG_COLS-15;i--){
@@ -178,8 +189,8 @@ void DMA0_IRQHandler(){
     if(errorFlag)
       for(int i=1;i<IMG_COLS;i++)
         loading_buffer[img_row][i]=loading_buffer[img_row-1][i];
-  }
-    img_row++; 
+  }*/
+  img_row++; 
  //}
 }
 
@@ -198,7 +209,7 @@ void Cam_Init(){
   PORTC->PCR[11] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
   
   NVIC_EnableIRQ(PORTC_IRQn);
-  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 1, 2));
+  NVIC_SetPriority(PORTC_IRQn, NVIC_EncodePriority(NVIC_GROUP, 0, 1));
   
   // --- AD ---
   
@@ -325,6 +336,9 @@ void cam_usb(){
       sending_buffer=buffer_ptr[t]-SIG_SIZE;
       
       sending_frame_indicator=t;
+      static s32 tag=0;
+      tag=
+        *((s32*)((u8*)sending_buffer+IMG_ROWS*IMG_COLS + SIG_SIZE+6));
       LPLD_USB_VirtualCom_Tx( sending_buffer,
                              IMG_ROWS * VALID_COLS
                                + EXTRA_INFO_SIZE 

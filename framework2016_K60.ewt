@@ -257,10 +257,25 @@
   <group>
     <name>app</name>
     <file>
-      <name>$PROJ_DIR$\source\algorithm.c</name>
+      <name>$PROJ_DIR$\source\Algorithm.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\source\algorithm.h</name>
+      <name>$PROJ_DIR$\source\Algorithm.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Algorithm_Analysis.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Algorithm_Control.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Algorithm_Handler.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Algorithm_Utils.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\Algorithm_Visual.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\source\Bluetooth.c</name>

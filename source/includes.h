@@ -25,7 +25,9 @@
 #include "Bluetooth.h"
 #include "HW_USB.h"
 #include "USB_callback.h"
-#include "algorithm.h"
+#include "Algorithm.h"
 #include "Debug.h"
+
+void delayMs(int);
 
 #include <arm_itm.h>

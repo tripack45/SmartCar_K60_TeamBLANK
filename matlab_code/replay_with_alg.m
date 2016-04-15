@@ -3,9 +3,9 @@ imgrow=67;
 imgcol=77;
 algrow=150;
 algcol=150;
-source=frame;
-fps=50;
-start=900;
+source=imglog;
+fps=10;
+start=600;
 
 %% Set up the figures
 InitializeFigures;
@@ -19,9 +19,17 @@ for i=start:size(source,3)
     %Load A Frame
     img=source(:,:,i);
     
-    %Apply Algorithms.
-    [out algdir algspd]=alg(img);
+    %Preprocess A Frame
+    for ii=2:imgrow
+        if any(img(ii,end-20:end)'<10)
+            img(ii,:)=img(ii-1,:);
+        end
+    end
     
+    %Apply Algorithms.
+
+        [out algdir algspd]=alg(img);
+
     %Recall Logging Data
     dir=dirlog(i);
     spd=spdlog(i);

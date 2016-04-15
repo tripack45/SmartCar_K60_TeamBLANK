@@ -12,19 +12,19 @@ U16 flashData[DATA_NUM];
 
 U16 data_initial[DATA_NUM]={
   1,	        //data flag
-  0,	        //KF_switch
-  0,	        //blance_deform
-  40,	        //balance_K
-  100,	        //balance P
-  85,	        //balance D
-  95,	        //balance dt
-  1635,	        //acc offset
-  40,           //P speed
-  10,           //D speed
-  10,           //Spped PD_I
-  10,           //Speed Sensitivity 
-  30,           //Spped PD_P
-  100,          //Speed PD_D
+  90,	        //F_DIRPID_P
+  70,	        //NONE
+  300,	        //NONE
+  10,	        //NONE
+  10,	        //NONE
+  15,	        //F_LINE_LOWSPD
+  15,	        //F_LINE_HIGHSPD   
+  30,            //F_AID_SENSITIVITY
+  20,            //F_DIRPID_D
+  50,           //Speed PD_I
+  10,           //Brake Sensitivity 
+  30,           //Speed PD_P
+  10,           //Speed PD_D
   25,           // SAVE_VAR
   1,            // STEPLENGTH
 };

@@ -12,7 +12,7 @@ catch
 end
 imgrow=67;
 imgcol=77;
-extraInfoSize=6;
+extraInfoSize=10;
 algrow=150;
 algcol=150;
 frameNum=0;
@@ -41,9 +41,10 @@ set(h,'KeyPressFcn',@keyboard_callback);
 disp('Recieving');
 b_buffer=[];
 imglog=[];
-tacholog=[];
-spdlog=[];
 dirlog=[];
+spdlog=[];
+tacholog=[];
+
 while 1
     if length(b_buffer)>3*imgcol*imgrow
         b_buffer=[];
@@ -92,19 +93,27 @@ while 1
         spdu8=indata(E+1:E+2);
         diru8=indata(E+3:E+4);
         tachou8=indata(E+5:E+6);
-        spd=typecast(uint8(spdu8),'int16');
+        frameCounter32=indata(E+7:E+10);
+        spd=typecast(uint8(spdu8),'int161');
         dir=typecast(uint8(diru8),'int16');
         tacho=typecast(uint8(tachou8),'int16');
-        
+        frameCounter=typecast(uint8(frameCounter32),'int32');
+        %disp(frameCounter);
+
         %Collecting Image Data
         indata=indata(1:imgcol*imgrow);
         img=reshape(indata,[imgcol,imgrow]);
         img=img.';
         
+        if(frameCounter==1000);
+            sample=img;
+            return;
+        end
+        
         %Apply the algorithms
         [out algdir algspd]=alg(img);
         
-        %Logging the results
+        %Logging the results    
         imglog(:,:,end+1)=img;
         dirlog(end+1)=dir;
         spdlog(end+1)=spd;

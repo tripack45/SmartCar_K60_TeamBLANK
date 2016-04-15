@@ -1,4 +1,3 @@
-
 function keyboard_callback(ObjH, EventData)
 global com;
 Key = get(ObjH, 'CurrentCharacter');

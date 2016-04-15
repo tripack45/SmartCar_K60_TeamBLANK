@@ -32,14 +32,14 @@ void main (void)
   Flash_Init();
 
   Debug_Init();
-  
+  /*
   if(!SW2()){
       UART_Init(921600);
   }else if(!SW3()){
       UART_Init(460800);
-  }else{
+  }else{*/
       UART_Init(115200);
-  }
+  //}
 #ifndef ENABLE_USB
   UART_Configure_DMA();
 #endif
@@ -71,6 +71,8 @@ void main (void)
   Oled_Putstr(7,1,"Press Key1 to go on");
   while (Key1());while (!Key1());
   Oled_Clear();
+  Oled_Putstr(2,0,"Waiting");
+  //delayMs(2000);
 /* 
 UART_SetMode(UART_MODE_DMA_MANNUAL);
   
@@ -120,13 +122,17 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   }
   //preparing testdata
   while(1){
-  //t=1;
+1  //t=1;
   ITM_EVENT16_WITH_PC(2,25);
   //while(t--){
       debug_num=LPLD_USB_VirtualCom_Tx((uint8*)sending_buffer-3,IMG_ROWS * IMG_COLS + 2 * 3);
   for(int i=1;i<10000000;i++)asm("NOP");
   //}
   }*/
+  
+  
+  //for(;;);
+  
   while(1)
   {
     // Don't use oled or sensors' functions here !!!

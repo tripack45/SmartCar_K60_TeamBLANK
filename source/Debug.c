@@ -5,6 +5,8 @@
 
 int16* varAddr=(void*)NULL;
 u8 isDebugging=0;
+int16 debugWatch[4]={0};
+
 
 //Debug Menu
 u8 varEdit=14; u8 isEditing=0;
@@ -78,17 +80,17 @@ void SaveVariable(){
 
 const char* varName[]=
               {"0  RESERVE",           //Flash[0]
-               "1  NONE",             //Flash[1]
+               "1  DirPIDP",             //Flash[1]
                "2  NONE",             //Flash[2]
                "3  NONE",             //Flash[3]
                "4  NONE",             //Flash[4]
                "5  NONE",             //Flash[5]
-               "6  NONE",             //Flash[6]
-               "7  NONE",             //Flash[7]
-               "8  NONE",             //Flash[8]
-               "9  NONE",             //Flash[9]
+               "6  LLSpd",             //Flash[6]
+               "7  LHSpd",             //Flash[7]
+               "8  AIDSEN",             //Flash[8]
+               "9  DirPIDD",           //Flash[9]
                "10 SpdPd_I",          //Flash[10]
-               "11 EXP_SEN",          //Flash[11]
+               "11 BRK_SEN",          //Flash[11]
                "12 SpdPd_P",          //Flash[12]
                "13 SpdPd_D",          //Flash[13]
                "14 USRVAR",           //Flash[14] 
@@ -124,7 +126,6 @@ void DebugKeyPress2(){
   }
   else
     varEdit=(varEdit-1)&0x000f;
-  
 }
 
 void DebugKeyPress3(){
@@ -142,10 +143,13 @@ void UI_Debug(){
   }
   Oled_Putnum(1,11,varEdit);
   
-  Oled_Putstr(3,0,"NONE"); Oled_Putnum(3,11,0);
-  Oled_Putstr(4,0,"USERVAR"); Oled_Putnum(4,11,*varAddr);
-  Oled_Putstr(5,0,"CURRDIR"); Oled_Putnum(5,11,currdir);
-  Oled_Putstr(6,0,"CURRSPD"); Oled_Putnum(6,11,currspd);
+  //Oled_Putstr(3,0,"DBG 0"); Oled_Putnum(3,11,debugWatch[0]);
+  //Oled_Putstr(4,0,"DBG 1"); Oled_Putnum(4,11,debugWatch[1]);
+  //Oled_Putstr(5,0,"DBG 2"); Oled_Putnum(5,11,debugWatch[2]);
+  Oled_Putstr(3,0,"state"); Oled_Putnum(3,11,currentState.state);
+  Oled_Putstr(4,0,"X"); Oled_Putnum(4,11,currentState.circleX);
+  Oled_Putstr(5,0,"Y"); Oled_Putnum(5,11,currentState.circleY);
+  Oled_Putstr(6,0,"R"); Oled_Putnum(6,11,currentState.circleRadius);
   
   Oled_Putstr(7,0,"           ");
   Oled_Putstr(7,0,(u8*)(varName[varEdit]));

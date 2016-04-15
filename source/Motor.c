@@ -8,7 +8,7 @@ License : MIT
 
 
 // ===== Setting =====
-#define SERVO_MID 6830 // (g_bus_clock/64*15/10000)  Adjust it according to your mech
+#define SERVO_MID 6900 // (g_bus_clock/64*15/10000)  Adjust it according to your mech
 
 
 // ===== Variables =====
@@ -16,7 +16,7 @@ License : MIT
 // --- Global ----
 S16 tacho0, tacho1;
 S16 currdir=SERVO_MAX;
-S16 currspd=0;
+S16 currspd=10;
 
 // --- Local ---
 U16 tacho1_tmp,tacho0_tmp,ftm1cnt_last;
@@ -34,8 +34,10 @@ u8 Tacho1_Dir();
 
 
 void Servo_Output(s16 x){
+  //x=-x;
   if(x>SERVO_MAX) x = SERVO_MAX;
   if(x<-SERVO_MAX) x = -SERVO_MAX;
+  x = x * 22 / 60;
   FTM2->CONTROLS[0].CnV=SERVO_MID + x;
 }
 
