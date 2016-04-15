@@ -129,6 +129,10 @@ UART_SetMode(UART_MODE_DMA_CONTINUOUS);
   for(int i=1;i<10000000;i++)asm("NOP");
   //}
   }*/
+  
+  
+  //for(;;);
+  
   while(1)
   {
     // Don't use oled or sensors' functions here !!!
