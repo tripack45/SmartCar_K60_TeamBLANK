@@ -36,6 +36,7 @@ u8 Tacho1_Dir();
 void Servo_Output(s16 x){
   if(x>SERVO_MAX) x = SERVO_MAX;
   if(x<-SERVO_MAX) x = -SERVO_MAX;
+  x /= 4;
   FTM2->CONTROLS[0].CnV=SERVO_MID + x;
 }
 
