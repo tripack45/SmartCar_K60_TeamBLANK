@@ -110,6 +110,5 @@ void ControllerControl(){
   default:
     break;
   }
-  debugWatch[0]=internalState.state;
   return;
 }

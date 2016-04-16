@@ -29,7 +29,12 @@ void AlgorithmMain(){
    }else{
       startLineCounter--;
    }
+   static u32 TStart=0;
+   static u32 TEnd=0;
+   if(startLineFlag==1) TStart = PIT2_VAL();
+   if(startLineFlag==3) TEnd   = PIT2_VAL(); 
    if(startLineFlag>2){
+     debugWatch[3]= (TStart-TEnd)/(g_bus_clock / 100);
      delayMs(100);
      currspd=0;
      for(;;);
