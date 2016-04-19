@@ -62,6 +62,7 @@ for k=2:N
         end
     end
     Y0=A0*Uk_1;
+    
     e(k)=y(k-1)-Y0(1);
     Yr=zeros(P,1);
     for i=1:P

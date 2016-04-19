@@ -2,46 +2,50 @@
 //=========Model Predicting Controlling=====
 
 #define MPC_INTERVAL 2 // 2 frames per perdiction
-#define MPC_N 15 // Sampling Period
-#define MPC_P 15 // Perdiction Horizon
+#define MPC_N 10// Sampling Period
+#define MPC_P 10 // Perdiction Horizon
 
 // @spd=20
 float MPCModel1[MPC_N]={0.0022f  , 0.0087f  , 0.0196f , 0.0348f , 0.0542f ,
-                        0.0778f  , 0.1054f  , 0.1369f , 0.1721f , 0.2110f,
-                        0.2532f  , 0.2988f  , 0.3473f , 0.3987f , 0.4527f};
+                        0.0778f  , 0.1054f  , 0.1369f , 0.1721f , 0.2110f};
 float MPCControlVec1[MPC_P]={0.209f, 0.698f ,1.167f, 1.470f, 1.649f,
-                             1.771f, 1.824f ,1.794f, 1.668f, 1.432f,
-                             1.076f, 0.587f ,-0.045f ,-0.830f,-1.773f}; 
+                             1.771f, 1.824f ,1.794f, 1.668f, 1.432f}; 
 
 //@spd=10
-float MPCModel2[MPC_N]={0.000548,0.002190,0.004924,0.008748,0.013658,
-                        0.019647,0.026709,0.034837,0.044020,0.054249,
-                        0.065512,0.077796,0.091088,0.105373,0.120634}; 
-float MPCControlVec2[MPC_P]={0.062751,0.231075,0.458283,0.701802,0.924118,
-                             1.103712,1.232933,1.304177,1.309902,1.242638,
-                             1.095004,0.859724,0.529636,0.097707,-0.442949};
+float MPCModel2[MPC_N]={0.000548,0.002190,0.004924,0.008748,0.013658,0.019647,0.026709,0.034837,0.044020,0.054249};
+float MPCControlVec2[MPC_P]={0.173118,0.602877,1.071223,1.535874,1.908167,2.151732,2.250668,2.205667,2.025825,1.720388};
 
 float* MPCModel=MPCModel2;
 float* MPCControlVec=MPCControlVec2;
 
-float MPCPrediction[MPC_P]={0}; 
+float MPCPrediction[MPC_P]={1}; 
 
-float MPCCorrectionVec[MPC_P]={1,1,1,1,1,
-                               1,1,1,1,1,
-                               1,1,1,1,1};
+float MPCCorrectionVec[MPC_P]={1,0.11,0.11,0.11,0.11,
+                               0.11,0.11,0.11,0.11,0.11};
 float MPCLastOut=0;
 
-//Obtained Through Offline Calculations
 
-
-// The dynamics Matrix, P by M
-
-void MPC_Initialize(){
-  //Initialize Dynamcis Matrix
-  
+void MPCHandler(){
+  static u8 flag=0;
+  if(flag){
+    s32 numerator = currentState.carPosX * 100
+      - currentState.lineAlpha * currentState.carPosY 
+        - currentState.lineBeta;
+    //s32 numerator = ABS(numerator);
+    s64 denominator = (s64)currentState.lineAlpha * (s64)currentState.lineAlpha + 10000;
+    s32 denom = Isqrt(denominator);
+    float distance = numerator/(float)denom;
+    debugWatch[1]=(s16)(s32)distance;
+    float dir=MPC(distance, 0);
+    currdir=(s16)(s32)dir;
+  }else{
+    flag=1-flag;
+  }
 }
+  
+  
 
-s16 MPC(int y, int setPoint){
+float MPC(float y, int setPoint){
   //Error Prediction
   float error = y - MPCPrediction[0];
   for(int p=0; p < MPC_P; p++)
@@ -51,8 +55,12 @@ s16 MPC(int y, int setPoint){
     MPCPrediction[p] = MPCPrediction[p+1];
   
   float deltaControl =0;
-  for(int p=0; p < MPC_P; p++)
-    deltaControl += (setPoint - MPCPrediction[p]) * MPCControlVec[p];
+  for(int p=0; p < MPC_P; p++){
+    volatile float e= setPoint -MPCPrediction[p];
+    volatile float k= MPCControlVec[p];
+    deltaControl += e * k;
+    //deltaControl += ((float)setPoint - MPCPrediction[p]) * MPCControlVec[p];
+  }
   
   MPCLastOut += deltaControl;
   
@@ -63,7 +71,7 @@ s16 MPC(int y, int setPoint){
       MPCPrediction[p]+=MPCModel[p] * deltaControl;
   }
   
-  return (s16)(int)MPCLastOut;
+  return MPCLastOut;
 }
 
 

@@ -262,5 +262,9 @@ s16 MACircleY(s16 input);
 s16 MACircleRadius(s16 input);
 //=========Moving Average========
 
+//=========MPC=========
+float MPC(float y, int setPoint);
+void MPCHandler();
+
 //======================================
 #endif
