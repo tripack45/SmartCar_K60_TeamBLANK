@@ -12,9 +12,10 @@ disp('Preparing to buffer');
 disp('Recieving...');
 obj.Show();
 
+
 b_buffer=[];
 while 1
-    if length(b_buffer)>3*imgcol*imgrow
+    if length(b_buffer)>3 * obj.imageHeight * obj.imageWidth;
         b_buffer=[];
     end
     head_found=false;
@@ -33,7 +34,7 @@ while 1
             head_pos=head_pos(1);
             head_found=true;
             b_buffer(1:head_pos+2)=[];
-        elseif(length(b_buffer)>imgrow*imgcol*3)
+        elseif(length(b_buffer)>3 * obj.imageHeight * obj.imageWidth)
             b_buffer=[];
         end
     end
@@ -50,7 +51,7 @@ while 1
             tail_found=true;
             indata=b_buffer(1:tail_pos-1);
             b_buffer(1:tail_pos+2)=[];
-        elseif(length(b_buffer)>imgrow*imgcol*3)
+        elseif(length(b_buffer)>3 * obj.imageHeight * obj.imageWidth)
             b_buffer=[];
         end
     end
@@ -61,12 +62,12 @@ while 1
         instance = ParsePackage(indata);
         obj.feed{end+1}=instance;
         
-        [out,algdir,algspd]=alg(intance.frame);
+        [out,algdir,algspd]=alg(instance.frame);
         algResult.display=out;
         algResult.dir    =algdir;
         algResult.spd    =algspd;
         
-        UpdateFigures(instance,algResult);
+        obj.UpdateFigures(instance,algResult);
     else
         disp('Invalid frame size!');
     end
@@ -74,9 +75,11 @@ end
 end
 
 function instance=ParsePackage(indata)
+h=K60Server.imageHeight;
+w=K60Server.imageWidth;
 
 instance=struct();
-E=imgcol*imgrow;
+E=h * w;
 spdu8=indata(E+1:E+2);
 diru8=indata(E+3:E+4);
 tachou8=indata(E+5:E+6);
@@ -87,8 +90,8 @@ instance.dir=typecast(uint8(diru8),'int16');
 instance.tacho=typecast(uint8(tachou8),'int16');
 instance.frameNumber=typecast(uint8(frameCounter32),'int32');
 
-img=indata(1:obj.imageWidth * obj.imageHeight);
-img=reshape(img,[obj.imageWidth,obj.imageHeight]);
+img=indata(1:h * w);
+img=reshape(img,[w,h]);
 img=img.';
 instance.frame=img;
 end

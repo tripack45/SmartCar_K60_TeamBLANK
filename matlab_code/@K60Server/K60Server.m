@@ -44,10 +44,11 @@ classdef K60Server < handle
             delete(obj.figureHandle);
             try
                 fclose(obj.comData);
+                
             catch
             end
-            clear K60Server.GetInstance;
             delete(obj.comData);
+            clear classes;
         end
         
         ReplayWithAlg(obj,start,fps);

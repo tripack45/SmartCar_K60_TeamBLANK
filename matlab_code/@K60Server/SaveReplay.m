@@ -3,7 +3,6 @@ function SaveRep(obj, name )
 %   Detailed explanation goes here
 eval([name,'=obj.feed']);
 save([name,'.mat'],name);
-disp('Reopening Com');
-obj.
+
 end
 

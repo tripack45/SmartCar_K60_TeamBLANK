@@ -4,6 +4,8 @@ obj.figureHandle=figure;
 set(obj.figureHandle,'Renderer','OpenGL');
 set(obj.figureHandle,'Position',[58,126,1300,557]);
 
+%uicontrol('String','Stop','Style', 'pushbutton', 'Callback', 'error();');
+
 obj.plotSource=subplot(1,2,1);
 colormap(obj.plotSource,gray);
 axis equal;
