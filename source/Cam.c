@@ -136,7 +136,7 @@ void PORTC_IRQHandler(){
     
     if(   (img_row < IMG_ROWS) 
        && (cam_row % IMG_STEP == 0)
-       && (cam_row > 12) 
+       && (cam_row > 4) 
       ){
       //ITM_EVENT32(1, img_row);
       for(int i=1;i<170;i++)asm("NOP");

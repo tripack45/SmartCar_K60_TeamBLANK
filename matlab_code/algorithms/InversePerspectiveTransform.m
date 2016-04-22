@@ -10,13 +10,13 @@ REAL_WORLD_SCALE=50; %70pts==50cm
 %  *    |
 %  *    V y
 % */ 
-C1=-104;
-C2=8170; %// Scaled by 10000
-ORIGIN_X=39;
-ORIGIN_Y=35;
-TRAPZOID_HEIGHT=51;
-TRAPZOID_UPPER=38;
-TRAPZOID_LOWER=70;
+C1=-159;
+C2=10129; %// Scaled by 10000
+ORIGIN_X=38;
+ORIGIN_Y=31;
+TRAPZOID_HEIGHT=33;
+TRAPZOID_UPPER=32;
+TRAPZOID_LOWER=53;
 % /* Formula
 %    Standard_50(y')= Upeer + (Lower- Upper)* (y'-3) / Height
 %    x= PERSPECTIVE_SCALE * x' / Standard_50(y') 
@@ -25,10 +25,10 @@ TRAPZOID_LOWER=70;
 numerator = PERSPECTIVE_SCALE * (xIn - ORIGIN_X) * TRAPZOID_HEIGHT;
 denominator = TRAPZOID_UPPER * TRAPZOID_HEIGHT  ...
                 + (TRAPZOID_LOWER - TRAPZOID_UPPER) * (yIn - 3);
-xOut=fix(numerator./denominator) + ORIGIN_X+50;
+xOut=fix(numerator./denominator) + ORIGIN_X+75;
 
 numerator = PERSPECTIVE_SCALE * C2 * (yIn - ORIGIN_Y);
 denominator = REAL_WORLD_SCALE * (10000 - C1 * (yIn - ORIGIN_Y));
-yOut=fix(numerator./denominator) + ORIGIN_Y+40;
+yOut=fix(numerator./denominator) + ORIGIN_Y+100;
 
 end

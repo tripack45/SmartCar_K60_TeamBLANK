@@ -4,10 +4,10 @@ classdef K60Server < handle
     % car
     
     properties (Constant=true)
-        imageHeight=67;
+        imageHeight=61;
         imageWidth =77;
-        displayHeight = 150;
-        displayWidth  = 150;
+        displayHeight = 200;
+        displayWidth  = 200;
         extraInfoByte = 10;
     end
     

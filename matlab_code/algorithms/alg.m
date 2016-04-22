@@ -1,5 +1,6 @@
 function [graph,dir,spd] = alg(img_buffer)
 %% Setup
+displaySize=200;
 imgrow=size(img_buffer,1);
 imgcol=size(img_buffer,2);
 IMG_ROWS=imgrow;
@@ -9,6 +10,7 @@ beep=@(x)sound(sin(150*(1:floor(8192*x/1000))));
 currentState=struct( ...
     'state'       ,0 ...
     ,'img_buffer' ,img_buffer ...
+    ,'binarizedImg',[] ...
     ,'LBoundaryX'  ,[] ...
     ,'LBoundaryY'  ,[] ...
     ,'LBoundarySize',0 ...
@@ -142,7 +144,7 @@ internalState=ControllerUpdate(internalState,currentState);
 %% Output to graph
 try
 %Draw Boundary
-out=zeros(150,150)+57;
+out=zeros(displaySize,displaySize)+57;
 for row=1:size(currentState.LBoundaryY);
     out(currentState.LBoundaryY(row),currentState.LBoundaryX(row))=50;%9/44/50/55/65
 end
@@ -158,9 +160,9 @@ end
 
 % Draw A line
 if(currentState.state==1)
-    for jj=0+1:150+1
+    for jj=0+1:displaySize+1
         temp=ceil(currentState.lineAlpha * jj+currentState.lineBeta);
-        if (temp>=0+1 && temp<=150)
+        if (temp>=0+1 && temp<=displaySize)
             out(jj,temp)=65;
         end
     end
@@ -177,8 +179,8 @@ end
     % end
     
     for row=1:length(p)
-        if (0+1<px(row)+1 && px(row)<150 ...
-                && 0+1<py(row) && py(row)<150+1)
+        if (0+1<px(row)+1 && px(row)<displaySize ...
+                && 0+1<py(row) && py(row)<displaySize+1)
             out(ceil(px(row)) ,ceil(py(row)))=65;
         end
     end
@@ -187,7 +189,7 @@ end
     for ii=-1:1
         for jj=-1:1
             if(currentState.circleY+jj>0   && currentState.circleX+ii>0 ...
-                    && currentState.circleY+jj<150 && currentState.circleX+ii<150)
+                    && currentState.circleY+jj<displaySize && currentState.circleX+ii<displaySize)
                 out(ceil(currentState.circleY)+jj,ceil(currentState.circleX)+ii)=9;
             end
         end
@@ -206,7 +208,7 @@ end
 if(currentState.innerCircleFlag==-1)
     out([70:73],[1:15])=9;
 else
-    out([70:73],[135:150])=9;
+    out([70:73],[135:displaySize])=9;
 end
 catch
     dir=0;

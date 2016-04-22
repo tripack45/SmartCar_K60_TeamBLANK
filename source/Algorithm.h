@@ -93,13 +93,13 @@ extern BoundaryDetector boundaryDetector;
  *    |
  *    V y
 */
-#define ALGC1 -104
-#define ALGC2 8170 // Scaled by 10000
-#define ORIGIN_X 39
-#define ORIGIN_Y 35
-#define TRAPZOID_HEIGHT 51
-#define TRAPZOID_UPPER 38
-#define TRAPZOID_LOWER 70
+#define ALGC1 -159
+#define ALGC2 10129 // Scaled by 10000
+#define ORIGIN_X 38 
+#define ORIGIN_Y 31
+#define TRAPZOID_HEIGHT 33
+#define TRAPZOID_UPPER 32
+#define TRAPZOID_LOWER 53
 /* Formula
    Standard_50(y')= Upeer + (Lower- Upper)* y' / Height
    x= PERSPECTIVE_SCALE * x' / Standard_50(y')

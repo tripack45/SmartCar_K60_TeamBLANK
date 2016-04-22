@@ -7,7 +7,7 @@
 // so we get 1 row of image for every IMG_STEP rows of camera ,
 // and totally get IMG_ROWS rows.
 
-#define IMG_ROWS 67
+#define IMG_ROWS 61
 #define IMG_COLS 77
 #define IMG_STEP 4
 
