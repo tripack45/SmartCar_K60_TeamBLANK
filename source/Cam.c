@@ -84,7 +84,7 @@ void Cam_Algorithm(){
   //u8 header[SIG_SIZE]={0xFF,0x00,0xFF};
   //u8 tail[SIG_SIZE]={0xA0,0x00,0xA0};
   u32 img_row_used;
-  currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;currentState.isUnknown=0;for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
+  for(img_row_used = 0; img_row_used < IMG_ROWS; img_row_used++){
     // For every row:
     while( (img_row_used >= img_row % IMG_ROWS) 
         && (processing_frame == loading_frame)  );

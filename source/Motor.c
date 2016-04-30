@@ -10,7 +10,6 @@ License : MIT
 // ===== Setting =====
 #define SERVO_MID 6900 // (g_bus_clock/64*15/10000)  Adjust it according to your mech
 
-
 // ===== Variables =====
 
 // --- Global ----
@@ -41,7 +40,7 @@ void Servo_Output(s16 x){
   FTM2->CONTROLS[0].CnV=SERVO_MID + x;
 }
 
-void MotorL_Output(s16 x){
+void MotorR_Output(s16 x){
   x=-x;
   if(x>MOTOR_MAX) x=MOTOR_MAX;
   if(x<-MOTOR_MAX) x=-MOTOR_MAX;
@@ -59,7 +58,7 @@ void MotorL_Output(s16 x){
   }
 }
 
-void MotorR_Output(s16 x){
+void MotorL_Output(s16 x){
   if(x>MOTOR_MAX) x=MOTOR_MAX;
   if(x<-MOTOR_MAX) x=-MOTOR_MAX;
   if(x>0){
