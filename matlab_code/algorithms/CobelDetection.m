@@ -2,12 +2,18 @@ function [img_o ] = CobelDetection(img)
     MZ = 1;
     IMG_ROWS = K60Server.imageHeight;
     IMG_COLS = K60Server.imageWidth;
+    COL_LSCAN = 2;
+    COL_RSCAN = IMG_COLS-4;
+    ROW_USCAN = 1;
+    ROW_DSCAN = IMG_ROWS-4;
+    
     COBEL_THRES = 34;
+    
     imgCobel = zeros(IMG_ROWS,IMG_COLS);
+
     
-    
-    for (i = 2:IMG_COLS-4)
-        for (j = 1:IMG_ROWS-4);
+    for (i = COL_LSCAN:COL_RSCAN)
+        for (j = ROW_USCAN:ROW_DSCAN);
             gx1 = img(MZ + j    ,MZ + i + 2) - img(MZ + j    , MZ + i);
             gx2 = img(MZ + j + 1,MZ + i + 2) - img(MZ + j + 1, MZ + i);
             gx3 = img(MZ + j + 2,MZ + i + 2) - img(MZ + j + 2, MZ + i);
@@ -20,7 +26,7 @@ function [img_o ] = CobelDetection(img)
             
             g= abs(gx)+abs(gy);
             
-            imgCobel(MZ + j, MZ + i)=g/5;
+            imgCobel(MZ + j, MZ + i)=fix(g/5);
         end
     end
     disp(max(imgCobel(:)));
