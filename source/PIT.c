@@ -78,7 +78,7 @@ void PIT0_IRQHandler(){
   
   // Tacho
   Tacho0_Get();
-  Tacho1_Get();
+  //Tacho1_Get();
   
   
   // UI operation input
