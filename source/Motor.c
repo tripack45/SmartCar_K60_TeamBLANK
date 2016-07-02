@@ -13,6 +13,8 @@ License : MIT
 // ===== Variables =====
 
 // --- Global ----
+
+S16 tachoAccu;
 S16 tacho0, tacho1;
 S16 currdir=SERVO_MAX;
 S16 currspd=10;
@@ -91,9 +93,9 @@ void MotorR_Enable(u8 x){
 // ------- Tacho -----
 
 void Tacho0_Get(){
-  u16 tmp = Tacho0_Renew();
-  tacho0 = tmp - tacho0_last;
-  tacho0_last = tmp;
+  static u16 tachoLast = 0;
+  tacho0 = tachoAccu - tachoLast;
+  tachoLast = tachoAccu;
 }
 
 u16 Tacho0_Renew(){
@@ -108,11 +110,11 @@ u16 Tacho0_Renew(){
   return tacho0_tmp;
 }
 
-void Tacho1_Get(){
-  u16 tmp = tacho1_tmp;
-  tacho1 = tmp - tacho1_last;
-  tacho1_last = tmp;
-}
+//void Tacho1_Get(){
+//  u16 tmp = tacho1_tmp;
+//  tacho1 = tmp - tacho1_last;
+//  tacho1_last = tmp;
+//}
 
 
 
@@ -163,32 +165,31 @@ void Tacho_Init(){
   */
   
   // QD for phase0
-  PORTA->PCR[12]|=PORT_PCR_MUX(7);
-  FTM1->MODE|=FTM_MODE_WPDIS_MASK;//Write protection disable
-  FTM1->QDCTRL|=FTM_QDCTRL_QUADMODE_MASK;
-  FTM1->CNTIN=0;
-  FTM1->MOD=0XFFFF;
-  FTM1->QDCTRL|=FTM_QDCTRL_QUADEN_MASK;
-  FTM1->MODE|=FTM_MODE_FTMEN_MASK;//let all registers available for use
-  FTM1->CNT=0;
+//  PORTA->PCR[12]|=PORT_PCR_MUX(7);
+//  FTM1->MODE|=FTM_MODE_WPDIS_MASK;//Write protection disable
+//  FTM1->QDCTRL|=FTM_QDCTRL_QUADMODE_MASK;
+//  FTM1->CNTIN=0;
+//  FTM1->MOD=0XFFFF;
+//  FTM1->QDCTRL|=FTM_QDCTRL_QUADEN_MASK;
+//  FTM1->MODE|=FTM_MODE_FTMEN_MASK;//let all registers available for use
+//  FTM1->CNT=0;
   
   // IO interrupt for phase1
-  PORTA->PCR[13]|=PORT_PCR_MUX(1);
-  PTA->PDDR &=~(1<<13);
-  PORTA->PCR[13] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(10);	//PULLUP | falling edge
+  PORTA->PCR[12]|=PORT_PCR_MUX(1);
+  PTA->PDDR &=~(1<<12);
+  PORTA->PCR[12] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(10);	//PULLUP | falling edge
   NVIC_EnableIRQ(PORTA_IRQn);
   NVIC_SetPriority(PORTA_IRQn, NVIC_EncodePriority(NVIC_GROUP, 0, 2));
   
   //==== Tacho DIR ===
-  PORTA->PCR[14] |= PORT_PCR_MUX(1);
-  PORTA->PCR[15] |= PORT_PCR_MUX(1);
-  PTA->PDDR &=~(3<<14);
-  PORTA->PCR[14] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK | PORT_PCR_IRQC(11);	//PULLUP | either edge
-  PORTA->PCR[15] |= PORT_PCR_PE_MASK | PORT_PCR_PS_MASK ;
-  
+  PORTA->PCR[13] |= PORT_PCR_MUX(1);
+  PTA->PDDR &=~(1<<13);
+  PORTA->PCR[13] |= PORT_PCR_PE_MASK 
+                  | PORT_PCR_PS_MASK;	//PULLUP | either edge
+//  
   tacho0_dir = Tacho0_Dir();
   
-  /*
+  /*1
   SIM->SCGC5|=SIM_SCGC5_LPTIMER_MASK;
   PORTC->PCR[5] = PORT_PCR_MUX(4);
   //PORTA->PCR[19] = PORT_PCR_MUX(6);
@@ -215,32 +216,21 @@ void Servo_Init(){
 
 //---- Tacho dir ----
 u8 Tacho0_Dir(void){
-  return (PTA->PDIR>>14)&1;
+  return (PTA->PDIR>>13)&1;
 }
+
 u8 Tacho1_Dir(void){
   return (PTA->PDIR>>15)&1;
 }
 
 
 void PORTA_IRQHandler(){
-  if((PORTA->ISFR)&PORT_ISFR_ISF(1 << 13)){     // phase 1 
-    PORTA->ISFR |= PORT_ISFR_ISF(1 << 13);
-    if(Tacho1_Dir())
-      tacho1_tmp ++;
-    else
-      tacho1_tmp --;
-  }
-  else if((PORTA->ISFR)&PORT_ISFR_ISF(1 << 14)){     // phase 0 dir 
-    PORTA->ISFR |= PORT_ISFR_ISF(1 << 14);
-    if(Tacho0_Dir()){
-      tacho0_dir = 1;
-      tacho0_tmp += FTM1->CNT-ftm1cnt_last;
-      ftm1cnt_last = FTM1->CNT;
-    }
-    else{       //  falling
-      tacho0_dir = 0;
-      tacho0_tmp -= FTM1->CNT-ftm1cnt_last;
-      ftm1cnt_last = FTM1->CNT;
+if((PORTA->ISFR)&PORT_ISFR_ISF(1 << 12)){     // phase 1 
+    PORTA->ISFR |= PORT_ISFR_ISF(1 << 12);
+    if(Tacho0_Dir()) {
+      tachoAccu++;
+    } else {
+      tachoAccu--;
     }
   }
 }
